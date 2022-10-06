@@ -63,7 +63,7 @@ Provide guidance on how to approach common UX patterns, achieve consistent UX.
 <table border=2>
   <tr>
     <th rowspan=6>P0</th>
-    <th rowspan=6>Logo</th>
+    <th rowspan=6>Logo (Done)</th>
     <th>Usage</th>
     <td>Provide contextual examples of what to do and not to do with the logo</td>
   </tr>
