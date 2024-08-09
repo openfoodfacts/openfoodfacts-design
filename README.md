@@ -1,4 +1,5 @@
-#### Open Food Facts
+# Open Food Facts
+
 # Design plan
 This is an initial plan to kickstart design at Open Food Facts.
 
@@ -110,3 +111,7 @@ Provide guidance on how to approach common UX patterns, achieve consistent UX.
     <td>How do we onboard users to product or new feature, give them great UX from the start</td>
   </tr>
 </table>
+
+
+### Elsewhere
+* Old wiki page to update: https://wiki.openfoodfacts.org/Design
