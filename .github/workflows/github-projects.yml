@@ -1,4 +1,4 @@
-name: Add bugs to the relevant GitHub Projects
+name: 'Add bugs to the relevant GitHub Projects'
 on:
   issues:
     types:
