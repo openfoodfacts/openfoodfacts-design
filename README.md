@@ -119,3 +119,5 @@ Provide guidance on how to approach common UX patterns, achieve consistent UX.
 
 ### Elsewhere
 * Old wiki page to update: https://wiki.openfoodfacts.org/Design
+* We have a #design channel on Slack. https://slack.openfoodfacts.org
+* We'd like to restart a regular design call (for meta subject related to design, and creating a design org), as well as find a way to integrate Design in our development process, and weekly calls.
