@@ -12,6 +12,7 @@ This is an initial plan to kickstart design at Open Food Facts.
   - User persona
  
 - [🎨 Fostering the Open Food Facts Design Community](https://github.com/orgs/openfoodfacts/projects/76)
+- [🎨 Creating & Maintening a Design System for Open Food Facts](https://github.com/orgs/openfoodfacts/projects/75)
 - [🎨 UXR & Design team - a daunting and massive backlog generated automatically from all our repositories](https://github.com/orgs/openfoodfacts/projects/11)
 
 <br />
