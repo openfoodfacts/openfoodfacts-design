@@ -2,15 +2,12 @@
 <svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 94 219">
   <defs>
     <style>
-      .cls-1, .cls-2 {
+      .cls-1 {
         fill: #fff;
       }
 
       .cls-2 {
-        stroke: #9b9b9b;
-        stroke-linecap: round;
-        stroke-miterlimit: 10;
-        stroke-width: 2.25px;
+        fill: #999;
       }
 
       .cls-3 {
@@ -30,9 +27,9 @@
     <g id="Bottle_Sticker">
       <rect class="cls-1" x="15" y="84" width="65" height="95" rx="4.04" ry="4.04"/>
       <g>
-        <line class="cls-2" x1="21" y1="103" x2="73.02" y2="103"/>
-        <line class="cls-2" x1="21" y1="114" x2="73.02" y2="114"/>
-        <line class="cls-2" x1="21" y1="125" x2="73.02" y2="125"/>
+        <path class="cls-2" d="M73.02,104.12H21c-.62,0-1.12-.5-1.12-1.12s.5-1.12,1.12-1.12h52.02c.62,0,1.12.5,1.12,1.12s-.5,1.12-1.12,1.12Z"/>
+        <path class="cls-2" d="M73.02,115.12H21c-.62,0-1.12-.5-1.12-1.12s.5-1.12,1.12-1.12h52.02c.62,0,1.12.5,1.12,1.12s-.5,1.12-1.12,1.12Z"/>
+        <path class="cls-2" d="M73.02,126.12H21c-.62,0-1.12-.5-1.12-1.12s.5-1.12,1.12-1.12h52.02c.62,0,1.12.5,1.12,1.12s-.5,1.12-1.12,1.12Z"/>
       </g>
     </g>
   </g>
