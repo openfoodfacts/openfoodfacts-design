@@ -1,55 +1,6 @@
-var avatars_config = {
-    "width": 300,
-    "height": 400,
-    "select_width": 75,
-    "select_height": 100,
-    "parts": {
-        "body" : {
-            "types" : [
-                "default"
-            ],
-            "components" : [ "top" ]
-        },
-        "hair" : {
-            "types" : [
-                "short", "long"
-            ],
-            "components" : [ "bottom", "top" ]
-        },
-        "face-expression" : {
-            "types" : [
-                "basic", "smile"
-            ],
-            "components" : [ "top" ]
-        },
-        "top-clothes" : {
-            "types" : [
-                "tshirt", "sweatshirt"
-            ],
-            "components" : [ "top" ]
-        },
-        "bottom-clothes" : {
-            "types" : [
-                "pants"
-            ],
-            "components" : [ "top" ]
-        }
-    },
-    "parts_order": [
-        "hair.bottom",
-        "body.top",
-        "face-expression.top",
-        "top-clothes.top",
-        "bottom-clothes.top",
-        "hair.top"
-    ],
-    "colors": {
-        "hair": [
-            ['#ffcc00', '#e6b800'],
-            ['#663300', '#4d2600']
-        ]
-    }
-}
+// avatars.js
+
+// Sample UI to create an avatar by selecting parts and colors
 
 function createAvatarSVG () {
     // For each part, we will extract the content of the selected part type SVG
@@ -67,30 +18,64 @@ function createAvatarSVG () {
     avatarSVG.style.height = `${avatars_config.height}px`;
 
     // For each part in the order defined in avatars_config.parts_order
-    avatars_config.parts_order.forEach(part => {
-        const [partName, component] = part.split('.');
-        const partElement = document.getElementById(`avatar-${partName}`);
+    avatars_config.parts_order.forEach(partComponent => {
+        const [part, component] = partComponent.split('.');
+        const partElement = document.getElementById(`avatar-${part}`);
+        // Get the index of the selected colors, for all parts
+        // (as some parts use colors from other parts, e.g. face-expression uses hair colors)
+        let selectedColorsIndexes = [];
+        for (const colorPart in avatars_config.colors) {
+            const selectedColorElement = document.querySelector(`#avatar-colors-${colorPart} .selected`);
+            if (selectedColorElement) {
+                const colorIdParts = selectedColorElement.id.split('-');
+                selectedColorsIndexes.push(parseInt(colorIdParts[colorIdParts.length - 1], 10));
+            } else {
+                selectedColorsIndexes.push(0); // Default to first color if not selected
+            }
+        }
+
         if (partElement) {
             // Find the selected type element
-            console.log(`Processing part: ${partName}, component: ${component}`);
+            console.log(`Processing part: ${part}, component: ${component}`);
             const selectedTypeElement = Array.from(partElement.children).find(child => child.classList.contains('selected'));
             if (selectedTypeElement) {
                 // Get the SVG for the selected type and component
-                console.log(`Selected type element for ${partName}:`, selectedTypeElement);
+                console.log(`Selected type element for ${part}:`, selectedTypeElement);
                 const svgElement = selectedTypeElement.querySelector(`object[data*="${component}"]`);
                 // We need to extract the SVG content inside the img element and add it to the avatarSVG
                 if (svgElement) {
-                    console.log(`Adding ${partName}.${component} to avatar`);
+                    console.log(`Adding ${part}.${component} to avatar`);
                     // Add all the top level elements except the <svg> tag itself
                     // Note: contentDocument only works if the SVG is loaded from the same origin (on a web server)
                     // it does not work locally
                     const svgContent = svgElement.contentDocument;
                     const svgChildren = Array.from(svgContent.children);
                     svgChildren.forEach(child => {
-                        // Clone the child to avoid moving it from the original SVG
-                        const clonedChild = child.cloneNode(true);
-                        // Append the cloned child to the avatar SVG
-                        avatarSVG.appendChild(clonedChild);
+                        // Get the SVG code as a string, so that we can find and replace colors easily
+                        let svgCode = new XMLSerializer().serializeToString(child);
+
+                        // Replace colors in the SVG code for parts that have colors defined
+                        // when the selected color is not the first one (index 0)
+                        for (let i = 0; i < selectedColorsIndexes.length; i++) {
+                            if (avatars_config.colors[part] && selectedColorsIndexes[i] > 0) {
+                                const originalColors = avatars_config.colors[part][0];
+                                const selectedColors = avatars_config.colors[part][selectedColorsIndexes[i]];
+                                // Replace all instances of the original colors with the selected colors
+                                console.log(`Replacing colors for ${part}:`, originalColors, 'with', selectedColors);
+                                for (let j = 0; j < originalColors.length; j++) {
+                                    // Replace the color in the SVG code
+                                    svgCode = svgCode.replace(new RegExp(originalColors[j], 'g'), selectedColors[j]);
+                                }
+                            }
+                        }
+
+                        // Create a new SVG element from the modified SVG code and append it
+                        newSvgElement = document.createElementNS("http://www.w3.org/2000/svg", "g");
+                        newSvgElement.innerHTML = svgCode;
+                        // Set the id of the new SVG element to the part and component
+                        newSvgElement.id = `${part}-${component}`;
+                        // Add the new SVG element to the avatarSVG
+                        avatarSVG.appendChild(newSvgElement);
                     });
                 }
 
@@ -125,9 +110,10 @@ function initAvatars () {
         partElement.style.flexDirection = 'row';
 
         // If the part has colors defined, display selectable squares for each color, and automatically select the first color      
-        if (0 && avatars_config.colors[part]) {
+        if (avatars_config.colors[part]) {
             const colorsElement = document.createElement('div');
             colorsElement.className = 'avatar-part-colors';
+            colorsElement.id = `avatar-colors-${part}`;
             colorsElement.style.display = 'flex';
             colorsElement.style.flexDirection = 'row';
 
@@ -135,9 +121,8 @@ function initAvatars () {
                 const colorElement = document.createElement('div');
                 colorElement.className = `avatar-color`;
                 colorElement.style.background = `${colorPair[0]}`;
-                colorElement.style.width = "20px";
-                colorElement.style.height = "20px";
-                colorElement.style.cursor = 'pointer';
+                // Add an id to identify the part name and the index of the colors
+                colorElement.id = `avatar-color-${part}-${index}`;
 
                 // Add click event listener to change the color
                 colorElement.addEventListener('click', () => {
