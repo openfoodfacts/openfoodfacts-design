@@ -11,6 +11,10 @@ Avatars are composed of several body parts (e.g. hair, body, top clothes, bottom
 For each part, it's possible to choose between different types (e.g. short hair, long hair).
 Some parts / types combinations will also allow users to choose a color (e.g. tshirt color).
 
+## Configuration
+
+The different body parts, types, components and selectable colors for the different body parts need to be listed in avatars-config.js
+
 ## Avatars SVG files
 
 ### Software

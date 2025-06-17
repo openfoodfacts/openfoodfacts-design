@@ -23,14 +23,16 @@ function createAvatarSVG () {
         const partElement = document.getElementById(`avatar-${part}`);
         // Get the index of the selected colors, for all parts
         // (as some parts use colors from other parts, e.g. face-expression uses hair colors)
-        let selectedColorsIndexes = [];
+        let selectedColorsIndexes = {};
         for (const colorPart in avatars_config.colors) {
             const selectedColorElement = document.querySelector(`#avatar-colors-${colorPart} .selected`);
             if (selectedColorElement) {
                 const colorIdParts = selectedColorElement.id.split('-');
-                selectedColorsIndexes.push(parseInt(colorIdParts[colorIdParts.length - 1], 10));
+                // Get the index of the color from the id, which is in the format avatar-color-part-index
+                const colorIndex = parseInt(colorIdParts[colorIdParts.length - 1], 10);
+                selectedColorsIndexes[colorPart] = colorIndex; // Store the index of the selected color
             } else {
-                selectedColorsIndexes.push(0); // Default to first color if not selected
+                selectedColorsIndexes[colorPart] = 0; // Default to the first color if none is selected
             }
         }
 
@@ -56,10 +58,10 @@ function createAvatarSVG () {
 
                         // Replace colors in the SVG code for parts that have colors defined
                         // when the selected color is not the first one (index 0)
-                        for (let i = 0; i < selectedColorsIndexes.length; i++) {
-                            if (avatars_config.colors[part] && selectedColorsIndexes[i] > 0) {
-                                const originalColors = avatars_config.colors[part][0];
-                                const selectedColors = avatars_config.colors[part][selectedColorsIndexes[i]];
+                        for (const colorPart in avatars_config.colors) {
+                            if (selectedColorsIndexes[colorPart] > 0) {
+                                const originalColors = avatars_config.colors[colorPart][0];
+                                const selectedColors = avatars_config.colors[colorPart][selectedColorsIndexes[colorPart]];
                                 // Replace all instances of the original colors with the selected colors
                                 console.log(`Replacing colors for ${part}:`, originalColors, 'with', selectedColors);
                                 for (let j = 0; j < originalColors.length; j++) {

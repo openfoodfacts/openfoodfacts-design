@@ -55,6 +55,11 @@ var avatars_config = {
             ['#eac37d', '#d6ac69'],
             ['#663300', '#4d2600']
         ],
+        "top-clothes": [
+            ['#337ab7', '#2b6c9e'],
+            ['#b73333', '#9e2b2b'],
+            ['#5bb733', '#4d9e2b']
+        ],
         "bottom-clothes": [
             ['#50728c'],
             ['#8c507a'],
