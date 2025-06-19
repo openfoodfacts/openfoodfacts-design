@@ -107,9 +107,6 @@ function initAvatars () {
     for (const part in avatars_config.parts) {
         const partElement = document.createElement('div');
         partElement.className = 'avatar-part';
-        partElement.id = `avatar-${part}`;
-        partElement.style.display = 'flex';
-        partElement.style.flexDirection = 'row';
 
         // If the part has colors defined, display selectable squares for each color, and automatically select the first color      
         if (avatars_config.colors[part]) {
@@ -118,6 +115,9 @@ function initAvatars () {
             colorsElement.id = `avatar-colors-${part}`;
             colorsElement.style.display = 'flex';
             colorsElement.style.flexDirection = 'row';
+
+            // Select a random color
+            const randomColorIndex = Math.floor(Math.random() * avatars_config.colors[part].length);
 
             avatars_config.colors[part].forEach((colorPair, index) => {
                 const colorElement = document.createElement('div');
@@ -136,8 +136,8 @@ function initAvatars () {
                     updateAvatar();
                 });
 
-                // Add "selected" class to the first color element
-                if (index === 0) {
+                // Add "selected" class to the selected color
+                if (index === randomColorIndex) {
                     colorElement.classList.add('selected');
                 }
 
@@ -146,7 +146,18 @@ function initAvatars () {
 
             partElement.appendChild(colorsElement);
             
-        }        
+        }
+
+        // Create an avatar part type element for each type of the part
+
+        const partTypesElement = document.createElement('div');
+        partTypesElement.id = `avatar-${part}`;
+        partTypesElement.className = 'avatar-part-types';
+        partTypesElement.style.display = 'flex';
+        partTypesElement.style.flexDirection = 'row';
+
+        // Select a random type for the part, if it has multiple types
+        const randomTypeIndex = Math.floor(Math.random() * avatars_config.parts[part].types.length);
 
         avatars_config.parts[part].types.forEach((type, index) => {
             
@@ -159,22 +170,22 @@ function initAvatars () {
             typeElement.style.width = `${avatars_config.select_width}px`;
             typeElement.style.height = `${avatars_config.select_height}px`;
 
-            // Add "selected" class to the first type element
-            if (index === 0) {
+            // Add "selected" class to the selected type element
+            if (index === randomTypeIndex) {
                 typeElement.classList.add('selected');
             }
 
             // Add click event listener to make the type selectable
             typeElement.addEventListener('click', () => {
                 // Remove "selected" class from all sibling type elements
-                Array.from(partElement.children).forEach(child => child.classList.remove('selected'));
+                Array.from(partTypesElement.children).forEach(child => child.classList.remove('selected'));
                 // Add "selected" class to the clicked type element
                 typeElement.classList.add('selected');
                 // Update the avatar
                 updateAvatar();
             });
 
-            partElement.appendChild(typeElement);
+            partTypesElement.appendChild(typeElement);
             avatars_config.parts[part].components.forEach(component => {
                 svgFilename = `svg/${part}.${type}.${component}.svg`;
                 // We load the SVG in a HTML object so that we can manipulate its content
@@ -201,7 +212,14 @@ function initAvatars () {
             }
         });
 
+        partElement.appendChild(partTypesElement);
         avatarsElement.appendChild(partElement);
     }
+
+    // Update the avatar with the randomly selected types and colors
+    // sleep for 2 seconds to ensure all SVGs are loaded
+    setTimeout(() => {
+        updateAvatar();
+    }, 2000);
 
 }
