@@ -1,0 +1,31 @@
+html {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
+}
+
+#avatar-container {
+    width:300px;
+}
+
+.avatar-part-type {
+    margin: 10px;
+    margin-right:0px;
+    background-color: #f0f0f0;
+}
+
+.avatar-color {
+    width: 20px;
+    height: 20px;
+    margin: 10px;
+    margin-bottom:0px;
+    margin-right:0px;
+    border: 10px solid #f0f0f0;
+    cursor: pointer;
+}
+
+.selected.avatar-color {
+    border: 10px solid #d0d0d0;
+}
+
+.selected.avatar-part-type {
+    background-color: #d0d0d0;
+}
