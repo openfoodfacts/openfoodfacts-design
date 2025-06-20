@@ -24,7 +24,7 @@ var avatars_config = {
         },
         "top-clothes" : {
             "types" : [
-                "tshirt", "tshirt-long-sleeves", "sweatshirt", "tshirt-off-beige", "tshirt-obf-beige", "tshirt-opff-beige", "tshirt-opf-beige"
+                "tshirt", "tshirt-long-sleeves", "sweatshirt", "tshirt-off-beige", "tshirt-obf-beige", "tshirt-opf-beige", "tshirt-open-prices"
             ],
             "components" : [ "top" ]
         },
