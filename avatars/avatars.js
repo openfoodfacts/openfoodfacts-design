@@ -217,9 +217,9 @@ function initAvatars () {
     }
 
     // Update the avatar with the randomly selected types and colors
-    // sleep for 2 seconds to ensure all SVGs are loaded
+    // sleep a bit to ensure all SVGs are loaded
     setTimeout(() => {
         updateAvatar();
-    }, 2000);
+    }, 1000);
 
 }
