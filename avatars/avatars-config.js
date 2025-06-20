@@ -12,25 +12,25 @@ var avatars_config = {
         },
         "hair" : {
             "types" : [
-                "short", "long"
+                "short", "bob", "long", "long-wavy"
             ],
             "components" : [ "bottom", "top" ]
         },
         "face-expression" : {
             "types" : [
-                "basic", "smile"
+                "basic", "smile", "sad"
             ],
             "components" : [ "top" ]
         },
         "top-clothes" : {
             "types" : [
-                "tshirt", "sweatshirt"
+                "tshirt", "tshirt-long-sleeves", "sweatshirt", "tshirt-off-beige", "tshirt-obf-beige", "tshirt-opff-beige", "tshirt-opf-beige"
             ],
             "components" : [ "top" ]
         },
         "bottom-clothes" : {
             "types" : [
-                "pants"
+                "pants", "shorts", "long-skirt"
             ],
             "components" : [ "top" ]
         },
@@ -51,6 +51,10 @@ var avatars_config = {
         "shoes.top"
     ],
     "colors": {
+        "body": [
+            ['#ffdab9', '#ddbb9f'],
+            ['#b2855f', '#9b7053']
+        ],
         "hair": [
             ['#eac37d', '#d6ac69'],
             ['#663300', '#4d2600']
@@ -63,6 +67,7 @@ var avatars_config = {
         "bottom-clothes": [
             ['#50728c'],
             ['#8c507a'],
+            ['#5a9361']
         ],
     }
 }
