@@ -6,6 +6,9 @@ on:
 jobs:
   release-please:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - uses: GoogleCloudPlatform/release-please-action@v4
         with:
