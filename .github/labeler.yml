@@ -1,3 +1,17 @@
 GitHub:
 - changed-files:
   - any-glob-to-any-file: '.github/**/*'
+
+- 🐾 Open Pet Food Facts:
+    - any-glob-to-any-file: 'images/illustrations/pet-food/animals/*.svg'
+    - any-glob-to-any-file: 'images/illustrations/pet-food/*.svg'
+
+- 📸 Open Products Facts:
+    - any-glob-to-any-file: 'images/illustrations/products/*.svg'
+    - any-glob-to-any-file: 'images/illustrations/pet-food/clothes/*.svg'
+
+- 🍊 Open Food Facts:
+    - any-glob-to-any-file: 'images/illustrations/food/*.svg'
+
+- 🧴 Open Beauty Facts:
+    - any-glob-to-any-file: 'images/illustrations/beauty/*.svg'
