@@ -1,5 +1,14 @@
 # Open Food Facts
 
+# Welcome
+[Click here to get onboarded on the Design team](./ONBOARDING.md)
+
+# Current assets
+- [Graphic charter by Quentin Lagrange and Clémence Gigandet](./graphic-charter)
+- [Illustrations by Quentin Lagrange and Clémence Gigandet](./images/illustrations)
+- [Avatar system by Clémence Gigandet](./avatars)
+
+
 # Design plan
 This is an initial plan to kickstart design at Open Food Facts.
 
@@ -57,10 +66,14 @@ Values should define our unique identity and should makes us stand out from othe
 
 # Logo
 In most cases, your logo will be the first brand asset someone sees. Make the right first impression. A distintive logo helps users recognise a product immediately and fives the essence of the branding
-- [ ] Create monochromatic version of logo
-- [ ] Provide a variety of formats for the vector version to make it easier for others to work and prevent anyone from redrawing it.
+- [x] Create monochromatic version of logo
+- [x] Provide a variety of formats for the vector version to make it easier for others to work and prevent anyone from redrawing it.
 
 <br />
+
+# Illustrations
+- [ ] Provide guidelines for illustrations
+- [ ] Create the most important illustrations so that we stay coherent
 
 # Guidelines
 Provide guidance on how to approach common UX patterns, achieve consistent UX.
