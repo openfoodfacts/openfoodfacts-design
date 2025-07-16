@@ -32,6 +32,7 @@ cd openfoodfacts-design
 ```
 
 ### 3. **Explore the Directory**
+NOT CREATED YET, STRUCTURE TO DEBATE
 - `/assets`: Design files (Figma exports, SVGs, etc.)
 - `/components`: UI components and guidelines
 - `/docs`: Documentation (including this guide!)
