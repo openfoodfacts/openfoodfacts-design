@@ -68,12 +68,14 @@ Values should define our unique identity and should makes us stand out from othe
 In most cases, your logo will be the first brand asset someone sees. Make the right first impression. A distintive logo helps users recognise a product immediately and fives the essence of the branding
 - [x] Create monochromatic version of logo
 - [x] Provide a variety of formats for the vector version to make it easier for others to work and prevent anyone from redrawing it.
-
+https://www.figma.com/design/HKAAPSQq8CZZO5uAziabRY/New-Open-Food-Facts-logo?m=auto&t=bGdHdz45zaPlgTnW-6
 <br />
 
 # Illustrations
 - [ ] Provide guidelines for illustrations
 - [ ] Create the most important illustrations so that we stay coherent
+
+https://www.figma.com/design/aM6Yu2w3JGBuHTXDHoeUuf/Illustrations?m=auto&t=bGdHdz45zaPlgTnW-6
 
 # Guidelines
 Provide guidance on how to approach common UX patterns, achieve consistent UX.
