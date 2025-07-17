@@ -26,16 +26,16 @@ Method:
  
  
 **🎯Phase 2: Exploratory Discovery**
-Method: User Interviews (5-8 participants)
-Output: proto-personas, list of JTBD and pain points
+- Method: User Interviews (5-8 participants)
+- Output: proto-personas, list of JTBD and pain points
 
 **🎯Phase 3: Quantitative Validation**
-Method: Survey (quantitative JTBD outcome validation) (n=50-100)
-Output: validated JTBD importance and satisfaction, finalised personas + segmentation data
+- Method: Survey (quantitative JTBD outcome validation) (n=50-100)
+- Output: validated JTBD importance and satisfaction, finalised personas + segmentation data
 
 **🎯Phase 4: Evaluative Research**
-Method: Usability Testing (n=5-8; each persona test based on their likely task flow)
-Output: UX issues, pain points, design recommendations
+- Method: Usability Testing (n=5-8; each persona test based on their likely task flow)
+- Output: UX issues, pain points, design recommendations
 
 **🗂️Deliverables:**
 
