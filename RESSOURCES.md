@@ -48,14 +48,29 @@ A centralized place for design assets.
 - **6.1. Asset Library:** Links to download logo files, icon sets, and other key visual assets.
 - **6.2. UI Kit (Figma/Sketch):** A downloadable UI kit for designers to use as a starting point for new designs.
 - **6.3. Design files by project** 
-## Mobile app
+## Mobile app (Meetings on Fridays at 9AM French time)
+- https://github.com/openfoodfacts/smooth-app
 - [![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?logo=figma&logoColor=white) Design file for the AppStore/PlayStore Vignettes](https://www.figma.com/file/loMFSX1wJ61jjuZkSeLV7e/Vignettes-App-Design-\(Quentin\)?node-id=3248%3A324) - [Tutorial on how to translate them using Figma](https://github.com/openfoodfacts/fastlane-descriptions-smoothie/blob/main/VIGNETTES.md)
-## Website
+- [![Sketch](https://img.shields.io/badge/Sketch-%23F24E1E.svg?logo=sketch&logoColor=white) Recent Sketch mockups by @g123k](https://www.sketch.com/s/11375b6d-9c02-4920-846d-a2b1376600b9/p/95D14BAF-AD1E-449F-9AB7-27E328773827/canvas)
+- [![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?logo=figma&logoColor=white) Mockups on the current app and future plans to discuss](https://www.figma.com/file/nFMjewFAOa8c4ahtob7CAB/Mobile-App-Design-(Quentin)?node-id=0%3A1&t=SrBuT7gBdhapUerx-0)
+## Website (Meetings on Mondays at 5PM French time for classic, Fridays at 10AM French time for explorer) 
+- https://github.com/openfoodfacts/openfoodfacts-server
+- https://github.com/openfoodfacts/openfoodfacts-explorer
 - [![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?logo=figma&logoColor=white) Design file for the Open Food Facts Website](https://www.figma.com/design/Qg9URUyrjHgYmnDHXRsTTB/Current-Website-design?m=auto&t=jNwvjRR8nIgOzzJZ-6)
 - [![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?logo=figma&logoColor=white) Design file for Mockups on the current website](https://www.figma.com/design/Qg9URUyrjHgYmnDHXRsTTB/Current-Website-design?m=auto&t=RokuCr1uXrGFMhTB-6)
 - [![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?logo=figma&logoColor=white) Design file for the current website](https://www.figma.com/design/Qg9URUyrjHgYmnDHXRsTTB/Current-Website-design?m=auto&t=RokuCr1uXrGFMhTB-6)
 - [![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?logo=figma&logoColor=white) Design file for a digital twin of openfoodfacts-explorer, the next generation of the web frontend](<https://www.figma.com/design/pgWZAEX1ZoTt0f7Azek4AV/Open-Food-Facts-Explorer-(next-gen-frontend)?node-id=1-53&t=XfEkgmUsvs6qiKr9-0>)
-## Web tools and extensions
+## Open Prices (Meetings on Wednesdays 2PM French time)
+- https://github.com/openfoodfacts/open-prices-frontend
+- [![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?logo=figma&logoColor=white) Design file for Open Prices](https://www.figma.com/design/cIB7CInl2BfueMzWnz09t6/Open-Prices?node-id=0-1&p=f&t=LC7UvPjngw57NGSs-0)
+- [![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?logo=figma&logoColor=white) Design file for Mobile Open Prices](https://www.figma.com/design/nFMjewFAOa8c4ahtob7CAB/Mobile-App-Design--Quentin-?node-id=5816-22697&p=f&t=AkgTM9QzMK7tQeGC-0)
+- [![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?logo=figma&logoColor=white) Benchmark of the defunct Prixing app](https://www.figma.com/design/XQYkLGKlcotBPpwKMhDe1z/Prixing---Benchmark?m=auto&t=AkgTM9QzMK7tQeGC-6)
+## Web tools and extensions (No regular meetings, see repo for Points of Contacts and details)
+- https://github.com/openfoodfacts/taxonomy-editor
+- https://github.com/openfoodfacts/hunger-games
+- https://github.com/openfoodfacts/openfoodfacts-webcomponents
+- https://github.com/openfoodfacts/nutripatrol-frontend
+- https://github.com/openfoodfacts/folksonomy_engine
 - [![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?logo=figma&logoColor=white) Design file for the Taxonomy Editor](https://www.figma.com/file/7QxD2pOnVntjDPqbHHPGHv/Taxonomy-Editor?t=4YadI2GgSAXcPnlo-0)
 - [![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?logo=figma&logoColor=white) Design file for Hunger Games](https://www.figma.com/design/pngqJwPkytFik6h4EW396n/Hunger-Games?node-id=801-2&p=f&t=xQnrkht1cbTJGOw9-0)
 - [![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?logo=figma&logoColor=white) Design file for Web Components](https://www.figma.com/design/X8nBndPdBfikAcevBiBxKo/Web-Components?node-id=0-1&p=f&t=A7yCwKqyW9klqYq8-0)
@@ -64,12 +79,7 @@ A centralized place for design assets.
 - [![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?logo=figma&logoColor=white) Design file for Knowledge panels folder](xxx)
 - [![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?logo=figma&logoColor=white) Design file for Search-a-Licious logo](https://www.figma.com/design/gNnI56OF91Ugdd4fBaq5F8/Search-A-Licious-Logo?m=auto&t=bEHMawF1eequkY9w-6)
 - [![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?logo=figma&logoColor=white) Design file for Wireframes & Mood board](https://www.figma.com/design/d1tuhFa0qQLqqJP2xbwBqZ/Website-%E2%80%93%3E-Search?node-id=1-2&t=bEHMawF1eequkY9w-0)
-
-## Open Prices
-- [![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?logo=figma&logoColor=white) Design file for Open Prices](https://www.figma.com/design/cIB7CInl2BfueMzWnz09t6/Open-Prices?node-id=0-1&p=f&t=LC7UvPjngw57NGSs-0)
-- [![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?logo=figma&logoColor=white) Design file for Mobile Open Prices](https://www.figma.com/design/nFMjewFAOa8c4ahtob7CAB/Mobile-App-Design--Quentin-?node-id=5816-22697&p=f&t=AkgTM9QzMK7tQeGC-0)
-- [![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?logo=figma&logoColor=white) Benchmark of the defunct Prixing app](https://www.figma.com/design/XQYkLGKlcotBPpwKMhDe1z/Prixing---Benchmark?m=auto&t=AkgTM9QzMK7tQeGC-6)
-## Paused projects
+## Paused projects (No regular meetings, see repo for Points of Contacts and details)
 - [![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?logo=figma&logoColor=white) Design file for the Community portal (student project) - Deprecated project](https://www.figma.com/file/AFo8ZYiNoom0o2Rakzg7vd/Community-portal-(OFF-version)?node-id=205%3A2)
 - [![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?logo=figma&logoColor=white) Design file for DriveOFF, the Browser extension to shop online with OFF data](https://www.figma.com/design/DHvAhrqU1TBaVkzyTcqXOT/DriveOFF---Chrome-extension-for-shopping?m=auto&t=tdB5zkxiDiU0bMVh-6)
 - [![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?logo=figma&logoColor=white) Design file for the old App on Figma](https://www.figma.com/file/BQ7CSyFvl7D9ljcXT0ay0u/Navigation-within-the-app)
