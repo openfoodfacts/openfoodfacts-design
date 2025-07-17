@@ -1,6 +1,6 @@
 # UX Researcher Guide: Data Collection, Consent & Privacy
 
-**Before beginning any UX research activities, all researchers must carefully review and adhere to the following documents and guidelines**
+**Before beginning any UX research activities, all researchers must carefully review and adhere to the following documents and guidelines**.
 
 
 📜[**UX Researcher Guide: Data Collection, Consent & Privacy**](https://docs.google.com/document/d/1mHo038urQChn91iUPLvkn0hjpyuaYs7AjUvFsbC8T0Q/edit?tab=t.0)
