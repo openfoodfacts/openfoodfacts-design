@@ -33,5 +33,7 @@ Always apply tags based on the standard categories below:
 - Team 
 
 # How to Write a Report 
-Use Research Report Template.
+Use [Research Report Template](https://github.com/openfoodfacts/openfoodfacts-design/edit/main/UXR%20Ops/UXR%20Report%20Template.md).
+
+
 
