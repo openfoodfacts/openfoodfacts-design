@@ -4,7 +4,7 @@ This repository is a centralized space for storing, organizing, and accessing us
 It is designed to help teams make evidence-based decisions throughout the product development process.
 
 
-# 📝 How to Write a UXR Repository Title
+# 📝 How to Write a UXR Report Title
 
 Every research entry in the repository should have a clear, consistent, and descriptive title. 
 This helps teammates quickly understand the focus of the research and find it later through search or filters.
