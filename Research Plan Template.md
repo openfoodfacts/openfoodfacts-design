@@ -1,4 +1,4 @@
-# 📋Research Plan Template 
+# 📋UX Research Plan Template 
 
 **Project name**
 
