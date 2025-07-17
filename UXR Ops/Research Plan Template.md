@@ -1,27 +1,35 @@
-# 📋UX Research Plan Template 
+# UX Research Plan Template 
 
-**Project name**
+# 📌 Project Name
+Enter the official name of the project or study.
 
-**Date**: enter the data. Update the date listed every time you edit the plan
+# 📅 Date
+Enter the date of this plan. Update this every time you edit the research plan to keep track of versions.
 
-**Stakeholders**: list of the stakholders and their roles 
+# 🤝 Stakeholders
+List all stakeholders involved along with their roles (e.g., Product Manager, UX Designer, Developer).
 
-**Project Background**: a few words about the focus of the study. Why have you decided to conduct the research? 
+# 🏗️ Project Background
+Briefly explain the focus of the study and why you decided to conduct this research. What problem or opportunity are you addressing?
 
-**Timeline**: timeline for the research
+# ⏳ Timeline
+Outline the schedule for the research project — key milestones, deadlines, and phases.
 
-**Research Goals**: what do you want to learn or achieve? 
+# 🎯 Research Goals
+What do you want to learn or achieve through this study? Define clear objectives.
 
-**Research Questions**: break down your goals into specific questions.
+# ❓ Research Questions
+Break down your goals into specific, answerable questions that will guide your research.
 
-**Methodology**: select methods based on goals and timeline. Which methods will you use and why?
+# 🔍 Methodology
+Choose research methods based on your goals and timeline. Explain which methods you’ll use and why they’re appropriate (e.g., interviews, surveys, usability tests).
 
-**Participants**: who are your target users? 
-Description of target audience Number of participants
-Recruitment strategy
-Decide how many participants are needed
+# 👥 Participants
+Describe your target users: who they are, demographics, number of participants, and how you plan to recruit them. Decide how many participants you need for meaningful results.
 
-**Task/Scenarios**: when your full script is ready, insert the link here.
+# 📄 Task/Scenarios
+Once your full test scripts or scenarios are ready, insert the link here for easy access.
 
-**Deliverables**: what outputs will you produce?
+# 📦 Deliverables
+List what outputs you will produce from this research (e.g., reports, personas, journey maps, recommendations).
 
