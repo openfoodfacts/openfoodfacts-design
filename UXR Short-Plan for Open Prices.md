@@ -48,3 +48,6 @@ Method:
 - UX usability findings and pain points
 
 - Recommendations
+
+[User Experience Research #864 discussion](https://github.com/openfoodfacts/open-prices/discussions/864)
+
