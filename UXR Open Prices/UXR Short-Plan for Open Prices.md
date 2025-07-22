@@ -23,6 +23,11 @@ Method:
 6. We believe that certain user segments may exist, including: early adopters - tech-savvy, individuals (using the API), power users - researchers.
 7. We believe power users mostly want to contribute massively to the database.
 8. Stakeholders believe most of our current contributions come from price tags (photos of shelves).
+9. For users price per unit is a decision aid not just a data point.
+10. We believe users might be afraid of mass upload of proofs due to the GDPR reason 
+
+
+
  
  
 **🎯Phase 2: Exploratory Discovery**
