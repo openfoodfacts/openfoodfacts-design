@@ -1,6 +1,6 @@
 # UX Research findings - slack/forums 
 
-This document collects and organizes UX research insights sourced from Slack or forums. 
+This document collects and organizes UX research findings sourced from Slack or forums. 
 Use this to identify patterns, pain points, and opportunities that can inform design and product decisions.
 
 ---
