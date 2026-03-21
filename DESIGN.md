@@ -1,37 +1,37 @@
 # Open Food Facts — Design System
 
-> **Format:** This file follows the [Google Stitch DESIGN.md](https://stitch.withgoogle.com/docs/design-md/overview) specification — a standardised way for open-source projects to document their design system in a single, version-controlled file.
+> **Format:** This file follows the [Google Stitch DESIGN.md](https://stitch.withgoogle.com/docs/design-md/overview) specification — a standardised, agent-readable way for open-source projects to document their design system in a single, version-controlled file. Coding agents and UI generators must strictly adhere to these design tokens and constraints to ensure brand consistency.
 
 ---
 
 ## Table of Contents
 
 1. [Overview](#1-overview)
-2. [Design Principles](#2-design-principles)
-3. [Brand Identity](#3-brand-identity)
-   - [Logo](#31-logo)
-   - [Color Palette](#32-color-palette)
-   - [Typography](#33-typography)
-4. [Visual Language](#4-visual-language)
-   - [Iconography](#41-iconography)
-   - [Grid & Spacing](#42-grid--spacing)
-   - [Illustrations](#43-illustrations)
-   - [Animations](#44-animations)
-5. [UI Components](#5-ui-components)
-   - [Buttons](#51-buttons)
-   - [Forms & Inputs](#52-forms--inputs)
-   - [Product Cards](#53-product-cards)
-   - [Navigation Elements](#54-navigation-elements)
-   - [Modals & Dialogs](#55-modals--dialogs)
-   - [Data Visualization](#56-data-visualization)
-   - [Tables](#57-tables)
-6. [Page Templates](#6-page-templates)
-7. [Avatar System](#7-avatar-system)
-8. [Content & Communication](#8-content--communication)
-9. [Accessibility](#9-accessibility)
-10. [UX Research](#10-ux-research)
-11. [Contributing](#11-contributing)
-12. [Resources & Tools](#12-resources--tools)
+2. [Brand Architecture](#2-brand-architecture)
+3. [Design Tokens: Color Palette](#3-design-tokens-color-palette)
+4. [Typography Rules](#4-typography-rules)
+5. [Logo Implementation & Layout Constraints](#5-logo-implementation--layout-constraints)
+6. [Design Principles](#6-design-principles)
+7. [Visual Language](#7-visual-language)
+   - [Iconography](#71-iconography)
+   - [Grid & Spacing](#72-grid--spacing)
+   - [Illustrations](#73-illustrations)
+   - [Animations](#74-animations)
+8. [UI Components](#8-ui-components)
+   - [Buttons](#81-buttons)
+   - [Forms & Inputs](#82-forms--inputs)
+   - [Product Cards](#83-product-cards)
+   - [Navigation Elements](#84-navigation-elements)
+   - [Modals & Dialogs](#85-modals--dialogs)
+   - [Data Visualization](#86-data-visualization)
+   - [Tables](#87-tables)
+9. [Page Templates](#9-page-templates)
+10. [Avatar System](#10-avatar-system)
+11. [Content & Communication](#11-content--communication)
+12. [Accessibility](#12-accessibility)
+13. [UX Research](#13-ux-research)
+14. [Contributing](#14-contributing)
+15. [Resources & Tools](#15-resources--tools)
 
 ---
 
@@ -63,7 +63,175 @@
 
 ---
 
-## 2. Design Principles
+## 2. Brand Architecture
+
+The Open Food Facts ecosystem consists of four distinct sub-brands. The UI must dynamically adapt its primary accent color depending on the active brand context. All sub-brands share the same foundational design system (typography, spacing, components) but use their designated accent color as the primary UI action color.
+
+| Sub-brand | Token | Hex | Usage context |
+|---|---|---|---|
+| **Open Food Facts** | `brand-food` | `#FF8714` | Food product pages, food-related flows |
+| **Open Beauty Facts** | `brand-beauty` | `#008C8C` | Beauty product pages, beauty-related flows |
+| **Open Pet Food Facts** | `brand-pet-food` | `#FF6E78` | Pet food product pages, pet food flows |
+| **Open Products Facts** | `brand-products` | `#0064C8` | Generic product pages, fallback brand |
+
+> **For coding agents:** Read the active brand from context (e.g., a `brand` prop, a CSS custom property `--brand-accent`, or a theme variable) and apply the corresponding token as the primary color for buttons, links, focus rings, and other accent elements.
+
+---
+
+## 3. Design Tokens: Color Palette
+
+### Base & Structural Colors
+
+| Token | Value | Usage |
+|---|---|---|
+| `color-text-primary` | `#000000` | Primary text, headings, high-emphasis labels |
+| `color-background-default` | `#F5F5F5` | Default page/screen background |
+| `color-surface-white` | `#FFFFFF` | Card surfaces, modal backgrounds, input fills |
+| `color-grayscale` | 0%–100% opacity of `#000000` | Dividers, disabled states, secondary text |
+
+### Brand Accent Colors
+
+Map the primary UI action color (`--brand-accent`) to the active brand:
+
+| Token | Hex | Brand |
+|---|---|---|
+| `brand-food` | `#FF8714` | Open Food Facts (Orange) |
+| `brand-beauty` | `#008C8C` | Open Beauty Facts (Turquoise) |
+| `brand-pet-food` | `#FF6E78` | Open Pet Food Facts (Pink) |
+| `brand-products` | `#0064C8` | Open Products Facts (Blue) |
+
+### Semantic Colors
+
+| Token | Usage |
+|---|---|
+| `color-success` | Confirming a successful action (e.g., product added) |
+| `color-error` | Validation errors, destructive actions |
+| `color-warning` | Cautionary information (e.g., allergen alerts) |
+| `color-info` | Neutral informational messages |
+
+### Grayscale System
+
+The grayscale is a 100-step scale from 0% to 100% Black (`#000000` with varying opacities). Use named steps for consistency:
+
+| Step | Approximate value | Usage |
+|---|---|---|
+| `gray-100` | `#F5F5F5` | Background fills |
+| `gray-200` | `#E5E5E5` | Dividers, borders |
+| `gray-400` | `#BDBDBD` | Placeholder text, disabled borders |
+| `gray-600` | `#757575` | Secondary text, captions |
+| `gray-800` | `#424242` | Sub-headings, strong secondary text |
+| `gray-900` | `#212121` | Near-black text |
+
+### Accessibility
+
+All colour combinations must achieve a minimum contrast ratio of **4.5:1** for normal text and **3:1** for large text (18px+ bold or 24px+ regular), in accordance with WCAG 2.1 AA.
+
+---
+
+## 4. Typography Rules
+
+### Primary Typeface: Plus Jakarta Sans
+
+| Property | Value |
+|---|---|
+| **Family** | `Plus Jakarta Sans` |
+| **License** | Open Font License — available via [Google Fonts](https://fonts.google.com/specimen/Plus+Jakarta+Sans) |
+| **Usage** | Must be used universally for all UI text, including titles, headings, important keywords, paragraphs, and UI components |
+
+### Available Weights
+
+All weights support both normal and italic styles:
+
+| Weight name | CSS weight value |
+|---|---|
+| ExtraLight | `200` |
+| Light | `300` |
+| Regular | `400` |
+| Medium | `500` |
+| SemiBold | `600` |
+| Bold | `700` |
+| ExtraBold | `800` |
+
+### Type Scale
+
+| Role | Weight | Size (px) | Line height | Usage |
+|---|---|---|---|---|
+| Display | ExtraBold (800) | 48–64 | 1.1 | Hero headings, marketing |
+| H1 | Bold (700) | 32–40 | 1.2 | Page titles |
+| H2 | SemiBold (600) | 24–28 | 1.25 | Section headings |
+| H3 | SemiBold (600) | 20–22 | 1.3 | Sub-section headings |
+| Body Large | Regular (400) | 18 | 1.6 | Lead paragraphs, introductions |
+| Body | Regular (400) | 16 | 1.5 | Main body copy |
+| Body Small | Regular (400) | 14 | 1.5 | Captions, metadata |
+| Label | Medium (500) | 12–14 | 1.4 | UI labels, badges, tags |
+
+**Type rules:**
+- Minimum body text size: **16px** (1rem) — never go below this for body copy
+- Never substitute Plus Jakarta Sans with system fonts in production UIs
+- For code snippets or technical content, use a system monospace font as a complement only
+
+---
+
+## 5. Logo Implementation & Layout Constraints
+
+The logo is the primary brand asset. All implementations must follow these rules exactly.
+
+### Available Logo Files
+
+| Variant | File | Recommended use |
+|---|---|---|
+| Horizontal – Light | `images/logos/openfoodfacts/off-logo-horizontal-light.svg` | Light UI backgrounds |
+| Horizontal – Dark | `images/logos/openfoodfacts/off-logo-horizontal-dark.svg` | Dark UI backgrounds |
+| Horizontal – Mono Black | `images/logos/openfoodfacts/off-logo-horizontal-mono-black.svg` | Single-colour print |
+| Horizontal – Mono White | `images/logos/openfoodfacts/off-logo-horizontal-mono-white.svg` | Photography overlays, dark print |
+| Vertical – Light | `images/logos/openfoodfacts/off-logo-vertical-light.svg` | Light backgrounds, portrait format |
+| Vertical – Dark | `images/logos/openfoodfacts/off-logo-vertical-dark.svg` | Dark backgrounds, portrait format |
+| Icon – Light | `images/logos/openfoodfacts/off-logo-icon-light.svg` | App icons, favicons (light context) |
+| Icon – Dark | `images/logos/openfoodfacts/off-logo-icon-dark.svg` | App icons, favicons (dark context) |
+| Favicon | `images/logos/openfoodfacts/off-logo-favicon-light.png` | Browser tabs |
+
+[![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?logo=figma&logoColor=white) Logo of Open Food Facts](https://www.figma.com/design/HKAAPSQq8CZZO5uAziabRY/New-Open-Food-Facts-logo?m=auto&t=bGdHdz45zaPlgTnW-6)
+
+### Spatial Requirements
+
+- **Safety Margin:** A strict protection grid/safety margin must be maintained around the logo at all times. No text, images, or other UI components may encroach on this padding. Refer to the [Brand Guidelines PDF](./graphic-charter/BRAND%20GUIDELINES_OFF_V1.pdf) for the exact safety margin dimensions.
+- **Small Scale Contexts:** For small UI areas (favicons, mobile app icons, social media avatars), strictly use the icon/synthetic single-icon version of the logo (`off-logo-icon-*.svg`) to guarantee legibility. Never use the full horizontal or vertical logo at small sizes.
+
+### Background Adaptation
+
+| UI background | Correct logo variant |
+|---|---|
+| Light background (`color-surface-white`, `color-background-default`) | Standard color logo (`-light`) or monochrome black (`-mono-black`) |
+| Dark background | White/inverted logo (`-dark` or `-mono-white`) to maintain maximum contrast |
+| Photography / non-uniform background | Monochrome white (`-mono-white`) for guaranteed readability |
+
+### Visual Integrity — Strict "Do Nots"
+
+> **For coding agents:** These constraints are non-negotiable. Any generated code that violates these rules must be corrected before shipping.
+
+- ❌ **DO NOT** distort the proportions or aspect ratio of the logo (no non-uniform `width`/`height` or `transform: scale(x, y)` with differing values)
+- ❌ **DO NOT** alter the core logo colors or apply CSS `filter` properties to the logo element
+- ❌ **DO NOT** add `drop-shadow`, `box-shadow`, glows, gradients, or any other visual effects to the logo
+- ❌ **DO NOT** apply the logo over non-uniform or low-contrast backgrounds that compromise readability
+- ❌ **DO NOT** resize individual elements of the logo independently or remove any of its components
+- ❌ **DO NOT** redraw or recreate the logo — always use the provided vector files from `images/logos/`
+- ❌ **DO NOT** change the logo axis or rotate it
+
+### Sister Brand Logos
+
+Logos for all sister brands are available in `images/logos/` following the same file-naming conventions:
+
+| Brand | Directory |
+|---|---|
+| Open Beauty Facts | `images/logos/openbeautyfacts/` |
+| Open Pet Food Facts | `images/logos/openpetfoodfacts/` |
+| Open Products Facts | `images/logos/openproductsfacts/` |
+| Open Prices | `images/logos/openprices/` |
+| Green Score | `images/logos/green-score/` |
+
+---
+
+## 6. Design Principles
 
 These principles guide every design decision at Open Food Facts. When in doubt, refer back to them.
 
@@ -78,118 +246,9 @@ These principles guide every design decision at Open Food Facts. When in doubt, 
 
 ---
 
-## 3. Brand Identity
+## 7. Visual Language
 
-### 3.1 Logo
-
-The Open Food Facts logo is the primary brand asset. It must always be used consistently to build recognition.
-
-**Available formats:**
-
-| Variant | File | Use case |
-|---|---|---|
-| Horizontal – Light | `images/logos/openfoodfacts/off-logo-horizontal-light.svg` | Light backgrounds |
-| Horizontal – Dark | `images/logos/openfoodfacts/off-logo-horizontal-dark.svg` | Dark backgrounds |
-| Horizontal – Mono Black | `images/logos/openfoodfacts/off-logo-horizontal-mono-black.svg` | Single-colour printing |
-| Horizontal – Mono White | `images/logos/openfoodfacts/off-logo-horizontal-mono-white.svg` | Photography overlays |
-| Vertical – Light | `images/logos/openfoodfacts/off-logo-vertical-light.svg` | Light backgrounds, portrait format |
-| Vertical – Dark | `images/logos/openfoodfacts/off-logo-vertical-dark.svg` | Dark backgrounds, portrait format |
-| Icon – Light | `images/logos/openfoodfacts/off-logo-icon-light.svg` | App icons, favicons (light) |
-| Icon – Dark | `images/logos/openfoodfacts/off-logo-icon-dark.svg` | App icons, favicons (dark) |
-| Favicon | `images/logos/openfoodfacts/off-logo-favicon-light.png` | Browser tabs |
-
-[![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?logo=figma&logoColor=white) Logo of Open Food Facts](https://www.figma.com/design/HKAAPSQq8CZZO5uAziabRY/New-Open-Food-Facts-logo?m=auto&t=bGdHdz45zaPlgTnW-6)
-
-**Logo rules (Do's and Don'ts):**
-
-✅ **Do:**
-- Use the logo according to the grid and safety margin defined in the brand guidelines
-- Apply the logo on recommended backgrounds or photographs that don't affect readability
-- Use recommended colour variants and their approved alternatives
-- Refer to the [Brand Guidelines PDF](./graphic-charter/BRAND%20GUIDELINES_OFF_V1.pdf) for full specifications
-
-❌ **Don't:**
-- Change the logo axis or distort proportions
-- Use on low-contrast backgrounds
-- Change brand colours or add effects
-- Resize or remove individual logo elements
-- Redraw the logo — always use the provided vector files
-
-**Sister brand logos** are also available in `images/logos/` for:
-- Open Beauty Facts (`openbeautyfacts/`)
-- Open Pet Food Facts (`openpetfoodfacts/`)
-- Open Products Facts (`openproductsfacts/`)
-- Open Prices (`openprices/`)
-- Green Score (`green-score/`)
-
----
-
-### 3.2 Color Palette
-
-Colors are defined in the [Brand Guidelines PDF](./graphic-charter/BRAND%20GUIDELINES_OFF_V1.pdf).
-
-#### Primary palette
-
-| Name | Usage | Hex | RGB | CMYK |
-|---|---|---|---|---|
-| **Black** | Text, high-contrast elements | `#000000` | 0, 0, 0 | 0, 0, 0, 100 |
-| **White** | Backgrounds, reversed text | `#FFFFFF` | 255, 255, 255 | 0, 0, 0, 0 |
-| **Light Gray** | Secondary backgrounds, dividers | — | — | — |
-
-#### Product-specific accent colours
-
-| Product | Colour Name | Usage |
-|---|---|---|
-| **Open Food Facts** | Orange | Primary brand colour for food products |
-| **Open Beauty Facts** | Turquoise | Primary brand colour for beauty products |
-| **Open Pet Food Facts** | Pink | Primary brand colour for pet food products |
-| **Open Products Facts** | Blue | Primary brand colour for generic products |
-
-> ℹ️ Exact hex, RGB, and CMYK values for each accent colour are documented in the [Brand Guidelines PDF](./graphic-charter/BRAND%20GUIDELINES_OFF_V1.pdf).
-
-#### Semantic colours
-
-| State | Usage |
-|---|---|
-| **Success** | Confirming a successful action (e.g., product added) |
-| **Error** | Validation errors, destructive actions |
-| **Warning** | Cautionary information (e.g., allergen alerts) |
-| **Info** | Neutral informational messages |
-
-#### Accessibility
-
-All colour combinations must achieve a minimum contrast ratio of **4.5:1** for normal text and **3:1** for large text, in accordance with WCAG 2.1 AA.
-
----
-
-### 3.3 Typography
-
-**Primary typeface: Plus Jakarta Sans**
-
-Plus Jakarta Sans is the official typeface for Open Food Facts. It is used in the logo and across all products. It is licensed under the [Open Font License](https://openfontlicense.org/).
-
-| Style | Weight | Usage |
-|---|---|---|
-| Display | ExtraBold (800) | Hero headings, marketing |
-| H1 | Bold (700) | Page titles |
-| H2 | SemiBold (600) | Section headings |
-| H3 | SemiBold (600) | Sub-section headings |
-| Body Large | Regular (400) | Lead paragraphs, introductions |
-| Body | Regular (400) | Main body copy |
-| Body Small | Regular (400) | Captions, metadata, labels |
-| Label | Medium (500) | UI labels, badges |
-| Code | — | Technical content (use a monospace fallback) |
-
-**Type scale guidelines:**
-- Maintain clear visual hierarchy with sufficient size contrast between levels
-- Minimum body text size: **16px** (1rem)
-- Line height: **1.5** for body text, **1.2** for headings
-
----
-
-## 4. Visual Language
-
-### 4.1 Iconography
+### 7.1 Iconography
 
 Open Food Facts uses **Font Awesome** as its primary icon library.
 
@@ -201,7 +260,7 @@ Open Food Facts uses **Font Awesome** as its primary icon library.
 
 ---
 
-### 4.2 Grid & Spacing
+### 7.2 Grid & Spacing
 
 **Spacing system:**
 - Base unit: **8px**
@@ -220,7 +279,7 @@ Open Food Facts uses **Font Awesome** as its primary icon library.
 
 ---
 
-### 4.3 Illustrations
+### 7.3 Illustrations
 
 Illustrations are available in `images/illustrations/` and are organized by product category.
 
@@ -241,7 +300,7 @@ Illustrations are available in `images/illustrations/` and are organized by prod
 
 ---
 
-### 4.4 Animations
+### 7.4 Animations
 
 Rive animations are stored in `animations/` and are available for use in products.
 
@@ -253,15 +312,15 @@ Rive animations are stored in `animations/` and are available for use in product
 
 ---
 
-## 5. UI Components
+## 8. UI Components
 
 The component library is maintained in Figma. Below are specifications and links for each component category.
 
-> **Note:** All component specifications are subject to the design principles of Clarity, Accessibility, and Consistency outlined in Section 2.
+> **Note:** All component specifications are subject to the design principles of Clarity, Accessibility, and Consistency outlined in [Section 6](#6-design-principles).
 
 ---
 
-### 5.1 Buttons
+### 8.1 Buttons
 
 | Variant | Usage | States |
 |---|---|---|
@@ -279,7 +338,7 @@ The component library is maintained in Figma. Below are specifications and links
 
 ---
 
-### 5.2 Forms & Inputs
+### 8.2 Forms & Inputs
 
 | Element | States |
 |---|---|
@@ -299,7 +358,7 @@ The component library is maintained in Figma. Below are specifications and links
 
 ---
 
-### 5.3 Product Cards
+### 8.3 Product Cards
 
 Product cards are the primary way products are displayed in search results and lists.
 
@@ -319,7 +378,7 @@ Product cards are the primary way products are displayed in search results and l
 
 ---
 
-### 5.4 Navigation Elements
+### 8.4 Navigation Elements
 
 | Element | Description |
 |---|---|
@@ -332,7 +391,7 @@ Product cards are the primary way products are displayed in search results and l
 
 ---
 
-### 5.5 Modals & Dialogs
+### 8.5 Modals & Dialogs
 
 | Type | Usage |
 |---|---|
@@ -350,7 +409,7 @@ Product cards are the primary way products are displayed in search results and l
 
 ---
 
-### 5.6 Data Visualization
+### 8.6 Data Visualization
 
 Open Food Facts relies on rich data scores and visualizations to communicate nutritional and environmental impact.
 
@@ -370,7 +429,7 @@ Open Food Facts relies on rich data scores and visualizations to communicate nut
 
 ---
 
-### 5.7 Tables
+### 8.7 Tables
 
 | Variant | Usage |
 |---|---|
@@ -380,11 +439,11 @@ Open Food Facts relies on rich data scores and visualizations to communicate nut
 
 ---
 
-## 6. Page Templates
+## 9. Page Templates
 
 These templates define the standard layouts for key pages across Open Food Facts products.
 
-### 6.1 Product Page
+### 9.1 Product Page
 
 The standard layout for a single product's detail page.
 
@@ -402,7 +461,7 @@ The standard layout for a single product's detail page.
 
 ---
 
-### 6.2 Search Results Page
+### 9.2 Search Results Page
 
 **Key sections:**
 1. Search bar (persistent, pre-filled with query)
@@ -413,7 +472,7 @@ The standard layout for a single product's detail page.
 
 ---
 
-### 6.3 User Contribution Flow
+### 9.3 User Contribution Flow
 
 **"Add a Product" flow:**
 1. Barcode scan / manual entry
@@ -431,7 +490,7 @@ The standard layout for a single product's detail page.
 
 ---
 
-### 6.4 Homepage Template
+### 9.4 Homepage Template
 
 **Key sections:**
 1. Hero / search prompt
@@ -443,7 +502,7 @@ The standard layout for a single product's detail page.
 
 ---
 
-### 6.5 User Profile & Settings
+### 9.5 User Profile & Settings
 
 **Key sections:**
 1. Profile header (avatar, username, contribution count)
@@ -455,7 +514,7 @@ The standard layout for a single product's detail page.
 
 ---
 
-## 7. Avatar System
+## 10. Avatar System
 
 The avatar system allows users to create personalised profile avatars using composable SVG components.
 
@@ -482,9 +541,9 @@ The avatar system allows users to create personalised profile avatars using comp
 
 ---
 
-## 8. Content & Communication
+## 11. Content & Communication
 
-### 8.1 Voice & Tone
+### 11.1 Voice & Tone
 
 Open Food Facts speaks with a voice that is:
 
@@ -508,7 +567,7 @@ Open Food Facts speaks with a voice that is:
 
 ---
 
-### 8.2 Editorial & Writing Style Guide
+### 11.2 Editorial & Writing Style Guide
 
 **General rules:**
 - Use **sentence case** for UI labels, headings, and buttons (not Title Case or ALL CAPS)
@@ -538,13 +597,13 @@ Open Food Facts speaks with a voice that is:
 
 ---
 
-## 9. Accessibility
+## 12. Accessibility
 
 Open Food Facts is committed to making its products usable by everyone.
 
 **Standard:** WCAG 2.1 Level AA
 
-### 9.1 Checklist for Designers
+### 12.1 Checklist for Designers
 
 **Colour & Contrast:**
 - [ ] Text contrast ratio ≥ 4.5:1 (normal text), ≥ 3:1 (large text / UI components)
@@ -585,11 +644,11 @@ Open Food Facts is committed to making its products usable by everyone.
 
 ---
 
-## 10. UX Research
+## 13. UX Research
 
 UX research at Open Food Facts is conducted systematically to ensure design decisions are grounded in user needs.
 
-### 10.1 Research Process
+### 13.1 Research Process
 
 Research follows a structured 14-step process documented in [`UXR Ops/UX Research Process Flow Overview.md`](./UXR%20Ops/UX%20Research%20Process%20Flow%20Overview.md):
 
@@ -608,7 +667,7 @@ Research follows a structured 14-step process documented in [`UXR Ops/UX Researc
 13. Discuss findings with team
 14. Schedule follow-up
 
-### 10.2 Research Methods Used
+### 13.2 Research Methods Used
 
 | Method | Phase | Output |
 |---|---|---|
@@ -619,7 +678,7 @@ Research follows a structured 14-step process documented in [`UXR Ops/UX Researc
 | Survey | Validation | Quantitative JTBD validation, persona data |
 | Usability Testing | Evaluation | UX issues, design recommendations |
 
-### 10.3 Research Repository
+### 13.3 Research Repository
 
 Research reports are stored in [`UXR Reports Repository/`](./UXR%20Reports%20Repository/) following the naming convention:
 
@@ -629,14 +688,14 @@ Research reports are stored in [`UXR Reports Repository/`](./UXR%20Reports%20Rep
 
 Example: `[2025 Q2] Open Prices: Onboarding Flow`
 
-### 10.4 Active Research Areas
+### 13.4 Active Research Areas
 
 - **Open Food Facts (OFF):** General website UX audit — [`UXR OFF/`](./UXR%20OFF/)
 - **Open Prices:** UX audit, usability testing, contribution flow research — [`UXR Open Prices/`](./UXR%20Open%20Prices/)
 
 ---
 
-## 11. Contributing
+## 14. Contributing
 
 We welcome contributions to the design system from designers, developers, and UX researchers.
 
@@ -667,9 +726,9 @@ Add events via the [Open Food Facts Community Calendar](https://wiki.openfoodfac
 
 ---
 
-## 12. Resources & Tools
+## 15. Resources & Tools
 
-### 12.1 Design files by project
+### 15.1 Design files by project
 
 #### Mobile App
 [![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?logo=figma&logoColor=white) Mobile App Design (current + future plans)](https://www.figma.com/file/nFMjewFAOa8c4ahtob7CAB/Mobile-App-Design-(Quentin)?node-id=0%3A1&t=SrBuT7gBdhapUerx-0)
@@ -699,7 +758,7 @@ Add events via the [Open Food Facts Community Calendar](https://wiki.openfoodfac
 
 ---
 
-### 12.2 Asset library (this repository)
+### 15.2 Asset library (this repository)
 
 | Asset type | Location |
 |---|---|
@@ -720,7 +779,7 @@ Add events via the [Open Food Facts Community Calendar](https://wiki.openfoodfac
 
 ---
 
-### 12.3 External links
+### 15.3 External links
 
 | Resource | Link |
 |---|---|
