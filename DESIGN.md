@@ -332,7 +332,7 @@ The component library is maintained in Figma. Below are specifications and links
 
 **Button rules:**
 - Always include visible focus states for keyboard navigation
-- Minimum touch target size: **44×44px** (WCAG 2.5.5)
+- Minimum touch target size: **44×44px** — internal best practice aligned with WCAG 2.1 AAA (SC 2.5.5 Target Size)
 - Disabled buttons must not convey interactivity (no hover effects)
 - Loading states should provide feedback without blocking the UI
 
