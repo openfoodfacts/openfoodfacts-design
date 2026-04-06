@@ -518,7 +518,8 @@ The standard layout for a single product's detail page.
 
 The avatar system allows users to create personalised profile avatars using composable SVG components.
 
-**Location:** `avatars/`
+**Location (SVG assets):** `avatars/svg/`  
+**System root (config / JS / HTML / CSS):** `avatars/`
 
 **Structure:** Avatars are composed of stacked SVG layers:
 
