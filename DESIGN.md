@@ -618,7 +618,7 @@ Open Food Facts is committed to making its products usable by everyone.
 
 **Interaction:**
 - [ ] All interactive elements are keyboard-navigable
-- [ ] Touch targets are at least 44×44px
+- [ ] Touch targets are at least 44×44px (WCAG 2.1 AAA / internal best practice; stricter than our AA baseline)
 - [ ] No interactions that require fine motor control only (e.g., hover-only)
 - [ ] Provide alternatives for time-limited interactions
 
