@@ -23,7 +23,7 @@ This repo contains the assets, documentation, and design system that power the v
 ### 1. **Get Access**
 - Make sure you have a [GitHub account](https://github.com/).
 - Request access to this repository if needed.
-- Request access to Figma if needed. Please request view access. If edit access is needed, we can grant it, otherwise, we have a collective account, or you can duplicate files to your personal Figma account.
+- **Figma Access:** Follow our [Figma Access & Contribution Guide](#figma) below to get started.
 
 ### 2. **Clone the Repo**
 ```bash
@@ -113,6 +113,38 @@ See [`CONTRIBUTING.md`](./CONTRIBUTING.md) for details.
 - [Open Food Facts GitHub](https://github.com/openfoodfacts/)
 - [Figma Design System](https://www.figma.com/) (ask for access)
 - [Accessibility Guidelines (WCAG)](https://www.w3.org/WAI/standards-guidelines/wcag/)
+
+---
+
+# Figma
+
+This guide helps you understand how to work with our design files, how to request access, and how to contribute even if you don't have full edit permissions.
+
+## 💺 1. What is a "Figma Seat"?
+In Figma, a **Seat** refers to a paid editor license. 
+* **Viewer (Default):** Everyone can access this. You can see all designs, measurements, and export assets.
+* **Editor (With Seat):** Allows you to modify the master design files directly.
+
+> **Note:** Because Open Food Facts is a non-profit, we have a limited number of editor seats. We prioritize these for core designers and active contributors.
+
+## 🚀 2. How to Contribute Without a Seat
+You do **not** need a seat to be a successful contributor! Most tasks can be completed using these methods:
+- **Inspect Mode:** Click any element in Figma to see its CSS, font sizes, colors, and spacing.
+- **Exporting Assets:** You can export icons, illustrations, and images directly from the "Export" tab in the sidebar.
+- **Duplicate to Drafts:** Go to `File > Duplicate to your drafts` to get a personal copy where you can experiment and edit freely.
+- **Comment Tool:** Press `C` to leave suggestions or ask questions directly on the design for the team to see.
+
+## 📝 3. Conditions to Request Edit Access
+If your task requires moving elements in the main project file, you may request access if:
+1. You have already made **1-2 consistent contributions** (code, documentation, or research).
+2. You are assigned to a specific UI/UX task that requires **frequent design updates**.
+3. You have introduced yourself in the **#design** Slack channel.
+
+## 🛠️ 4. How to Request Access
+If you meet the conditions above:
+1. Comment on your assigned GitHub issue requesting access.
+2. Provide your **Figma account email**.
+3. **Alternative:** If a seat is not available, we may grant access to a **collective account**, or you can share your duplicated file link for review.
 
 ---
 
