@@ -300,23 +300,23 @@ Illustrations are available in `images/illustrations/` and are organized by prod
 
 Flat Vector Illustration Style Guide
 1. Core Visual Principles
-Technique: Flat design vector illustration. The image must look as if it was created with vector paths and filled with solid color (no raster effects, pencil lines, or texture).
+Technique: Flat design vector illustration. The image must look as if it was created with vector paths and filled with solid colour (no raster effects, pencil lines, or texture).
 
 Dimensionality: Strictly 2D. Do not include any depth cues, perspective lines, gradients, shadows (soft or hard), or highlights (unless rendered as solid shapes).
 
-Linework: Avoid prominent black outlines. Prefer the contrast between adjacent colored shapes to define form. If lines must be used (e.g., mouth, implied text on a label, a thin screen edge), they should be minimal, of uniform weight, and a dark, non-black color.
+Linework: Avoid prominent black outlines. Prefer the contrast between adjacent coloured shapes to define form. If lines must be used (e.g., mouth, implied text on a label, a thin screen edge), they should be minimal, of uniform weight, and a dark, non-black colour.
 
 Simplification: Reduce all elements (characters, objects, animals, etc.) to their most essential geometric forms. A face is a circle; a body is a rectangle. Simplify all details.
 
 2. Character & Figure Guide
 Anatomy: Heads are simple circles with dot eyes and a curved line for a mouth. No noses. Ears are simple semicircles. Hands and fingers are simplified to rectangular shapes. Feet are simple block shapes.
 
-Clothing: Represented as simple blocks of solid color. Features like buttons or pocket flaps are also rendered as simple, solid shapes.
+Clothing: Represented as simple blocks of solid colour. Features like buttons or pocket flaps are also rendered as simple, solid shapes.
 
 Hair: Solid, blocky shapes without strands or gradients.
 
-3. Color Palette Guide
-Color Use: Use a limited, intentional, and high-contrast color palette with no gradients. Adjacent shapes should have a clear visual separation.
+3. Colour Palette Guide
+Colour Use: Use a limited, intentional, and high-contrast colour palette with no gradients. Adjacent shapes should have a clear visual separation.
 
 Primary Colors: Focus on a limited set. Common choices: Specific oranges, yellows, and teals/blues for objects and accents; a deep green for specific elements; a charcoal or medium grey for clothing or bases.
 
