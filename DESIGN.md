@@ -797,4 +797,4 @@ Add events via the [Open Food Facts Community Calendar](https://wiki.openfoodfac
 
 ---
 
-*Last updated: 2026 — Maintained by the Open Food Facts Design team. Contributions welcome via [GitHub issues](https://github.com/openfoodfacts/openfoodfacts-design/issues) or the [#design Slack channel](https://slack.openfoodfacts.org).*
+*Last updated: April 2026 — Maintained by the Open Food Facts Design team. Contributions welcome via [GitHub issues](https://github.com/openfoodfacts/openfoodfacts-design/issues) or the [#design Slack channel](https://slack.openfoodfacts.org).*
