@@ -83,7 +83,7 @@ NOT CREATED YET, STRUCTURE TO DEBATE
 - We strive to timebox the core of the meeting (decision making) to 30 minutes, with an optional free discussion/live debugging afterwards.
 - We take comprehensive notes in the Weekly Agenda of agenda item discussions and of decisions taken.
 
-## Weekly office hours (Design team, Developpers and Community welcome)
+## Weekly office hours (Design team, Developers and Community welcome)
 - We e-meet on Fridays at 09:00 Paris Time (08:00 London Time, 11:30 IST, 12:00 AM PT)
 - ![Google Meet](https://img.shields.io/badge/Google%20Meet-00897B?logo=google-meet&logoColor=white) Video call link: <https://meet.google.com/xxxxxx>
 - Join by phone: <https://tel.meet/xxxxxx>
