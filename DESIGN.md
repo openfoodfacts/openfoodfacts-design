@@ -124,7 +124,7 @@ The grayscale is a 100-step scale from 0% to 100% Black (`#000000` with varying 
 
 ### Accessibility
 
-All colour combinations must achieve a minimum contrast ratio of **4.5:1** for normal text and **3:1** for large text (18px+ bold or 24px+ regular), in accordance with WCAG 2.1 AA.
+All color combinations must achieve a minimum contrast ratio of **4.5:1** for normal text and **3:1** for large text (18px+ bold or 24px+ regular), in accordance with WCAG 2.1 AA.
 
 ---
 
@@ -797,4 +797,4 @@ Add events via the [Open Food Facts Community Calendar](https://wiki.openfoodfac
 
 ---
 
-*Last updated: 2026 — Maintained by the Open Food Facts Design team. Contributions welcome via [GitHub issues](https://github.com/openfoodfacts/openfoodfacts-design/issues) or the [#design Slack channel](https://slack.openfoodfacts.org).*
+*Last updated: April 2026 — Maintained by the Open Food Facts Design team. Contributions welcome via [GitHub issues](https://github.com/openfoodfacts/openfoodfacts-design/issues) or the [#design Slack channel](https://slack.openfoodfacts.org).*
