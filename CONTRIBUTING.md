@@ -103,7 +103,7 @@ NOT CREATED YET, STRUCTURE TO DEBATE
 4. **Review:** Request feedback from relevant team members.
 5. **Merge:** After approvals, merge your branch.
 
-See [`CONTRIBUTING.md`](./CONTRIBUTING.md) for details.
+See this guide for details.
 
 ---
 
