@@ -334,7 +334,7 @@ Background: Use a clean, simple, solid-color background (or transparent) without
 Framing: The composition should be straightforward and centered.
 
 ##### Structured Prompt Template
-You can use this structure for your prompts:
+You can use this structure for your prompts, but models work best by adding one or two sample images (an object and a person, and the official logo if needed). As of May 2026, ChatGPT was working well, while NanoBanana was not.
 
 ```text
 [Subject, e.g., A developer at a desk with a laptop], 2D flat design vector illustration style.
