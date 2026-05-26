@@ -7,7 +7,9 @@
 - [Graphic charter by Quentin Lagrange and Clémence Gigandet](./graphic-charter)
 - [Illustrations by Quentin Lagrange and Clémence Gigandet](./images/illustrations)
 - [Avatar system by Clémence Gigandet](./avatars)
-- [Rive animation by Clémence Gigandet](./animation)
+- [Rive animation by Clémence Gigandet](./animations)
+- [Design System documentation](./DESIGN.md)
+- [Code implementation resources](./ACTING-ON-THE-CODE.md)
 
 
 # Design plan
@@ -33,13 +35,13 @@ Values should define our unique identity and should makes us stand out from othe
 
 <br />
 
-## Questionaire
+## Questionnaire
 
 ### Audience
 > Who is the audience?
 - Consumers
 - Journalists
-- Contributers
+- Contributors
   - Catalogue
   - Developers
   - Designers
@@ -56,7 +58,7 @@ Values should define our unique identity and should makes us stand out from othe
 <br />
 
 ### Tone of voice
-> What's the tono of voice we want to speak to our audience at every moment in their journey in order to help getting wherever they want to go?
+> What's the tone of voice we want to speak to our audience at every moment in their journey in order to help getting wherever they want to go?
 
 <br />
 
@@ -66,10 +68,10 @@ Values should define our unique identity and should makes us stand out from othe
 <br />
 
 # Logo
-In most cases, your logo will be the first brand asset someone sees. Make the right first impression. A distintive logo helps users recognise a product immediately and fives the essence of the branding
+In most cases, your logo will be the first brand asset someone sees. Make the right first impression. A distinctive logo helps users recognise a product immediately and gives the essence of the branding
 - [x] Create monochromatic version of logo
 - [x] Provide a variety of formats for the vector version to make it easier for others to work and prevent anyone from redrawing it.
-- [![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?logo=figma&logoColor=white) Logo of Open Food Factss](https://www.figma.com/design/HKAAPSQq8CZZO5uAziabRY/New-Open-Food-Facts-logo?m=auto&t=bGdHdz45zaPlgTnW-6)
+- [![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?logo=figma&logoColor=white) Logo of Open Food Facts](https://www.figma.com/design/HKAAPSQq8CZZO5uAziabRY/New-Open-Food-Facts-logo?m=auto&t=bGdHdz45zaPlgTnW-6)
 <br />
 
 # Illustrations
@@ -89,7 +91,7 @@ Provide guidance on how to approach common UX patterns, achieve consistent UX.
   </tr>
   <tr>
     <th rowspan=2>Small</th>
-    <td>Logo should perform well and should be recognisible at all sizes</td>
+    <td>Logo should perform well and should be recognisable at all sizes</td>
   </tr>
   <tr>
     <td>Provide tips for using logo in these cases in order to minimise the risk of it being misused.</td>
@@ -121,7 +123,7 @@ Provide guidance on how to approach common UX patterns, achieve consistent UX.
     <td>How do we write for the components</td>
   </tr>
   <tr>
-    <td>Platform conventions and brest practices for writing all into consideration.</td>
+    <td>Platform conventions and best practices for writing all into consideration.</td>
   </tr>
   <tr>
     <th rowspan=1>P2</th>
