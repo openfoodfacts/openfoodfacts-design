@@ -14,3 +14,31 @@ This document provides quick links to the key code locations for implementing de
 
 ## Explorer (Next-gen Frontend)
 - Source: https://github.com/openfoodfacts/openfoodfacts-explorer
+
+## Hunger Games
+https://github.com/openfoodfacts/hunger-games
+
+
+## Wiki
+- Hasn't been styled specifically
+- Config at https://github.com/openfoodfacts/openfoodfacts-infrastructure/blob/develop/confs/ovh1-reverse-proxy/nginx/conf.d/wiki.conf
+
+## Keycloak (login system)
+- Uncoherent styling
+- https://github.com/openfoodfacts/openfoodfacts-auth/tree/main/theme
+
+## Nutri-Patrol (moderation system)
+- https://github.com/openfoodfacts/nutripatrol-frontend
+
+## Open Prices
+- https://github.com/openfoodfacts/open-prices-frontend
+- Not very convergent with the graphic charter so far
+
+## Search engine
+- https://github.com/openfoodfacts/search-a-licious
+
+## Contents (for illustration)
+- https://github.com/openfoodfacts/openfoodfacts-web
+
+## Webcomponents (visual aspects are mostly abstracted away)
+- https://github.com/openfoodfacts/openfoodfacts-webcomponents
