@@ -250,13 +250,29 @@ These principles guide every design decision at Open Food Facts. When in doubt, 
 
 ### 7.1 Iconography
 
-Open Food Facts uses **Font Awesome** as its primary icon library.
+Open Food Facts uses icons from multiple sources across its products.
+
+#### Website / Server Icons
+
+The icons used on the Open Food Facts website are stored in the [`icons/` directory of the openfoodfacts-server repository](https://github.com/openfoodfacts/openfoodfacts-server/tree/main/icons). Many of these icons come from [Google Material Symbols and Icons](https://fonts.google.com/icons), supplemented by custom icons designed by [@stephanegigandet](https://github.com/stephanegigandet).
+
+#### Mobile App Icons
+
+The mobile app ([smooth-app](https://github.com/openfoodfacts/smooth-app)) has its own separate iconography:
+
+- **Food Icons (foodicons):** A handcrafted icon font created by [@g123k](https://github.com/g123k), available at [`packages/smooth_app/assets/fonts/`](https://github.com/openfoodfacts/smooth-app/tree/develop/packages/smooth_app/assets/fonts).
+- **Other assets:** Additional visual assets used by the mobile app can be found at [`packages/smooth_app/assets/`](https://github.com/openfoodfacts/smooth-app/tree/develop/packages/smooth_app/assets).
+
+#### General Icon Library
+
+For UI components and web tools, **Font Awesome** is also used as a supplementary icon library.
 
 **Usage guidelines:**
 - Always pair icons with descriptive text labels when space permits, for accessibility
-- Use consistent icon sizing within a given context (e.g., all navigation icons at 24px)
+- Use consistent icon sizing within a given context (e.g., all navigation icons at 24 px)
 - Ensure icons meet colour contrast requirements against their background
 - Do not use icons alone to convey critical information — always provide a text alternative
+- When adding new icons to the server, prefer sourcing from [Google Material Symbols](https://fonts.google.com/icons) for consistency
 
 ---
 

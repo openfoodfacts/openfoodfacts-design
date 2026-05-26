@@ -5,7 +5,7 @@ This section defines the core principles and visual identity of the brand.
 - **1.2. Brand Identity & Logo Guidelines:** Rules for using the Open Food Facts logo, including clear space, minimum size, and misuse cases.
 - **1.3. Color Palette:** Defines primary, secondary, and semantic colors (for success, error, warning, info) with accessibility checks.
 - **1.4. Typography:** Specifies font families, sizes, weights, and line heights for all text elements, from headings to body copy.
-- **1.5. Iconography:** Guidelines on the icon library (e.g., Font Awesome), usage, sizing, and when to pair icons with text.
+- **1.5. Iconography:** Guidelines on the icon libraries used across products. The website uses icons from [Google Material Symbols](https://fonts.google.com/icons) and custom icons by [@stephanegigandet](https://github.com/stephanegigandet) (stored in the [server icons directory](https://github.com/openfoodfacts/openfoodfacts-server/tree/main/icons)). The mobile app uses a handcrafted icon font called foodicons by [@g123k](https://github.com/g123k) (see [assets/fonts](https://github.com/openfoodfacts/smooth-app/tree/develop/packages/smooth_app/assets/fonts)). Font Awesome is also used in web tools. See [DESIGN.md § 7.1](./DESIGN.md#71-iconography) for full details.
 - **1.6. Grid & Spacing:** Defines the layout grid, spacing units, and rules for maintaining rhythm and consistency in layouts.
 
 # 🧩 2. UI Components (The Component Library)
