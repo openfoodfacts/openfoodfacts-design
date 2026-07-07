@@ -85,7 +85,7 @@ NOT CREATED YET, STRUCTURE TO DEBATE
 
 ## Weekly office hours (Design team, Developers and Community welcome)
 - We e-meet on Fridays at 09:00 Paris Time (08:00 London Time, 11:30 IST, 12:00 AM PT)
-- ![Google Meet](https://img.shields.io/badge/Google%20Meet-00897B?logo=google-meet&logoColor=white) Video call link: <https://meet.google.com/xxxxxx>
+- ![Google Meet](https://img.shields.io/badge/Google%20Meet-00897B?logo=google-meet&logoColor=white) Video call link: see the current event details in the community calendar: <https://wiki.openfoodfacts.org/Events>
 - Join by phone: <https://tel.meet/xxxxxx>
 - Add the Event to your Calendar by [adding the Open Food Facts community calendar to your calendar](https://wiki.openfoodfacts.org/Events)
 - [Weekly Agenda](https://docs.google.com/document/d/REPLACE_WITH_ACTUAL_WEEKLY_AGENDA_ID/edit): please add the Agenda items as early as you can. Make sure to check the Agenda items in advance of the meeting, so that we have the most informed discussions possible, leading to reasoned decisions.
