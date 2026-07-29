@@ -4,7 +4,7 @@
 [Click here to get onboarded on the Design team](./CONTRIBUTING.md)
 
 # Current assets
-- [Graphic charter by Quentin Lagrange and Clémence Gigandet](./graphic-charter)
+- [Graphic charter by Quentin Lagrange](./graphic-charter)
 - [Illustrations by Quentin Lagrange and Clémence Gigandet](./images/illustrations)
 - [Avatar system by Clémence Gigandet](./avatars)
 - [Rive animation by Clémence Gigandet](./animations)
