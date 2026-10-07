@@ -24,7 +24,7 @@ https://github.com/openfoodfacts/hunger-games
 - Config at https://github.com/openfoodfacts/openfoodfacts-infrastructure/blob/develop/confs/ovh1-reverse-proxy/nginx/conf.d/wiki.conf
 
 ## Keycloak (login system)
-- Uncoherent styling
+- Incoherent styling
 - https://github.com/openfoodfacts/openfoodfacts-auth/tree/main/theme
 
 ## Nutri-Patrol (moderation system)

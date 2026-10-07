@@ -314,6 +314,55 @@ Illustrations are available in `images/illustrations/` and are organized by prod
 
 **Available food illustrations include:** butter, cheese, chocolate bar, egg, egg carton, flour, fridge, pasta, scale, shopping cart, tomato can, water bottle, yogurt.
 
+#### 7.3.1 Flat Vector Illustration Style Guide
+
+##### Core Visual Principles
+Technique: Flat design vector illustration. The image must look as if it was created with vector paths and filled with solid colour (no raster effects, pencil lines, or texture).
+
+Dimensionality: Strictly 2D. Do not include any depth cues, perspective lines, gradients, shadows (soft or hard), or highlights (unless rendered as solid shapes).
+
+Linework: Avoid prominent black outlines. Prefer the contrast between adjacent coloured shapes to define form. If lines must be used (e.g., mouth, implied text on a label, a thin screen edge), they should be minimal, of uniform weight, and a dark, non-black colour.
+
+Simplification: Reduce all elements (characters, objects, animals, etc.) to their most essential geometric forms. A face is a circle; a body is a rectangle. Simplify all details.
+
+##### Character & Figure Guide
+Anatomy: Heads are simple circles with dot eyes and a curved line for a mouth. No noses. Ears are simple semicircles. Hands and fingers are simplified to rectangular shapes. Feet are simple block shapes.
+
+Clothing: Represented as simple blocks of solid colour. Features like buttons or pocket flaps are also rendered as simple, solid shapes.
+
+Hair: Solid, blocky shapes without strands or gradients.
+
+##### Colour Palette Guide
+Colour Use: Use a limited, intentional, and high-contrast colour palette with no gradients. Adjacent shapes should have a clear visual separation.
+
+Primary Colors: Focus on a limited set. Common choices: Specific oranges, yellows, and teals/blues for objects and accents; a deep green for specific elements; a charcoal or medium grey for clothing or bases.
+
+Secondary/Branding Colors: Light blues for screens or water, pinks and light purples for products/fluids, varying shades of brown for skin and hair.
+
+##### Object & Detail Guide
+Objects: Simplify to geometric shapes. Appliances, tools, containers, etc., should be easily identifiable but minimally detailed.
+
+Details: Intricacies are removed. Placeholder elements like text on a label are represented by a few solid parallel lines. Small, abstract floating elements (like small circles for liquid drops) are encouraged to suggest motion or fluid, but they must be flat and solid.
+
+##### Environment & Context
+Background: Use a clean, simple, solid-color background (or transparent) without any complex patterns or gradients.
+
+Framing: The composition should be straightforward and centered.
+
+##### Structured Prompt Template
+You can use this structure for your prompts, but models work best by adding one or two sample images (an object and a person, and the official logo if needed). As of May 2026, ChatGPT was working well, while NanoBanana was not.
+
+```text
+[Subject, e.g., A developer at a desk with a laptop], 2D flat design vector illustration style.
+The image uses clean geometric shapes and strictly solid, flat colors, with no gradients,
+shadows, or realistic textures. No prominent outlines are present, with form defined by
+contrasting color blocks. The character has simplified features: a simple geometric face with
+dot eyes and a mouth curve, blocky hair, and clothing represented as simple colored rectangles.
+The [Subject's action/objects] are similarly simplified to their essential shapes. Details are
+minimal. The color palette is limited to specific oranges, teals, pinks, greys, and browns.
+Clean, solid color background. Minimalist composition.
+```
+
 ---
 
 ### 7.4 Animations

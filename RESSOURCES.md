@@ -84,3 +84,47 @@ A centralized place for design assets.
 - [![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?logo=figma&logoColor=white) Design file for DriveOFF, the Browser extension to shop online with OFF data](https://www.figma.com/design/DHvAhrqU1TBaVkzyTcqXOT/DriveOFF---Chrome-extension-for-shopping?m=auto&t=tdB5zkxiDiU0bMVh-6)
 - [![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?logo=figma&logoColor=white) Design file for the old App on Figma](https://www.figma.com/file/BQ7CSyFvl7D9ljcXT0ay0u/Navigation-within-the-app)
 
+## Marketing Assets
+- The permanent team uses Canva (we're on a non-profit plan).
+- New user guide: https://canva.link/wldpnc1wrg6fkcx
+- Seasonal posts: https://canva.link/2f3ge4cdt0qs8v5
+- Summer of Code: https://canva.link/ohwuakswexh97q5
+- Meat Alternatives: https://canva.link/r3zurhqapeu81pa
+- Events: https://canva.link/74fgwssac1u5l4p
+- QR-Codes: https://canva.link/zhh7oweas85c44k
+- Talks: https://canva.link/zuhyrx0upjw0sw2
+- Scan parties: https://canva.link/xcx1afdch2gis9v
+- Labels: https://canva.link/42ah1kn2b91376i
+- Brands: https://canva.link/24zevriul1o9x2a
+- Press: https://canva.link/krusgkwb9pb102q
+- Perl: https://canva.link/xjotjgadivgfifk
+- Artificial intelligence: https://canva.link/ojce3k7xhegavsg
+- Milestones: https://canva.link/u23k80yl5kwrb4r
+- Open Pet Food Facts: https://canva.link/9kgvambxhx2tt8b
+- Fundraising: https://canva.link/w4ro1o5o363sjto
+- Miniature products: https://canva.link/skjyyik2yhkd8td
+- Open Beauty Facts: https://canva.link/uujd85xx1nxjrot
+- Newsletter: https://canva.link/sx1b6dqk53pz568
+- Journée Pro 2024: https://canva.link/wpfrhd4zswpsq8y
+- Donations: https://canva.link/qdihcahb17bcui9
+- Banners: https://canva.link/7e48puays0bsc6d
+- Community/Contribution: https://canva.link/gnq2qnqlj1whx7r
+- Taxonomy Editor: https://canva.link/qt9zhn2u0cead3x
+- People: https://canva.link/aes7yk513f7k3a8
+- Open Products Facts: https://canva.link/6qxbbjvku5qo5op
+- Science: https://canva.link/cz99eveq4qy4jcr
+- Ultra-processed foods / NOVA groups: https://canva.link/tfahmmmcxf5iceu
+- Search-A-Licious: https://canva.link/pq4rbagpwb8ryf8
+- Nutri-Score: https://canva.link/nk9srhkqpgpuvfh
+- Mobile-App: https://canva.link/c5w2b78q3yvqacd
+- Eco-Score: https://canva.link/u9ydqqzih6z41sm
+- Hunger Games: https://canva.link/kuyobjgm39fgqn6
+- Reusers: https://canva.link/2n7ebx1nah8l5cq
+- Logo partners: https://canva.link/h4gai2fbca518cx
+- Packaging: https://canva.link/zu3kdf2qc75wjyv
+- Physical objects: https://canva.link/tmewjo2jqve0agr
+- Videos mobile: https://canva.link/pluo49m2cut4bak
+- Producers: https://canva.link/9dk144j9m404wvz
+- Open Prices: https://canva.link/blanmigtue0wj04
+- Stores logos: https://canva.link/rjjuz4vjhtclx9l
+- Nutri-Score V2: https://canva.link/9ork5mis42ocbee
