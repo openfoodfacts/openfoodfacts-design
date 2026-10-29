@@ -469,13 +469,37 @@
 
         // Update screen image href
         function updateScreenImage(url) {
-            if (!url) {
+            const rawUrl = (url || '').trim();
+            if (!rawUrl) {
                 customScreenPhoto.setAttribute('href', '');
                 customScreenPhoto.style.display = 'none';
-            } else {
-                customScreenPhoto.style.display = 'block';
-                customScreenPhoto.setAttribute('href', url);
+                return;
             }
+
+            let safeUrl = '';
+
+            // Allow embedded local uploads (data:image/*) and normal remote images (http/https).
+            if (/^data:image\//i.test(rawUrl)) {
+                safeUrl = rawUrl;
+            } else {
+                try {
+                    const parsed = new URL(rawUrl, window.location.href);
+                    if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+                        safeUrl = parsed.href;
+                    }
+                } catch (_) {
+                    safeUrl = '';
+                }
+            }
+
+            if (!safeUrl) {
+                customScreenPhoto.setAttribute('href', '');
+                customScreenPhoto.style.display = 'none';
+                return;
+            }
+
+            customScreenPhoto.style.display = 'block';
+            customScreenPhoto.setAttribute('href', safeUrl);
         }
 
         // Apply URL button & Enter key
