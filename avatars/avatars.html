@@ -1,42 +1,92 @@
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Avatars</title>
-        <link rel="stylesheet" href="avatars.css">
-        <script src="avatars-config.js"></script>
-        <script src="avatars.js"></script>
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                initAvatars();
-            });
-        </script>
-    </head>
-    <body>
-        <div style="display:flex; flex-direction:row; justify-content: flex-start;">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open Food Facts — Avatar Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .avatar-type-btn.selected {
+            border-color: #ea580c !important;
+            background-color: #fff7ed !important;
+            box-shadow: 0 0 0 2px rgba(234, 88, 12, 0.25);
+        }
+        .avatar-part-colors button.selected {
+            box-shadow: 0 0 0 3px #ea580c !important;
+            transform: scale(1.15);
+        }
+    </style>
+    <script src="avatars-data.js"></script>
+    <script src="avatars-config.js"></script>
+    <script src="avatars.js"></script>
+</head>
+<body class="bg-stone-50 text-stone-900 min-h-screen p-4 sm:p-8">
 
-            <div>
-                <img src="https://static.openfoodfacts.org/images/logos/off-logo-vertical-light.svg" alt="Open Food Facts logo" style="height: 150px; margin: 20px;">
+    <div class="max-w-6xl mx-auto">
+        <!-- Top Nav -->
+        <div class="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-stone-200">
+            <div class="flex items-center gap-3">
+                <a href="../index.html" class="inline-flex items-center gap-2 text-sm font-bold text-orange-600 hover:text-orange-700 transition">
+                    &larr; Back to Design Hub
+                </a>
+                <span class="text-stone-300">|</span>
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl">👤</span>
+                    <h1 class="text-2xl font-black text-stone-900 tracking-tight">Open Food Facts Avatar Generator</h1>
+                </div>
             </div>
 
-            <div>
-
-                <h1>Open Food Facts avatars</h1>
-
-                <p>A prototype of avatars that could be used in promo material and contributor profiles on the website and mobile app.</p>
-                <p>Please give feedback on #design on <a href="https://slack.openfoodfacts.org">Open Food Facts' Slack</a></p>
-
-                <p>Note: the UI is basic and intended only to test combinations, final UI will be better organized.</p>
-
+            <div class="flex items-center gap-2">
+                <button id="btn-randomize" class="px-4 py-2 rounded-xl text-sm font-bold bg-white border border-stone-200 hover:bg-stone-100 text-stone-700 shadow-xs transition flex items-center gap-2 cursor-pointer">
+                    🎲 Randomize
+                </button>
+                <button id="btn-copy-svg" class="px-4 py-2 rounded-xl text-sm font-bold bg-white border border-stone-200 hover:bg-stone-100 text-stone-700 shadow-xs transition cursor-pointer">
+                    📋 Copy SVG
+                </button>
+                <button id="btn-download-svg" class="px-4 py-2 rounded-xl text-sm font-bold bg-orange-600 hover:bg-orange-700 text-white shadow-sm shadow-orange-300 transition flex items-center gap-2 cursor-pointer">
+                    📥 Download SVG
+                </button>
             </div>
         </div>
 
-        <div style="display:flex; flex-direction:row; justify-content: flex-start;">
-                    
-            <div id="avatar-container"></div>
+        <!-- Main Workspace -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-8">
+            <!-- Left: Avatar Preview Stage -->
+            <div class="lg:col-span-5 flex flex-col items-center">
+                <div class="sticky top-8 w-full bg-white rounded-3xl p-8 border border-stone-200/80 shadow-md flex flex-col items-center">
+                    <div id="avatar-container" class="w-[250px] h-[300px] flex items-center justify-center bg-stone-50/80 rounded-2xl border border-dashed border-stone-200 overflow-hidden shadow-inner">
+                        <!-- SVG dynamically placed here -->
+                    </div>
 
-            <div id="avatars"></div>
+                    <div class="mt-6 flex flex-wrap gap-2 justify-center">
+                        <button onclick="randomizeAvatar()" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-stone-100 hover:bg-stone-200 text-stone-700 transition">
+                            🎲 Surprise Me
+                        </button>
+                        <button onclick="downloadAvatarSvg()" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-orange-500 hover:bg-orange-600 text-white transition">
+                            📥 Save SVG
+                        </button>
+                    </div>
+                    <p class="text-xs text-stone-400 mt-4 text-center">Vector avatar with customizable layers, skin tones, and branded Open Food Facts shirts.</p>
+                </div>
+            </div>
 
-        </div>        
-        
-    </body>
+            <!-- Right: Controls -->
+            <div class="lg:col-span-7">
+                <div id="avatars-controls" class="space-y-4">
+                    <!-- Controls dynamically generated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            initAvatars();
+        });
+    </script>
+</body>
 </html>

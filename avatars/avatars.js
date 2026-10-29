@@ -1,225 +1,313 @@
-// avatars.js
+// Open Food Facts Avatar Generator (Fixed & Modernized)
 
-// Sample UI to create an avatar by selecting parts and colors
+let currentAvatarState = {
+    selectedTypes: {},
+    selectedColors: {}
+};
 
-function createAvatarSVG () {
-    // For each part, we will extract the content of the selected part type SVG
-    // and create a new SVG element with the selected parts and re"turn the SVG element
+// Helper: parse raw SVG string and return inner elements
+function parseSvgInner(svgString) {
+    if (!svgString) return "";
+    // Remove xml prolog and doctype
+    let cleaned = svgString.replace(/<\?xml[^>]*\?>/gi, '').replace(/<!DOCTYPE[^>]*>/gi, '');
+    // Match content between <svg ...> and </svg>
+    const match = cleaned.match(/<svg[^>]*>([\s\S]*)<\/svg>/i);
+    return match ? match[1] : cleaned;
+}
 
-    const avatarSVG = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    avatarSVG.setAttribute("width", avatars_config.width);
-    avatarSVG.setAttribute("height", avatars_config.height);
-    avatarSVG.setAttribute("viewBox", `0 0 ${avatars_config.width} ${avatars_config.height}`);
-    avatarSVG.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-    avatarSVG.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
-    avatarSVG.setAttribute("id", "avatar-svg");
-    avatarSVG.style.position = 'relative';
-    avatarSVG.style.width = `${avatars_config.width}px`;
-    avatarSVG.style.height = `${avatars_config.height}px`;
+// Get SVG content for a given part, type, and component
+function getPartSvgString(part, type, component) {
+    const filename = `${part}.${type}.${component}.svg`;
+    if (typeof AVATAR_SVGS !== 'undefined' && AVATAR_SVGS[filename]) {
+        return AVATAR_SVGS[filename];
+    }
+    return null;
+}
 
-    // For each part in the order defined in avatars_config.parts_order
+// Build the composed Avatar SVG
+function createAvatarSVG() {
+    const width = avatars_config.width || 250;
+    const height = avatars_config.height || 300;
+
+    const avatarSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    avatarSvg.setAttribute("width", "100%");
+    avatarSvg.setAttribute("height", "100%");
+    avatarSvg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+    avatarSvg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+    avatarSvg.setAttribute("id", "avatar-svg");
+
+    // Defs wrapper for any gradients/clipPaths
+    const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+    avatarSvg.appendChild(defs);
+
+    // Render layers in parts_order
     avatars_config.parts_order.forEach(partComponent => {
         const [part, component] = partComponent.split('.');
-        const partElement = document.getElementById(`avatar-${part}`);
-        // Get the index of the selected colors, for all parts
-        // (as some parts use colors from other parts, e.g. face-expression uses hair colors)
-        let selectedColorsIndexes = {};
+        const selectedType = currentAvatarState.selectedTypes[part];
+
+        if (!selectedType) return;
+
+        let rawSvg = getPartSvgString(part, selectedType, component);
+        if (!rawSvg) return;
+
+        let innerContent = parseSvgInner(rawSvg);
+
+        // Extract <defs> content if any and put into top defs
+        const defsMatch = innerContent.match(/<defs[^>]*>([\s\S]*?)<\/defs>/gi);
+        if (defsMatch) {
+            defsMatch.forEach(d => {
+                const defInner = d.replace(/<\/?defs[^>]*>/gi, '');
+                defs.innerHTML += defInner;
+            });
+            innerContent = innerContent.replace(/<defs[^>]*>[\s\S]*?<\/defs>/gi, '');
+        }
+
+        // Apply color replacements across defined palettes
         for (const colorPart in avatars_config.colors) {
-            const selectedColorElement = document.querySelector(`#avatar-colors-${colorPart} .selected`);
-            if (selectedColorElement) {
-                const colorIdParts = selectedColorElement.id.split('-');
-                // Get the index of the color from the id, which is in the format avatar-color-part-index
-                const colorIndex = parseInt(colorIdParts[colorIdParts.length - 1], 10);
-                selectedColorsIndexes[colorPart] = colorIndex; // Store the index of the selected color
-            } else {
-                selectedColorsIndexes[colorPart] = 0; // Default to the first color if none is selected
-            }
-        }
+            const selectedColorIdx = currentAvatarState.selectedColors[colorPart] || 0;
+            if (selectedColorIdx > 0 && avatars_config.colors[colorPart][selectedColorIdx]) {
+                const originalColors = avatars_config.colors[colorPart][0];
+                const newColors = avatars_config.colors[colorPart][selectedColorIdx];
 
-        if (partElement) {
-            // Find the selected type element
-            console.log(`Processing part: ${part}, component: ${component}`);
-            const selectedTypeElement = Array.from(partElement.children).find(child => child.classList.contains('selected'));
-            if (selectedTypeElement) {
-                // Get the SVG for the selected type and component
-                console.log(`Selected type element for ${part}:`, selectedTypeElement);
-                const svgElement = selectedTypeElement.querySelector(`object[data*="${component}"]`);
-                // We need to extract the SVG content inside the img element and add it to the avatarSVG
-                if (svgElement) {
-                    console.log(`Adding ${part}.${component} to avatar`);
-                    // Add all the top level elements except the <svg> tag itself
-                    // Note: contentDocument only works if the SVG is loaded from the same origin (on a web server)
-                    // it does not work locally
-                    const svgContent = svgElement.contentDocument;
-                    const svgChildren = Array.from(svgContent.children);
-                    svgChildren.forEach(child => {
-                        // Get the SVG code as a string, so that we can find and replace colors easily
-                        let svgCode = new XMLSerializer().serializeToString(child);
-
-                        // Replace colors in the SVG code for parts that have colors defined
-                        // when the selected color is not the first one (index 0)
-                        for (const colorPart in avatars_config.colors) {
-                            if (selectedColorsIndexes[colorPart] > 0) {
-                                const originalColors = avatars_config.colors[colorPart][0];
-                                const selectedColors = avatars_config.colors[colorPart][selectedColorsIndexes[colorPart]];
-                                // Replace all instances of the original colors with the selected colors
-                                console.log(`Replacing colors for ${part}:`, originalColors, 'with', selectedColors);
-                                for (let j = 0; j < originalColors.length; j++) {
-                                    // Replace the color in the SVG code
-                                    svgCode = svgCode.replace(new RegExp(originalColors[j], 'g'), selectedColors[j]);
-                                }
-                            }
-                        }
-
-                        // Create a new SVG element from the modified SVG code and append it
-                        newSvgElement = document.createElementNS("http://www.w3.org/2000/svg", "g");
-                        newSvgElement.innerHTML = svgCode;
-                        // Set the id of the new SVG element to the part and component
-                        newSvgElement.id = `${part}-${component}`;
-                        // Add the new SVG element to the avatarSVG
-                        avatarSVG.appendChild(newSvgElement);
-                    });
+                for (let i = 0; i < originalColors.length; i++) {
+                    const orig = originalColors[i];
+                    const repl = newColors[i] || newColors[0];
+                    if (orig && repl) {
+                        innerContent = innerContent.replace(new RegExp(orig, 'gi'), repl);
+                    }
                 }
-
             }
         }
+
+        // Create a grouping element for the component
+        const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        g.setAttribute("id", `avatar-${part}-${component}`);
+        g.innerHTML = innerContent;
+        avatarSvg.appendChild(g);
     });
 
-    return avatarSVG;
+    return avatarSvg;
 }
 
-function updateAvatar () {
-    // Create the avatar SVG element
-    const avatarSVG = createAvatarSVG();
-    
-    // Get the avatar container and clear it
-    const avatarContainer = document.getElementById('avatar-container');
-    avatarContainer.innerHTML = ''; // Clear previous content
-    
-    // Append the new avatar SVG to the container
-    avatarContainer.appendChild(avatarSVG);
+// Update the avatar in the DOM preview
+function updateAvatar() {
+    const container = document.getElementById('avatar-container');
+    if (!container) return;
+
+    const newSvg = createAvatarSVG();
+    container.innerHTML = '';
+    container.appendChild(newSvg);
 }
 
-function initAvatars () {
-
-    const avatarsElement = document.getElementById('avatars');
-    // For each part, we display the SVGs for each type, on a single row
+// Randomize all avatar parts and colors
+function randomizeAvatar() {
     for (const part in avatars_config.parts) {
-        const partElement = document.createElement('div');
-        partElement.className = 'avatar-part';
+        const types = avatars_config.parts[part].types;
+        currentAvatarState.selectedTypes[part] = types[Math.floor(Math.random() * types.length)];
+    }
+    for (const colorPart in avatars_config.colors) {
+        const colors = avatars_config.colors[colorPart];
+        currentAvatarState.selectedColors[colorPart] = Math.floor(Math.random() * colors.length);
+    }
+    syncUiSelections();
+    updateAvatar();
+}
 
-        // If the part has colors defined, display selectable squares for each color, and automatically select the first color      
+// Sync UI active states with current state
+function syncUiSelections() {
+    for (const part in currentAvatarState.selectedTypes) {
+        const selectedType = currentAvatarState.selectedTypes[part];
+        const container = document.getElementById(`avatar-types-${part}`);
+        if (container) {
+            Array.from(container.children).forEach(child => {
+                if (child.dataset.type === selectedType) {
+                    child.classList.add('selected');
+                } else {
+                    child.classList.remove('selected');
+                }
+            });
+        }
+    }
+
+    for (const colorPart in currentAvatarState.selectedColors) {
+        const selectedIdx = currentAvatarState.selectedColors[colorPart];
+        const container = document.getElementById(`avatar-colors-${colorPart}`);
+        if (container) {
+            Array.from(container.children).forEach((child, idx) => {
+                if (idx === selectedIdx) {
+                    child.classList.add('selected');
+                } else {
+                    child.classList.remove('selected');
+                }
+            });
+        }
+    }
+}
+
+// Download generated SVG
+function downloadAvatarSvg() {
+    const container = document.getElementById('avatar-container');
+    const svgEl = container ? container.querySelector('svg') : null;
+    if (!svgEl) return;
+
+    const serializer = new XMLSerializer();
+    let source = serializer.serializeToString(svgEl);
+    if (!source.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)) {
+        source = source.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
+    }
+    const blob = new Blob([source], { type: "image/svg+xml;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `openfoodfacts-avatar-${Date.now()}.svg`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+}
+
+// Copy SVG markup to clipboard
+function copyAvatarSvg(btnElement) {
+    const container = document.getElementById('avatar-container');
+    const svgEl = container ? container.querySelector('svg') : null;
+    if (!svgEl) return;
+
+    const serializer = new XMLSerializer();
+    const source = serializer.serializeToString(svgEl);
+    navigator.clipboard.writeText(source).then(() => {
+        if (btnElement) {
+            const origText = btnElement.innerText;
+            btnElement.innerText = "✓ Copied!";
+            setTimeout(() => { btnElement.innerText = origText; }, 2000);
+        }
+    });
+}
+
+// Initialize the avatar generator UI
+function initAvatars() {
+    const controlsContainer = document.getElementById('avatars-controls') || document.getElementById('avatars');
+    if (!controlsContainer) return;
+
+    controlsContainer.innerHTML = '';
+
+    // Initialize default or random state
+    for (const part in avatars_config.parts) {
+        const types = avatars_config.parts[part].types;
+        currentAvatarState.selectedTypes[part] = types[0];
+    }
+    for (const colorPart in avatars_config.colors) {
+        currentAvatarState.selectedColors[colorPart] = 0;
+    }
+
+    // Friendly labels
+    const friendlyPartNames = {
+        "body": "Skin Tone & Body",
+        "hair": "Hairstyle",
+        "face-expression": "Expression",
+        "top-clothes": "T-Shirts & Tops",
+        "bottom-clothes": "Bottom Clothes",
+        "shoes": "Shoes"
+    };
+
+    // Render part sections
+    for (const part in avatars_config.parts) {
+        const partSection = document.createElement('div');
+        partSection.className = 'avatar-part-section bg-slate-50 dark:bg-stone-900 border border-slate-200 dark:border-stone-800 rounded-2xl p-4 mb-4';
+
+        const titleRow = document.createElement('div');
+        titleRow.className = 'flex items-center justify-between mb-3';
+        titleRow.innerHTML = `<h3 class="text-sm font-bold text-slate-800 dark:text-stone-200 uppercase tracking-wide">${friendlyPartNames[part] || part}</h3>`;
+        partSection.appendChild(titleRow);
+
+        // Color swatches if defined for this part
         if (avatars_config.colors[part]) {
-            const colorsElement = document.createElement('div');
-            colorsElement.className = 'avatar-part-colors';
-            colorsElement.id = `avatar-colors-${part}`;
-            colorsElement.style.display = 'flex';
-            colorsElement.style.flexDirection = 'row';
+            const colorsWrap = document.createElement('div');
+            colorsWrap.className = 'avatar-part-colors flex items-center gap-2 mb-3.5';
+            colorsWrap.id = `avatar-colors-${part}`;
 
-            // Select a random color
-            const randomColorIndex = Math.floor(Math.random() * avatars_config.colors[part].length);
+            avatars_config.colors[part].forEach((colorPair, idx) => {
+                const swatch = document.createElement('button');
+                swatch.type = 'button';
+                swatch.className = `w-7 h-7 rounded-full transition shadow-xs border-2 border-white dark:border-stone-900 cursor-pointer ${idx === 0 ? 'selected ring-2 ring-orange-500 scale-110' : 'hover:scale-105'}`;
+                swatch.style.backgroundColor = colorPair[0];
+                swatch.title = `Color option ${idx + 1}`;
 
-            avatars_config.colors[part].forEach((colorPair, index) => {
-                const colorElement = document.createElement('div');
-                colorElement.className = `avatar-color`;
-                colorElement.style.background = `${colorPair[0]}`;
-                // Add an id to identify the part name and the index of the colors
-                colorElement.id = `avatar-color-${part}-${index}`;
-
-                // Add click event listener to change the color
-                colorElement.addEventListener('click', () => {
-                    // Remove "selected" class from all sibling color elements
-                    Array.from(colorsElement.children).forEach(child => child.classList.remove('selected'));
-                    // Add "selected" class to the clicked color element
-                    colorElement.classList.add('selected');
-                    // Update the avatar
+                swatch.addEventListener('click', () => {
+                    currentAvatarState.selectedColors[part] = idx;
+                    syncUiSelections();
                     updateAvatar();
                 });
 
-                // Add "selected" class to the selected color
-                if (index === randomColorIndex) {
-                    colorElement.classList.add('selected');
-                }
-
-                colorsElement.appendChild(colorElement);
+                colorsWrap.appendChild(swatch);
             });
 
-            partElement.appendChild(colorsElement);
-            
+            partSection.appendChild(colorsWrap);
         }
 
-        // Create an avatar part type element for each type of the part
+        // Part type options
+        const typesWrap = document.createElement('div');
+        typesWrap.className = 'avatar-part-types flex flex-wrap gap-2.5';
+        typesWrap.id = `avatar-types-${part}`;
 
-        const partTypesElement = document.createElement('div');
-        partTypesElement.id = `avatar-${part}`;
-        partTypesElement.className = 'avatar-part-types';
-        partTypesElement.style.display = 'flex';
-        partTypesElement.style.flexDirection = 'row';
+        avatars_config.parts[part].types.forEach((type, idx) => {
+            const typeBtn = document.createElement('button');
+            typeBtn.type = 'button';
+            typeBtn.dataset.type = type;
+            typeBtn.className = `avatar-type-btn p-2 rounded-xl border border-slate-200 dark:border-stone-700 bg-white dark:bg-stone-800 hover:border-orange-400 transition flex flex-col items-center justify-center cursor-pointer ${idx === 0 ? 'selected border-orange-500 ring-2 ring-orange-500/30' : ''}`;
+            typeBtn.style.minWidth = "70px";
 
-        // Select a random type for the part, if it has multiple types
-        const randomTypeIndex = Math.floor(Math.random() * avatars_config.parts[part].types.length);
-
-        avatars_config.parts[part].types.forEach((type, index) => {
-            
-            // Each part can have multiple components, so we iterate over them
-            // We create a fixed width and height div for each type of part so that we can display the SVG for all components inside it, one on top of the other
-            let svgFilename;
-            const typeElement = document.createElement('div');
-            typeElement.className = `avatar-part-type`;
-            typeElement.style.position = 'relative';
-            typeElement.style.width = `${avatars_config.select_width}px`;
-            typeElement.style.height = `${avatars_config.select_height}px`;
-
-            // Add "selected" class to the selected type element
-            if (index === randomTypeIndex) {
-                typeElement.classList.add('selected');
+            // Thumbnail preview (mini SVG)
+            const mainComp = avatars_config.parts[part].components[0] || 'top';
+            const miniSvg = getPartSvgString(part, type, mainComp);
+            if (miniSvg) {
+                const thumb = document.createElement('div');
+                thumb.className = 'w-12 h-14 overflow-hidden pointer-events-none flex items-center justify-center';
+                thumb.innerHTML = miniSvg;
+                const innerSvg = thumb.querySelector('svg');
+                if (innerSvg) {
+                    innerSvg.setAttribute('width', '100%');
+                    innerSvg.setAttribute('height', '100%');
+                }
+                typeBtn.appendChild(thumb);
             }
 
-            // Add click event listener to make the type selectable
-            typeElement.addEventListener('click', () => {
-                // Remove "selected" class from all sibling type elements
-                Array.from(partTypesElement.children).forEach(child => child.classList.remove('selected'));
-                // Add "selected" class to the clicked type element
-                typeElement.classList.add('selected');
-                // Update the avatar
+            const label = document.createElement('span');
+            label.className = 'text-[11px] font-semibold text-slate-600 dark:text-stone-300 mt-1 capitalize';
+            label.innerText = type.replace('tshirt-', '').replace('-beige', '');
+            typeBtn.appendChild(label);
+
+            typeBtn.addEventListener('click', () => {
+                currentAvatarState.selectedTypes[part] = type;
+                syncUiSelections();
                 updateAvatar();
             });
 
-            partTypesElement.appendChild(typeElement);
-            avatars_config.parts[part].components.forEach(component => {
-                svgFilename = `svg/${part}.${type}.${component}.svg`;
-                // We load the SVG in a HTML object so that we can manipulate its content
-                const svgElement = document.createElement('object');
-                svgElement.type = 'image/svg+xml';
-                svgElement.className = `avatar-svg ${part}-${type}-${component}`;
-                // Change the CSS of the SVG element to make it stack on other elements of the same part type
-                svgElement.style.position = 'absolute';
-                svgElement.style.top = '0';
-                svgElement.style.left = '0';
-                svgElement.style.width = '100%';
-                svgElement.style.height = '100%';
-                // We need pointer-events:none; so that the clicks go through to the type element
-                svgElement.style.pointerEvents = 'none';
-                // Set the source of the SVG
-                svgElement.data = svgFilename;
-
-                typeElement.appendChild(svgElement);
-            });
-
-            // Hide the body part
-            if (part === 'body') {
-                //typeElement.style.display = 'none';
-            }
+            typesWrap.appendChild(typeBtn);
         });
 
-        partElement.appendChild(partTypesElement);
-        avatarsElement.appendChild(partElement);
+        partSection.appendChild(typesWrap);
+        controlsContainer.appendChild(partSection);
     }
 
-    // Update the avatar with the randomly selected types and colors
-    // sleep a bit to ensure all SVGs are loaded
-    setTimeout(() => {
-        updateAvatar();
-    }, 1000);
+    // Attach event listeners for buttons if they exist
+    const randBtn = document.getElementById('btn-randomize');
+    if (randBtn) randBtn.addEventListener('click', randomizeAvatar);
 
+    const dlBtn = document.getElementById('btn-download-svg');
+    if (dlBtn) dlBtn.addEventListener('click', downloadAvatarSvg);
+
+    const copyBtn = document.getElementById('btn-copy-svg');
+    if (copyBtn) copyBtn.addEventListener('click', () => copyAvatarSvg(copyBtn));
+
+    // Initial render
+    syncUiSelections();
+    updateAvatar();
+}
+
+// Global hook
+if (typeof window !== 'undefined') {
+    window.initAvatars = initAvatars;
+    window.randomizeAvatar = randomizeAvatar;
+    window.downloadAvatarSvg = downloadAvatarSvg;
+    window.copyAvatarSvg = copyAvatarSvg;
 }
