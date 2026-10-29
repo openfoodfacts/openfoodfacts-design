@@ -1,8 +1,8 @@
 var avatars_config = {
-    "width": 300,
-    "height": 400,
+    "width": 250,
+    "height": 300,
     "select_width": 75,
-    "select_height": 100,
+    "select_height": 90,
     "parts": {
         "body" : {
             "types" : [
@@ -56,8 +56,6 @@ var avatars_config = {
             ['#b2855f', '#9b7053'],
             ['#967357', '#7f5d46'],
             ['#6d4930', '#59351c']
-
-
         ],
         "hair": [
             ['#eac37d', '#d6ac69'],
@@ -70,7 +68,6 @@ var avatars_config = {
             ['#b73333', '#9e2b2b'],
             ['#5bb733', '#4d9e2b'],
             ['#6d6d6d', '#606060']
-
         ],
         "bottom-clothes": [
             ['#50728c'],
@@ -80,7 +77,7 @@ var avatars_config = {
             ['#303f56']
         ],
     }
-}
+};
 
 // Export the avatars_config object
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {

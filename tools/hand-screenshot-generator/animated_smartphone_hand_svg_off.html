@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Smartphone Hand SVG</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col items-center justify-center p-4 sm:p-6">
+
+    <!-- Main Container Card -->
+    <div class="max-w-4xl w-full bg-white rounded-3xl shadow-xl border border-slate-200/80 overflow-hidden">
+        
+        <!-- Header Bar -->
+        <div class="p-5 sm:px-8 border-b border-slate-100 flex flex-wrap items-center justify-between gap-4 bg-white">
+            <div>
+                <h1 class="text-xl font-bold text-slate-900 tracking-tight">Animated Hand & Smartphone SVG</h1>
+                <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Features a masked <code class="bg-slate-100 px-1.5 py-0.5 rounded text-indigo-600 font-mono">&lt;image id="custom-screen-photo"&gt;</code> layer for instant photo swapping</p>
+            </div>
+            
+            <div class="flex items-center gap-2.5">
+                <button id="togglePauseBtn" class="px-3.5 py-2 rounded-xl text-sm font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 transition flex items-center gap-2 cursor-pointer">
+                    <span id="pauseIcon">⏸</span>
+                    <span id="pauseText">Pause</span>
+                </button>
+                <button id="downloadSvgBtn" class="px-4 py-2 rounded-xl text-sm font-semibold bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white shadow-sm shadow-indigo-200 transition flex items-center gap-2 cursor-pointer">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                    </svg>
+                    Download .SVG
+                </button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12">
+            
+            <!-- Left / Center Column: Interactive SVG Stage -->
+            <div id="stageContainer" class="lg:col-span-7 relative bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] [background-size:20px_20px] bg-slate-50/70 flex items-center justify-center p-6 sm:p-10 min-h-[380px] sm:min-h-[440px] border-b lg:border-b-0 lg:border-r border-slate-100 overflow-hidden">
+                
+                <!-- ========================================================= -->
+                <!-- STANDALONE ANIMATED SMARTPHONE HAND SVG STARTS HERE       -->
+                <!-- ========================================================= -->
+                <svg id="phoneHandSvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 380" width="100%" height="100%" class="max-w-[400px] w-full h-auto overflow-visible" style="--hand-skin-color: #955830;">
+                    <style>
+                        /* Customizable skin tone variable (easy to edit in raw SVG or via CSS) */
+                        .skin-tone {
+                            fill: var(--hand-skin-color, #955830);
+                            transition: fill 0.25s ease;
+                        }
+
+                        /* Natural wrist & arm floating entrance + gentle idle tilt */
+                        .hand-rig {
+                            animation: handFloat 4.8s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+                            transform-origin: 410px 310px;
+                        }
+
+                        /* Subtle thumb tap / grip motion on the right bezel */
+                        .thumb-grip {
+                            animation: thumbTap 4.8s ease-in-out infinite;
+                            transform-origin: 215px 195px;
+                        }
+
+                        /* Subtle finger curl on the left side of the phone */
+                        .back-fingers {
+                            animation: fingerGrip 4.8s ease-in-out infinite;
+                            transform-origin: 90px 140px;
+                        }
+
+                        /* Screen photo gentle zoom/pan & glass sheen sweep */
+                        .screen-content {
+                            animation: screenPop 4.8s ease-in-out infinite;
+                            transform-origin: 125px 155px;
+                        }
+
+                        .screen-glare {
+                            animation: glareSweep 4.8s ease-in-out infinite;
+                        }
+
+                        /* Pause utility class */
+                        svg.paused .hand-rig,
+                        svg.paused .thumb-grip,
+                        svg.paused .back-fingers,
+                        svg.paused .screen-content,
+                        svg.paused .screen-glare {
+                            animation-play-state: paused !important;
+                        }
+
+                        @keyframes handFloat {
+                            0%, 100% {
+                                transform: translate(0px, 0px) rotate(0deg);
+                            }
+                            25% {
+                                transform: translate(-4px, -8px) rotate(-2.2deg);
+                            }
+                            55% {
+                                transform: translate(2px, -3px) rotate(1.5deg);
+                            }
+                            80% {
+                                transform: translate(-2px, -6px) rotate(-1deg);
+                            }
+                        }
+
+                        @keyframes thumbTap {
+                            0%, 35%, 65%, 100% {
+                                transform: rotate(0deg) translate(0px, 0px);
+                            }
+                            45% {
+                                transform: rotate(-4.5deg) translate(-3px, 1px);
+                            }
+                            52% {
+                                transform: rotate(0deg) translate(0px, 0px);
+                            }
+                        }
+
+                        @keyframes fingerGrip {
+                            0%, 100% {
+                                transform: translate(0px, 0px);
+                            }
+                            45% {
+                                transform: translate(2px, 1px);
+                            }
+                        }
+
+                        @keyframes screenPop {
+                            0%, 38%, 100% {
+                                transform: scale(1);
+                            }
+                            47% {
+                                transform: scale(1.035);
+                            }
+                            62% {
+                                transform: scale(1);
+                            }
+                        }
+
+                        @keyframes glareSweep {
+                            0%, 30% {
+                                transform: translate(-180px, -40px);
+                                opacity: 0;
+                            }
+                            45% {
+                                opacity: 0.55;
+                            }
+                            65%, 100% {
+                                transform: translate(180px, 40px);
+                                opacity: 0;
+                            }
+                        }
+                    </style>
+
+                    <defs>
+                        <!-- Exact Screen Cutout Geometry (Includes Top Speaker Notch & Rounded Inner Corners) -->
+                        <!-- Positioned in unrotated phone space (X: 54..196, Y: 28..282), tilted with the phone group -->
+                        <clipPath id="smartphone-screen-clip">
+                            <path d="
+                                M 68,28
+                                L 94,28
+                                C 98,28 100,37 106,37
+                                L 144,37
+                                C 150,37 152,28 156,28
+                                L 182,28
+                                A 14,14 0 0,1 196,42
+                                L 196,268
+                                A 14,14 0 0,1 182,282
+                                L 68,282
+                                A 14,14 0 0,1 54,268
+                                L 54,42
+                                A 14,14 0 0,1 68,28
+                                Z" />
+                        </clipPath>
+                    </defs>
+
+                    <!-- ========================================================= -->
+                    <!-- ANIMATED HAND & PHONE RIG                                 -->
+                    <!-- Wrapper #orientationWrapper flips for Left-Hand variant   -->
+                    <!-- ========================================================= -->
+                    <g id="orientationWrapper" transform="">
+                        <g class="hand-rig">
+
+                            <!-- 1. FINGERS WRAPPING BEHIND THE PHONE -->
+                            <g class="back-fingers skin-tone" fill="#955830">
+                                <!-- Top / Index Finger Tip -->
+                                <rect x="44" y="88" width="55" height="28" rx="14" transform="rotate(37 70 102)" />
+                                <!-- Middle Finger -->
+                                <rect x="20" y="114" width="76" height="29" rx="14.5" transform="rotate(37 58 128)" />
+                                <!-- Ring Finger -->
+                                <rect x="0" y="142" width="88" height="29" rx="14.5" transform="rotate(37 44 156)" />
+                            </g>
+
+                            <!-- 2. MAIN PALM & FOREARM EXTENDING TO BOTTOM -->
+                            <path class="skin-tone" fill="#955830" d="
+                                M 165,168
+                                L 228,175
+                                C 278,218 338,242 415,253
+                                L 415,375
+                                C 322,363 248,328 175,274
+                                Z" />
+
+                            <!-- 3. SMARTPHONE BODY & CUSTOMIZABLE SCREEN (Tilted 6.2 deg) -->
+                            <g transform="rotate(6.2 125 155)">
+                                
+                                <!-- Outer Dark Grey Phone Bezel (#606362) -->
+                                <rect x="46" y="18" width="158" height="274" rx="16" fill="#606362" />
+
+                                <!-- Base Screen Fallback Fill (#e1f3fe from original SVG) -->
+                                <rect x="52" y="26" width="146" height="258" rx="14" fill="#e1f3fe" />
+
+                                <!-- ========================================================= -->
+                                <!-- EASY-TO-SWAP SCREEN IMAGE PLACEHOLDER                     -->
+                                <!-- Replace the `href` attribute below with any image URL     -->
+                                <!-- or data:image URI. Automatically clipped to the notch!    -->
+                                <!-- ========================================================= -->
+                                <g clip-path="url(#smartphone-screen-clip)">
+                                    <g class="screen-content">
+                                        <!-- Counter-flip wrapper keeps the screen photo un-mirrored when Left Hand is active -->
+                                        <g id="screenUnflipWrapper" transform="">
+                                            <image 
+                                                id="custom-screen-photo"
+                                                href="https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=600&q=80"
+                                                x="52" 
+                                                y="26" 
+                                                width="146" 
+                                                height="258" 
+                                                preserveAspectRatio="xMidYMid slice" />
+                                        </g>
+                                    </g>
+
+                                    <!-- Animated Glass Reflection Sheen -->
+                                    <rect class="screen-glare" x="0" y="-30" width="55" height="360" fill="white" transform="rotate(25 125 155)" pointer-events="none" />
+                                </g>
+
+                                <!-- Top Notch Overlay to keep edges crisp -->
+                                <path fill="#606362" d="
+                                    M 93,24
+                                    L 157,24
+                                    L 153,35
+                                    A 6,6 0 0,1 147,39
+                                    L 103,39
+                                    A 6,6 0 0,1 97,35
+                                    Z" />
+                            </g>
+
+                            <!-- 4. FOREGROUND THUMB OVERLAPPING THE BEZEL -->
+                            <g class="thumb-grip">
+                                <path class="skin-tone" fill="#955830" d="
+                                    M 188,248
+                                    L 196,112
+                                    A 15.5,15.5 0 0,1 227,110
+                                    L 236,184
+                                    L 222,255
+                                    Z" />
+                            </g>
+
+                        </g>
+                    </g>
+                </svg>
+                <!-- ========================================================= -->
+                <!-- STANDALONE ANIMATED SMARTPHONE HAND SVG ENDS HERE         -->
+                <!-- ========================================================= -->
+
+            </div>
+
+            <!-- Right Column: Live Screen Photo & Hand Customizer -->
+            <div class="lg:col-span-5 p-6 sm:p-7 flex flex-col justify-between bg-white">
+                <div class="space-y-5">
+                    <div>
+                        <h2 class="text-base font-bold text-slate-900">Customize Hand & Screen</h2>
+                        <p class="text-xs text-slate-500 mt-0.5">Configure hand side, skin tone, and screen photo before exporting your SVG.</p>
+                    </div>
+
+                    <!-- Hand Orientation Variant (Left vs Right) -->
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Hand Direction Variant</label>
+                        <div class="grid grid-cols-2 gap-2 p-1 bg-slate-100 rounded-xl">
+                            <button id="handRightBtn" class="px-3 py-2 rounded-lg text-xs font-semibold bg-white text-slate-900 shadow-2xs transition flex items-center justify-center gap-1.5 cursor-pointer">
+                                <span>🫱</span> Right Hand (Default)
+                            </button>
+                            <button id="handLeftBtn" class="px-3 py-2 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition flex items-center justify-center gap-1.5 cursor-pointer">
+                                <span>🫲</span> Left Hand (From Left)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Skin Tone Customizer -->
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500">Skin Tone</label>
+                            <span id="skinHexLabel" class="text-[11px] font-mono text-slate-500">#955830</span>
+                        </div>
+                        <div class="flex items-center gap-2.5 flex-wrap">
+                            <!-- 6 Diverse Skin Tone Swatches -->
+                            <button data-skin="#ffdbb4" title="Light Warm" class="skin-swatch w-7 h-7 rounded-full border-2 border-white shadow-xs ring-1 ring-slate-200 hover:scale-110 transition cursor-pointer" style="background-color: #ffdbb4;"></button>
+                            <button data-skin="#f1c27d" title="Light Golden" class="skin-swatch w-7 h-7 rounded-full border-2 border-white shadow-xs ring-1 ring-slate-200 hover:scale-110 transition cursor-pointer" style="background-color: #f1c27d;"></button>
+                            <button data-skin="#e0ac69" title="Medium Tan" class="skin-swatch w-7 h-7 rounded-full border-2 border-white shadow-xs ring-1 ring-slate-200 hover:scale-110 transition cursor-pointer" style="background-color: #e0ac69;"></button>
+                            <button data-skin="#c68642" title="Warm Bronze" class="skin-swatch w-7 h-7 rounded-full border-2 border-white shadow-xs ring-1 ring-slate-200 hover:scale-110 transition cursor-pointer" style="background-color: #c68642;"></button>
+                            <button data-skin="#955830" title="Original Rich Brown" class="skin-swatch w-7 h-7 rounded-full border-2 border-white shadow-xs ring-2 ring-indigo-600 scale-110 transition cursor-pointer" style="background-color: #955830;"></button>
+                            <button data-skin="#5c3824" title="Deep Espresso" class="skin-swatch w-7 h-7 rounded-full border-2 border-white shadow-xs ring-1 ring-slate-200 hover:scale-110 transition cursor-pointer" style="background-color: #5c3824;"></button>
+                            
+                            <!-- Custom Color Picker Input -->
+                            <label class="ml-auto flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-slate-200 hover:bg-slate-50 text-xs font-medium text-slate-700 cursor-pointer transition">
+                                <input id="customSkinPicker" type="color" value="#955830" class="w-4 h-4 rounded cursor-pointer border-0 p-0 bg-transparent" />
+                                <span>Custom</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <hr class="border-slate-100" />
+
+                    <!-- Option 1: Upload Local Image (Converts to embedded Data URI inside the SVG) -->
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">1. Upload Local Screen Photo</label>
+                        <label class="flex items-center justify-center gap-2 w-full px-4 py-2 rounded-xl border-2 border-dashed border-slate-300 hover:border-indigo-500 hover:bg-indigo-50/40 text-xs font-semibold text-slate-700 transition cursor-pointer">
+                            <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            <span>Choose Image File (PNG, JPG, WebP, SVG)</span>
+                            <input id="fileUploadInput" type="file" accept="image/*" class="hidden" />
+                        </label>
+                    </div>
+
+                    <!-- Option 2: External Image URL -->
+                    <div>
+                        <label for="imageUrlInput" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">2. Or Paste External Image URL</label>
+                        <div class="flex gap-2">
+                            <input 
+                                id="imageUrlInput" 
+                                type="url" 
+                                placeholder="https://example.com/photo.jpg" 
+                                value="https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=600&q=80"
+                                class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 font-mono text-slate-700" />
+                            <button id="applyUrlBtn" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-white transition shrink-0 cursor-pointer">
+                                Apply
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Option 3: Quick Presets (Including Original Blank Blue Screen) -->
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">3. Screen Presets</label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button data-preset="https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=600&q=80" class="preset-btn px-3 py-1.5 rounded-xl text-xs font-medium border border-indigo-200 bg-indigo-50/60 text-indigo-700 hover:bg-indigo-100/70 transition text-left truncate cursor-pointer">
+                                🌌 Night Sky
+                            </button>
+                            <button data-preset="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80" class="preset-btn px-3 py-1.5 rounded-xl text-xs font-medium border border-slate-200 hover:bg-slate-100 text-slate-700 transition text-left truncate cursor-pointer">
+                                👤 Portrait
+                            </button>
+                            <button data-preset="https://placehold.co/300x540/4f46e5/ffffff/svg?text=YOUR+PHOTO+HERE" class="preset-btn px-3 py-1.5 rounded-xl text-xs font-medium border border-slate-200 hover:bg-slate-100 text-slate-700 transition text-left truncate cursor-pointer">
+                                🖼️ Text Badge
+                            </button>
+                            <button data-preset="" class="preset-btn px-3 py-1.5 rounded-xl text-xs font-medium border border-slate-200 hover:bg-slate-100 text-slate-700 transition text-left truncate cursor-pointer">
+                                📱 Original Blue Screen
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Fit Mode Selector -->
+                    <div class="pt-1">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Image Aspect Fit</span>
+                            <div class="inline-flex rounded-lg bg-slate-100 p-0.5">
+                                <button id="fitCoverBtn" class="px-2.5 py-1 rounded-md text-xs font-medium bg-white shadow-2xs text-slate-800 cursor-pointer">Cover (Fill)</button>
+                                <button id="fitContainBtn" class="px-2.5 py-1 rounded-md text-xs font-medium text-slate-600 hover:text-slate-900 cursor-pointer">Contain</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Code Snippet Hint -->
+                <div class="mt-5 pt-3.5 border-t border-slate-100">
+                    <p class="text-[11px] text-slate-500 leading-relaxed">
+                        <strong class="text-slate-700">Easy code edits:</strong> Change <code class="text-indigo-600 font-mono">--hand-skin-color</code> on the root <code class="text-indigo-600 font-mono">&lt;svg&gt;</code> or swap <code class="text-indigo-600 font-mono">id="custom-screen-photo"</code>.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer Bar -->
+        <div class="p-4 sm:px-8 bg-slate-100/80 border-t border-slate-200/80 flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-emerald-100 text-emerald-800">
+                    Clipped Notch Screen
+                </span>
+                <span class="text-xs text-slate-500">Thumb naturally overlaps right edge of custom photo</span>
+            </div>
+            <button id="copyCodeBtn" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 shadow-2xs transition cursor-pointer">
+                Copy Raw SVG Code
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const phoneHandSvg = document.getElementById('phoneHandSvg');
+        const orientationWrapper = document.getElementById('orientationWrapper');
+        const screenUnflipWrapper = document.getElementById('screenUnflipWrapper');
+        const handRightBtn = document.getElementById('handRightBtn');
+        const handLeftBtn = document.getElementById('handLeftBtn');
+        const skinSwatches = document.querySelectorAll('.skin-swatch');
+        const customSkinPicker = document.getElementById('customSkinPicker');
+        const skinHexLabel = document.getElementById('skinHexLabel');
+        const skinToneElements = document.querySelectorAll('.skin-tone');
+
+        const customScreenPhoto = document.getElementById('custom-screen-photo');
+        const imageUrlInput = document.getElementById('imageUrlInput');
+        const applyUrlBtn = document.getElementById('applyUrlBtn');
+        const fileUploadInput = document.getElementById('fileUploadInput');
+        const presetBtns = document.querySelectorAll('.preset-btn');
+        const fitCoverBtn = document.getElementById('fitCoverBtn');
+        const fitContainBtn = document.getElementById('fitContainBtn');
+        const togglePauseBtn = document.getElementById('togglePauseBtn');
+        const pauseIcon = document.getElementById('pauseIcon');
+        const pauseText = document.getElementById('pauseText');
+        const downloadSvgBtn = document.getElementById('downloadSvgBtn');
+        const copyCodeBtn = document.getElementById('copyCodeBtn');
+
+        let currentHandSide = 'right';
+
+        // Switch between Right Hand (coming from right) and Left Hand (coming from left)
+        // Also counter-flips #screenUnflipWrapper so screen photos/text are never mirrored backwards!
+        function setHandOrientation(side) {
+            currentHandSide = side;
+            if (side === 'left') {
+                orientationWrapper.setAttribute('transform', 'translate(420, 0) scale(-1, 1)');
+                screenUnflipWrapper.setAttribute('transform', 'translate(250, 0) scale(-1, 1)');
+                handLeftBtn.className = 'px-3 py-2 rounded-lg text-xs font-semibold bg-white text-slate-900 shadow-2xs transition flex items-center justify-center gap-1.5 cursor-pointer';
+                handRightBtn.className = 'px-3 py-2 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition flex items-center justify-center gap-1.5 cursor-pointer';
+            } else {
+                orientationWrapper.setAttribute('transform', '');
+                screenUnflipWrapper.setAttribute('transform', '');
+                handRightBtn.className = 'px-3 py-2 rounded-lg text-xs font-semibold bg-white text-slate-900 shadow-2xs transition flex items-center justify-center gap-1.5 cursor-pointer';
+                handLeftBtn.className = 'px-3 py-2 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition flex items-center justify-center gap-1.5 cursor-pointer';
+            }
+        }
+
+        handRightBtn.addEventListener('click', () => setHandOrientation('right'));
+        handLeftBtn.addEventListener('click', () => setHandOrientation('left'));
+
+        // Update Skin Tone (updates both CSS variable and fallback fill attributes for universal SVG compatibility)
+        function setSkinTone(hexColor) {
+            phoneHandSvg.style.setProperty('--hand-skin-color', hexColor);
+            skinToneElements.forEach(el => el.setAttribute('fill', hexColor));
+            skinHexLabel.textContent = hexColor.toUpperCase();
+            customSkinPicker.value = hexColor;
+
+            skinSwatches.forEach(btn => {
+                if (btn.getAttribute('data-skin').toLowerCase() === hexColor.toLowerCase()) {
+                    btn.className = 'skin-swatch w-7 h-7 rounded-full border-2 border-white shadow-xs ring-2 ring-indigo-600 scale-110 transition cursor-pointer';
+                } else {
+                    btn.className = 'skin-swatch w-7 h-7 rounded-full border-2 border-white shadow-xs ring-1 ring-slate-200 hover:scale-110 transition cursor-pointer';
+                }
+            });
+        }
+
+        skinSwatches.forEach(btn => {
+            btn.addEventListener('click', () => {
+                setSkinTone(btn.getAttribute('data-skin'));
+            });
+        });
+
+        customSkinPicker.addEventListener('input', (e) => {
+            setSkinTone(e.target.value);
+        });
+
+        // Update screen image href
+        function updateScreenImage(url) {
+            const rawUrl = (url || '').trim();
+            if (!rawUrl) {
+                customScreenPhoto.setAttribute('href', '');
+                customScreenPhoto.style.display = 'none';
+                return;
+            }
+
+            let safeUrl = '';
+
+            // Allow embedded local uploads (data:image/*) and normal remote images (http/https).
+            if (/^data:image\//i.test(rawUrl)) {
+                safeUrl = rawUrl;
+            } else {
+                try {
+                    const parsed = new URL(rawUrl, window.location.href);
+                    if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+                        safeUrl = parsed.href;
+                    }
+                } catch (_) {
+                    safeUrl = '';
+                }
+            }
+
+            if (!safeUrl) {
+                customScreenPhoto.setAttribute('href', '');
+                customScreenPhoto.style.display = 'none';
+                return;
+            }
+
+            customScreenPhoto.style.display = 'block';
+            customScreenPhoto.setAttribute('href', safeUrl);
+        }
+
+        // Apply URL button & Enter key
+        applyUrlBtn.addEventListener('click', () => {
+            updateScreenImage(imageUrlInput.value.trim());
+        });
+        imageUrlInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') updateScreenImage(imageUrlInput.value.trim());
+        });
+
+        // Handle local file upload (embeds as Data URL inside the SVG so exported SVG is self-contained)
+        fileUploadInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const dataUrl = event.target.result;
+                updateScreenImage(dataUrl);
+                imageUrlInput.value = '[Embedded Local Image Data URI]';
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // Quick preset buttons
+        presetBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const url = btn.getAttribute('data-preset');
+                imageUrlInput.value = url;
+                updateScreenImage(url);
+            });
+        });
+
+        // Aspect Ratio Fit Toggle (slice vs meet)
+        fitCoverBtn.addEventListener('click', () => {
+            customScreenPhoto.setAttribute('preserveAspectRatio', 'xMidYMid slice');
+            fitCoverBtn.className = 'px-2.5 py-1 rounded-md text-xs font-medium bg-white shadow-2xs text-slate-800 cursor-pointer';
+            fitContainBtn.className = 'px-2.5 py-1 rounded-md text-xs font-medium text-slate-600 hover:text-slate-900 cursor-pointer';
+        });
+
+        fitContainBtn.addEventListener('click', () => {
+            customScreenPhoto.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+            fitContainBtn.className = 'px-2.5 py-1 rounded-md text-xs font-medium bg-white shadow-2xs text-slate-800 cursor-pointer';
+            fitCoverBtn.className = 'px-2.5 py-1 rounded-md text-xs font-medium text-slate-600 hover:text-slate-900 cursor-pointer';
+        });
+
+        // Pause / Play Animation
+        let isPaused = false;
+        togglePauseBtn.addEventListener('click', () => {
+            isPaused = !isPaused;
+            phoneHandSvg.classList.toggle('paused', isPaused);
+            pauseIcon.textContent = isPaused ? '▶' : '⏸';
+            pauseText.textContent = isPaused ? 'Play' : 'Pause';
+        });
+
+        // Serialize clean standalone SVG
+        function getCleanSvgString() {
+            const clone = phoneHandSvg.cloneNode(true);
+            clone.classList.remove('paused', 'max-w-[400px]', 'w-full', 'h-auto', 'overflow-visible');
+            clone.setAttribute('width', '420');
+            clone.setAttribute('height', '380');
+            return '<?xml version="1.0" encoding="UTF-8"?>\n' + clone.outerHTML;
+        }
+
+        // Download .SVG file
+        downloadSvgBtn.addEventListener('click', () => {
+            const svgData = getCleanSvgString();
+            const blob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `animated-smartphone-${currentHandSide}-hand.svg`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        });
+
+        // Copy raw SVG code
+        copyCodeBtn.addEventListener('click', () => {
+            const svgData = getCleanSvgString();
+            const tempInput = document.createElement('textarea');
+            tempInput.value = svgData;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            const originalText = copyCodeBtn.textContent;
+            copyCodeBtn.textContent = '✓ Copied SVG to Clipboard!';
+            copyCodeBtn.classList.add('text-indigo-600', 'border-indigo-300');
+            setTimeout(() => {
+                copyCodeBtn.textContent = originalText;
+                copyCodeBtn.classList.remove('text-indigo-600', 'border-indigo-300');
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
