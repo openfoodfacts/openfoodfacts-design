@@ -468,13 +468,36 @@
         });
 
         // Update screen image href
+        function sanitizeScreenImageUrl(url) {
+            if (!url) return '';
+            const trimmed = url.trim();
+
+            // Allow embedded local uploads (data URLs), but only image MIME types.
+            if (/^data:image\//i.test(trimmed)) {
+                return trimmed;
+            }
+
+            // Allow only http/https URLs (absolute or relative resolved against current origin).
+            try {
+                const parsed = new URL(trimmed, window.location.href);
+                if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+                    return parsed.href;
+                }
+            } catch (_) {
+                // Invalid URL
+            }
+
+            return '';
+        }
+
         function updateScreenImage(url) {
-            if (!url) {
+            const safeUrl = sanitizeScreenImageUrl(url);
+            if (!safeUrl) {
                 customScreenPhoto.setAttribute('href', '');
                 customScreenPhoto.style.display = 'none';
             } else {
                 customScreenPhoto.style.display = 'block';
-                customScreenPhoto.setAttribute('href', url);
+                customScreenPhoto.setAttribute('href', safeUrl);
             }
         }
 
