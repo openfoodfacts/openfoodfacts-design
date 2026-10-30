@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="svg-off-newsletter" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 420" width="560" height="420" class="">
+                    <style>
+                        .news-sheet-pop {
+                            animation: newsRise 4.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+                            transform-origin: 280px 210px;
+                        }
+                        .news-float-left {
+                            animation: newsOrbA 4.5s ease-in-out infinite;
+                        }
+                        .news-float-right {
+                            animation: newsOrbB 4.5s ease-in-out infinite 0.5s;
+                        }
+                        svg.paused * { animation-play-state: paused !important; }
+                        @keyframes newsRise {
+                            0%, 100% { transform: translateY(0px) scale(1); }
+                            50% { transform: translateY(-16px) scale(1.02); }
+                        }
+                        @keyframes newsOrbA {
+                            0%, 100% { transform: translate(0px, 0px) rotate(-5deg); }
+                            50% { transform: translate(-8px, -12px) rotate(4deg); }
+                        }
+                        @keyframes newsOrbB {
+                            0%, 100% { transform: translate(0px, 0px) rotate(4deg); }
+                            50% { transform: translate(8px, -12px) rotate(-5deg); }
+                        }
+                    </style>
+
+                    <!-- Soft Circular Backdrop (#dcf0f7) -->
+                    <circle cx="280" cy="220" r="168" fill="#dcf0f7"></circle>
+
+                    <!-- ========================================== -->
+                    <!-- ENVELOPE BACK & OPEN FLAP (#d95326)        -->
+                    <!-- ========================================== -->
+                    <path fill="#d95326" d="M 122,192 L 280,76 L 438,192 L 438,348 A 22,22 0 0,1 416,370 L 144,370 A 22,22 0 0,1 122,348 Z"></path>
+
+                    <!-- ========================================== -->
+                    <!-- RISING NEWSLETTER DIGEST SHEET             -->
+                    <!-- ========================================== -->
+                    <g class="news-sheet-pop">
+                        <rect x="148" y="48" width="264" height="276" rx="18" fill="#ffffff" stroke="#e2e8f0" stroke-width="3"></rect>
+
+                        <!-- Newsletter Masthead Banner (#009a49) -->
+                        <rect x="166" y="66" width="228" height="38" rx="10" fill="#009a49"></rect>
+                        <text x="280" y="90" text-anchor="middle" fill="#ffffff" font-family="Inter, sans-serif" font-size="16" font-weight="800" letter-spacing="2">NEWSLETTER</text>
+
+                        <!-- Featured Story Block 1: Mini Crispy Cereal Pack + Headline Bars -->
+                        <rect x="166" y="118" width="104" height="86" rx="12" fill="#fff3ed"></rect>
+                        <g transform="translate(194, 126)">
+                            <rect x="0" y="0" width="48" height="68" rx="5" fill="#ff6b35"></rect>
+                            <text x="5" y="16" fill="#d95326" font-weight="800" font-size="10">CRISPY</text>
+                            <path fill="#00bdf2" d="M 18,36 L 48,36 L 48,52 C 40,62 22,60 18,36 Z"></path>
+                            <circle cx="10" cy="30" r="2.5" fill="#f8c100"></circle>
+                            <circle cx="12" cy="46" r="2.5" fill="#f8c100"></circle>
+                        </g>
+
+                        <!-- Right Article Lines & Nutri-Score Strip -->
+                        <rect x="284" y="124" width="106" height="12" rx="6" fill="#181818"></rect>
+                        <rect x="284" y="144" width="84" height="9" rx="4.5" fill="#94a3b8"></rect>
+                        <rect x="284" y="160" width="96" height="9" rx="4.5" fill="#94a3b8"></rect>
+                        <!-- Mini 5-color Nutri-Score Bar -->
+                        <g transform="translate(284, 180)">
+                            <rect x="0" y="0" width="18" height="16" rx="4" fill="#009a49"></rect>
+                            <rect x="21" y="2" width="16" height="12" rx="3" fill="#7fbc2b"></rect>
+                            <rect x="40" y="2" width="16" height="12" rx="3" fill="#ffc412"></rect>
+                            <rect x="59" y="2" width="16" height="12" rx="3" fill="#ff6b35"></rect>
+                            <rect x="78" y="2" width="16" height="12" rx="3" fill="#dc3522"></rect>
+                        </g>
+
+                        <!-- Featured Story Block 2: Green Bottle + Community Stats -->
+                        <rect x="166" y="216" width="228" height="54" rx="12" fill="#e1f3fe"></rect>
+                        <circle cx="196" cy="243" r="18" fill="#00bdf2"></circle>
+                        <path d="M 189,243 L 194,248 L 204,238" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                        <rect x="226" y="232" width="118" height="10" rx="5" fill="#0077c8"></rect>
+                        <rect x="226" y="248" width="86" height="8" rx="4" fill="#606362"></rect>
+                    </g>
+
+                    <!-- ========================================== -->
+                    <!-- ENVELOPE FRONT POCKET (#ff6b35 & #ffc412)  -->
+                    <!-- ========================================== -->
+                    <path fill="#ff8552" d="M 122,192 L 280,290 L 122,362 Z"></path>
+                    <path fill="#e05520" d="M 438,192 L 280,290 L 438,362 Z"></path>
+                    <path fill="#ff6b35" d="M 122,356 L 262,268 A 26,26 0 0,1 298,268 L 438,356 A 18,18 0 0,1 420,370 L 140,370 A 18,18 0 0,1 122,356 Z"></path>
+
+                    <!-- Gold Envelope Wax Seal / Badge (#ffc412) -->
+                    <circle cx="280" cy="288" r="24" fill="#ffc412" stroke="#ffffff" stroke-width="4"></circle>
+                    <path fill="#ff6270" d="M 280,299 C 280,299 267,290 267,282 A 6.5,6.5 0 0,1 280,279 A 6.5,6.5 0 0,1 293,282 C 293,290 280,299 280,299 Z"></path>
+
+                    <!-- ========================================== -->
+                    <!-- FLOATING SIDE ICONS (BOTTLE, HEART, GLOBE) -->
+                    <!-- ========================================== -->
+                    <!-- Top-Left Floating Pink Heart (#ff6270) -->
+                    <g class="news-float-left">
+                        <path fill="#ff6270" d="M 96,154 C 96,154 62,134 65,114 C 67,102 80,98 90,107 C 98,95 114,96 118,109 C 124,127 96,154 96,154 Z"></path>
+                    </g>
+
+                    <!-- Bottom-Left Floating Attached Green Bottle -->
+                    <g class="news-float-right" transform="translate(54, 218) rotate(-14)">
+                        <rect x="16" y="0" width="20" height="9" rx="3" fill="#aeaeae"></rect>
+                        <path fill="#009a49" d="M 18,9 L 34,9 L 34,30 C 46,35 52,48 52,64 L 52,114 A 9,9 0 0,1 43,123 L 9,123 A 9,9 0 0,1 0,114 L 0,64 C 0,48 6,35 18,30 Z"></path>
+                        <rect x="9" y="56" width="34" height="44" rx="4" fill="#ffffff"></rect>
+                        <line x1="14" y1="68" x2="38" y2="68" stroke="#999999" stroke-width="3"></line>
+                        <line x1="14" y1="78" x2="38" y2="78" stroke="#999999" stroke-width="3"></line>
+                    </g>
+
+                    <!-- Top-Right Floating Earth Globe (#6ae3ff + #009a49) -->
+                    <g class="news-float-right">
+                        <circle cx="468" cy="132" r="38" fill="#6ae3ff"></circle>
+                        <path fill="#009a49" d="M 450,98 C 462,110 446,125 436,128 C 430,130 430,144 434,150 A 38,38 0 0,1 450,98 Z"></path>
+                        <path fill="#009a49" d="M 476,95 C 472,108 485,120 504,125 A 38,38 0 0,0 476,95 Z"></path>
+                        <path fill="#009a49" d="M 462,118 C 475,116 477,132 468,148 C 462,160 456,150 452,135 C 448,125 454,120 462,118 Z"></path>
+                    </g>
+                </svg>

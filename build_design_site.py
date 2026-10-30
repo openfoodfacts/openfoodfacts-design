@@ -82,13 +82,21 @@ for root, dirs, files in os.walk(repo_root):
             if cat in categories:
                 categories[cat]['count'] += 1
 
+            # Check for alternate format counterpart (PNG for SVG, SVG for PNG)
+            base_without_ext = os.path.splitext(full_path)[0]
+            rel_base = os.path.splitext(rel_path)[0]
+            has_png = os.path.exists(base_without_ext + '.png')
+            has_svg = os.path.exists(base_without_ext + '.svg')
+
             assets.append({
                 'name': f,
                 'path': rel_path,
                 'size': size,
                 'category': cat,
                 'animated': is_animated,
-                'ext': ext.replace('.', '')
+                'ext': ext.replace('.', ''),
+                'png_path': (rel_base + '.png') if has_png else None,
+                'svg_path': (rel_base + '.svg') if has_svg else None
             })
 
 # Sort assets: animated first, then by category, then by name
@@ -838,6 +846,9 @@ html = f"""<!DOCTYPE html>
                     <button id="modal-copy-link" onclick="copyAssetMarkdown()" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-white border border-stone-200 hover:bg-stone-50 text-stone-700 transition cursor-pointer">
                         📋 Copy Markdown
                     </button>
+                    <a id="modal-alt-download" href="#" download class="hidden px-4 py-2 rounded-xl text-xs font-bold bg-stone-100 hover:bg-stone-200 text-stone-700 shadow-xs transition cursor-pointer">
+                        📥 Download PNG
+                    </a>
                     <a id="modal-download" href="#" download class="px-4 py-2 rounded-xl text-xs font-bold bg-orange-600 hover:bg-orange-700 text-white shadow-xs transition cursor-pointer">
                         📥 Download Asset
                     </a>
@@ -1047,8 +1058,26 @@ html = f"""<!DOCTYPE html>
             currentModalAsset = asset;
             document.getElementById('modal-title').innerText = asset.name;
             document.getElementById('modal-path').innerText = asset.path;
-            document.getElementById('modal-download').href = asset.path;
-            document.getElementById('modal-download').download = asset.name;
+            
+            const downloadBtn = document.getElementById('modal-download');
+            downloadBtn.href = asset.path;
+            downloadBtn.download = asset.name;
+            downloadBtn.innerText = `📥 Download ${{asset.ext.toUpperCase()}}`;
+
+            const altBtn = document.getElementById('modal-alt-download');
+            if (asset.ext === 'svg' && asset.png_path) {{
+                altBtn.classList.remove('hidden');
+                altBtn.href = asset.png_path;
+                altBtn.download = asset.name.replace(/\\.svg$/i, '.png');
+                altBtn.innerText = '📥 Download PNG';
+            }} else if (asset.ext === 'png' && asset.svg_path) {{
+                altBtn.classList.remove('hidden');
+                altBtn.href = asset.svg_path;
+                altBtn.download = asset.name.replace(/\\.png$/i, '.svg');
+                altBtn.innerText = '📥 Download SVG';
+            }} else {{
+                altBtn.classList.add('hidden');
+            }}
 
             const stage = document.getElementById('modal-stage');
             stage.innerHTML = '';

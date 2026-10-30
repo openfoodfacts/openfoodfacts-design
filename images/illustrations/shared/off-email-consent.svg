@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="svg-email-consent" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 420" width="560" height="420" class="">
+                    <style>
+                        .consent-letter-rise {
+                            animation: consentSheetSlide 4.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+                        }
+                        .consent-chk-1 {
+                            animation: consentTickPop 4.4s cubic-bezier(0.34, 1.56, 0.64, 1) infinite 0.15s;
+                            transform-origin: 204px 128px;
+                        }
+                        .consent-chk-2 {
+                            animation: consentTickPop 4.4s cubic-bezier(0.34, 1.56, 0.64, 1) infinite 0.55s;
+                            transform-origin: 204px 172px;
+                        }
+                        .consent-big-seal {
+                            animation: sealApprovePop 4.4s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
+                            transform-origin: 432px 298px;
+                        }
+                        .privacy-shield-bob {
+                            animation: shieldGentleFloat 4.4s ease-in-out infinite;
+                            transform-origin: 122px 134px;
+                        }
+                        svg.paused * { animation-play-state: paused !important; }
+                        @keyframes consentSheetSlide {
+                            0%, 100% { transform: translateY(0px); }
+                            50% { transform: translateY(-14px); }
+                        }
+                        @keyframes consentTickPop {
+                            0%, 18%, 92%, 100% { transform: scale(0); opacity: 0; }
+                            32%, 80% { transform: scale(1); opacity: 1; }
+                        }
+                        @keyframes sealApprovePop {
+                            0%, 28%, 90%, 100% { transform: scale(0.84); }
+                            45%, 75% { transform: scale(1.1); }
+                        }
+                        @keyframes shieldGentleFloat {
+                            0%, 100% { transform: translateY(0px) rotate(-4deg); }
+                            50% { transform: translateY(-9px) rotate(2deg); }
+                        }
+                    </style>
+
+                    <!-- Soft Rounded Backdrop (#dcf0f7 from hero-openprices.svg) -->
+                    <circle cx="280" cy="218" r="168" fill="#dcf0f7"></circle>
+
+                    <!-- ========================================== -->
+                    <!-- ENVELOPE BACK & OPEN TOP FLAP (#0077c8)    -->
+                    <!-- ========================================== -->
+                    <path fill="#0077c8" d="M 136,184 L 280,82 L 424,184 L 424,344 A 20,20 0 0,1 404,364 L 156,364 A 20,20 0 0,1 136,344 Z"></path>
+
+                    <!-- ========================================== -->
+                    <!-- RISING CONSENT / OPT-IN CARD               -->
+                    <!-- ========================================== -->
+                    <g class="consent-letter-rise">
+                        <rect x="164" y="64" width="232" height="248" rx="18" fill="#ffffff" stroke="#e2e8f0" stroke-width="3"></rect>
+
+                        <!-- Top "@" Email Header Pill -->
+                        <rect x="188" y="82" width="184" height="24" rx="12" fill="#e1f3fe"></rect>
+                        <circle cx="204" cy="94" r="8" fill="#00bdf2"></circle>
+                        <rect x="220" y="90" width="96" height="8" rx="4" fill="#0077c8"></rect>
+
+                        <!-- Opt-in Row 1 (Checklist.svg circle + Green Check) -->
+                        <circle cx="204" cy="134" r="12" fill="none" stroke="#0077c8" stroke-width="4"></circle>
+                        <rect x="228" y="124" width="124" height="9" rx="4.5" fill="#181818"></rect>
+                        <rect x="228" y="138" width="84" height="7" rx="3.5" fill="#94a3b8"></rect>
+                        <g class="consent-chk-1">
+                            <circle cx="204" cy="134" r="13" fill="#0b7a3e"></circle>
+                            <path d="M 197,134 L 202,139 L 212,129" fill="none" stroke="#ffffff" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </g>
+
+                        <!-- Opt-in Row 2 (Checklist.svg circle + Green Check) -->
+                        <circle cx="204" cy="178" r="12" fill="none" stroke="#0077c8" stroke-width="4"></circle>
+                        <rect x="228" y="168" width="112" height="9" rx="4.5" fill="#181818"></rect>
+                        <rect x="228" y="182" width="94" height="7" rx="3.5" fill="#94a3b8"></rect>
+                        <g class="consent-chk-2">
+                            <circle cx="204" cy="178" r="13" fill="#0b7a3e"></circle>
+                            <path d="M 197,178 L 202,183 L 212,173" fill="none" stroke="#ffffff" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </g>
+
+                        <!-- Toggle Switch / Consent Button Pill -->
+                        <rect x="192" y="206" width="176" height="32" rx="16" fill="#009a49"></rect>
+                        <circle cx="350" cy="222" r="11" fill="#ffffff"></circle>
+                        <text x="262" y="227" text-anchor="middle" fill="#ffffff" font-size="13" font-weight="800" letter-spacing="0.8">OPT-IN ✓</text>
+                    </g>
+
+                    <!-- ========================================== -->
+                    <!-- ENVELOPE FRONT POCKET FLAPS (#00bdf2)      -->
+                    <!-- ========================================== -->
+                    <path fill="#33ccff" d="M 136,184 L 280,278 L 136,356 Z"></path>
+                    <path fill="#00a8db" d="M 424,184 L 280,278 L 424,356 Z"></path>
+                    <path fill="#00bdf2" d="M 136,352 L 264,262 A 24,24 0 0,1 296,262 L 424,352 A 16,16 0 0,1 408,364 L 152,364 A 16,16 0 0,1 136,352 Z"></path>
+
+                    <!-- ========================================== -->
+                    <!-- LEFT: PRIVACY SHIELD + HEART BADGE         -->
+                    <!-- ========================================== -->
+                    <g class="privacy-shield-bob">
+                        <path fill="#ffc412" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" d="
+                            M 118,76
+                            L 164,92
+                            L 164,138
+                            C 164,172 142,194 118,204
+                            C 94,194 72,172 72,138
+                            L 72,92 Z"></path>
+                        <!-- Pink Heart inside Privacy Shield (#ff6270) -->
+                        <path fill="#ff6270" d="
+                            M 118,162
+                            C 118,162 92,144 92,126
+                            C 92,115 101,108 110,108
+                            C 114,108 117,111 118,114
+                            C 119,111 122,108 126,108
+                            C 135,108 144,115 144,126
+                            C 144,144 118,162 118,162 Z"></path>
+                    </g>
+
+                    <!-- ========================================== -->
+                    <!-- RIGHT: ATTACHED GREEN CHECK.SVG SEAL       -->
+                    <!-- ========================================== -->
+                    <g class="consent-big-seal">
+                        <circle cx="430" cy="302" r="44" fill="#000000" opacity="0.1"></circle>
+                        <circle cx="432" cy="298" r="42" fill="#0b7a3e" stroke="#ffffff" stroke-width="4"></circle>
+                        <path d="M 412,299 L 426,313 L 454,285" fill="none" stroke="#ffffff" stroke-width="10.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </g>
+                </svg>
