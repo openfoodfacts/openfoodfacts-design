@@ -4,7 +4,7 @@ import glob
 import json
 import re
 
-repo_root = '/Users/pierre/development/openfoodfacts-design'
+repo_root = os.path.dirname(os.path.abspath(__file__))
 
 # 1. Collect all assets
 assets = []
@@ -13,24 +13,34 @@ categories = {
     'food': {'name': '🥗 Food Illustrations', 'count': 0},
     'shared': {'name': '🤝 Shared Illustrations', 'count': 0},
     'logos': {'name': '🏷️ Brand Logos', 'count': 0},
-    'scores': {'name': '🚦 Nutri-Score & Green-Score', 'count': 0},
+    'scores': {'name': '🚦 Nutri & Green-Score', 'count': 0},
     'prices': {'name': '💰 Open Prices', 'count': 0},
     'products': {'name': '📦 Products', 'count': 0},
     'beauty': {'name': '🧴 Beauty', 'count': 0},
     'petfood': {'name': '🐾 Pet Food', 'count': 0},
+    'avatars': {'name': '👤 Avatars', 'count': 0},
     'animations': {'name': '🎬 Motion & Videos', 'count': 0},
 }
 
+# Track indexed animations to avoid redundant duplicate cards between animations/ and animations/videos/
+indexed_anim_basenames = set()
+
 for root, dirs, files in os.walk(repo_root):
-    if '.git' in root or 'node_modules' in root:
+    if '.git' in root or 'node_modules' in root or 'scratch' in root or 'brain' in root:
         continue
-    for f in files:
+    for f in sorted(files):
         ext = os.path.splitext(f)[1].lower()
-        if ext in ['.svg', '.png', '.jpg', '.gif', '.mp4', '.riv']:
+        if ext in ['.svg', '.png', '.jpg', '.jpeg', '.gif', '.mp4', '.riv', '.webp']:
             full_path = os.path.join(root, f)
             rel_path = os.path.relpath(full_path, repo_root)
             size = os.path.getsize(full_path)
             
+            # Avoid duplicate video cards if identical file already exists in animations/
+            if 'animations/videos' in rel_path and ext == '.mp4':
+                root_anim_path = os.path.join(repo_root, 'animations', f)
+                if os.path.exists(root_anim_path):
+                    continue
+
             # Check if animated SVG
             is_animated = False
             if ext == '.svg':
@@ -44,27 +54,31 @@ for root, dirs, files in os.walk(repo_root):
 
             # Classify category
             cat = 'shared'
-            if is_animated:
-                cat = 'animated'
-            elif 'illustrations/food' in rel_path:
+            if 'illustrations/food' in rel_path:
                 cat = 'food'
             elif 'illustrations/shared' in rel_path:
                 cat = 'shared'
-            elif 'illustrations/prices' in rel_path:
+            elif 'illustrations/prices' in rel_path or 'logos/openprices' in rel_path:
                 cat = 'prices'
-            elif 'illustrations/products' in rel_path:
-                cat = 'products'
-            elif 'illustrations/beauty' in rel_path:
-                cat = 'beauty'
-            elif 'illustrations/pet-food' in rel_path:
+            elif 'illustrations/pet-food' in rel_path or 'logos/openpetfoodfacts' in rel_path or 'compare-graph-opff' in rel_path:
                 cat = 'petfood'
+            elif 'illustrations/beauty' in rel_path or 'logos/openbeautyfacts' in rel_path or 'compare-graph-obf' in rel_path:
+                cat = 'beauty'
+            elif 'illustrations/products' in rel_path or 'logos/openproductsfacts' in rel_path or 'compare-graph-opf' in rel_path:
+                cat = 'products'
             elif 'nutri-score' in rel_path or 'green-score' in rel_path or 'un-sdg' in rel_path:
                 cat = 'scores'
             elif 'logos' in rel_path:
                 cat = 'logos'
             elif 'animations' in rel_path or ext in ['.mp4', '.gif', '.riv']:
                 cat = 'animations'
+            elif 'avatars' in rel_path:
+                cat = 'avatars'
+            elif 'magnets' in rel_path:
+                cat = 'shared'
 
+            if is_animated:
+                categories['animated']['count'] += 1
             if cat in categories:
                 categories[cat]['count'] += 1
 
@@ -77,41 +91,111 @@ for root, dirs, files in os.walk(repo_root):
                 'ext': ext.replace('.', '')
             })
 
-# Sort assets
+# Sort assets: animated first, then by category, then by name
 assets.sort(key=lambda x: (not x['animated'], x['category'], x['name']))
 
-# 2. Collect UXR & Charter docs
-uxr_docs = []
+# 2. Collect all documentation pages (including root docs like README, DESIGN, CONTRIBUTING, RESSOURCES)
+docs = []
 for root, dirs, files in os.walk(repo_root):
-    if '.git' in root:
+    if '.git' in root or 'node_modules' in root or 'scratch' in root or 'brain' in root:
         continue
-    for f in files:
-        if f.endswith('.md') and any(k in root for k in ['UXR', 'graphic-charter', 'designs', 'animations']):
+    for f in sorted(files):
+        if f.endswith('.md'):
             full_path = os.path.join(root, f)
             rel_path = os.path.relpath(full_path, repo_root)
             with open(full_path, 'r', encoding='utf-8', errors='ignore') as fp:
                 content = fp.read()
-            doc_cat = 'UXR Research'
-            if 'UXR Ops' in rel_path: doc_cat = 'UXR Operations'
-            elif 'UXR Open Prices' in rel_path: doc_cat = 'Open Prices UXR'
-            elif 'UXR Reports' in rel_path: doc_cat = 'Research Reports'
-            elif 'graphic-charter' in rel_path: doc_cat = 'Brand Charter'
-            
+
+            cat = 'Core Documentation'
             clean_title = f.replace('.md', '').replace('_', ' ')
-            uxr_docs.append({
+            is_design = False
+
+            if rel_path in ['README.md', 'CONTRIBUTING.md', 'RESSOURCES.md', 'DESIGN.md', 'ACTING-ON-THE-CODE.md', 'CHANGELOG.md']:
+                cat = 'Core Documentation'
+                if rel_path == 'README.md':
+                    clean_title = 'README — Design Overview & Plan'
+                elif rel_path == 'DESIGN.md':
+                    clean_title = 'DESIGN.md — Stitch Design Tokens Spec'
+                    is_design = True
+                elif rel_path == 'CONTRIBUTING.md':
+                    clean_title = 'CONTRIBUTING — Onboarding & Guidelines'
+                elif rel_path == 'RESSOURCES.md':
+                    clean_title = 'RESSOURCES — UI Library & Foundations'
+                elif rel_path == 'ACTING-ON-THE-CODE.md':
+                    clean_title = 'ACTING ON THE CODE — Repos & Frontends'
+                elif rel_path == 'CHANGELOG.md':
+                    clean_title = 'CHANGELOG — Release Notes & History'
+            elif 'graphic-charter' in rel_path:
+                cat = 'Brand Charter'
+                clean_title = 'Brand Guidelines Overview'
+            elif 'UXR Ops' in rel_path:
+                cat = 'UXR Operations'
+            elif 'UXR Open Prices' in rel_path:
+                cat = 'Open Prices UXR'
+            elif 'UXR Reports' in rel_path:
+                cat = 'Research Reports'
+            elif 'UXR OFF' in rel_path:
+                cat = 'UX Research'
+            elif any(k in rel_path for k in ['avatars', 'designs', 'animations', 'illustrations', 'nutriscore']):
+                cat = 'Asset & Tool Guides'
+                if 'avatars' in rel_path:
+                    clean_title = 'Avatar System & Inkscape Guide'
+                elif 'magnets' in rel_path:
+                    clean_title = 'Fridge Magnets Guidelines'
+                elif 'scan-nutriscore' in rel_path:
+                    clean_title = 'Rive Scan Animation Specs'
+                elif 'animations/videos' in rel_path:
+                    clean_title = 'Motion Showcase Videos'
+                elif 'shared/README' in rel_path:
+                    clean_title = 'Shared Illustrations Guide'
+                elif 'prices/README' in rel_path:
+                    clean_title = 'Open Prices Illustrations Guide'
+                elif 'nutriscore/README' in rel_path:
+                    clean_title = 'Nutri-Score Assets Guidelines'
+                elif 'designs/README' in rel_path:
+                    clean_title = 'Finished Designs Repository'
+
+            docs.append({
                 'title': clean_title,
                 'path': rel_path,
-                'category': doc_cat,
-                'content': content
+                'category': cat,
+                'content': content,
+                'is_design_spec': is_design
             })
 
-uxr_docs.sort(key=lambda x: (x['category'], x['title']))
+# Sort documentation: Core Docs first (README, DESIGN, CONTRIBUTING, RESSOURCES, ACTING, CHANGELOG),
+# followed by Brand Charter, UXR docs, and Asset Guides.
+def doc_sort_key(d):
+    cat_order = {
+        'Core Documentation': 0,
+        'Brand Charter': 1,
+        'UX Research': 2,
+        'UXR Operations': 3,
+        'Open Prices UXR': 4,
+        'Research Reports': 5,
+        'Asset & Tool Guides': 6
+    }
+    c_idx = cat_order.get(d['category'], 99)
+    # Title order within Core Documentation
+    t_order = {
+        'README — Design Overview & Plan': 0,
+        'DESIGN.md — Stitch Design Tokens Spec': 1,
+        'CONTRIBUTING — Onboarding & Guidelines': 2,
+        'RESSOURCES — UI Library & Foundations': 3,
+        'ACTING ON THE CODE — Repos & Frontends': 4,
+        'CHANGELOG — Release Notes & History': 5
+    }
+    t_idx = t_order.get(d['title'], 50)
+    return (c_idx, t_idx, d['title'])
 
-print(f"Collected {len(assets)} assets and {len(uxr_docs)} documentation guides.")
+docs.sort(key=doc_sort_key)
+
+print(f"Collected {len(assets)} assets and {len(docs)} documentation guides.")
 
 # 3. Generate index.html
 assets_json = json.dumps(assets)
-uxr_json = json.dumps(uxr_docs)
+docs_json = json.dumps(docs)
+categories_json = json.dumps(categories)
 
 html = f"""<!DOCTYPE html>
 <html lang="en">
@@ -119,8 +203,8 @@ html = f"""<!DOCTYPE html>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Open Food Facts — Design System &amp; Asset Hub</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind CSS with Typography Plugin -->
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -138,7 +222,7 @@ html = f"""<!DOCTYPE html>
             background: linear-gradient(135deg, #ed8857 0%, #ea580c 50%, #c2410c 100%);
         }}
         .glass-header {{
-            background: rgba(255, 255, 255, 0.92);
+            background: rgba(255, 255, 255, 0.94);
             backdrop-filter: blur(12px);
         }}
         .nav-link.active {{
@@ -149,6 +233,54 @@ html = f"""<!DOCTYPE html>
         /* Animation Pause/Play helper */
         svg.paused * {{
             animation-play-state: paused !important;
+        }}
+        /* Markdown reader table & code enhancements */
+        #reader-body table {{
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.25rem 0;
+            font-size: 0.875rem;
+        }}
+        #reader-body th {{
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 0.625rem 0.875rem;
+            text-align: left;
+            font-weight: 700;
+            color: #1e293b;
+        }}
+        #reader-body td {{
+            border: 1px solid #e2e8f0;
+            padding: 0.5rem 0.875rem;
+            color: #334155;
+        }}
+        #reader-body tr:nth-child(even) td {{
+            background-color: #fbfcfe;
+        }}
+        #reader-body blockquote {{
+            border-left: 4px solid #ea580c;
+            background-color: #fffaf5;
+            padding: 0.75rem 1.25rem;
+            margin: 1rem 0;
+            border-radius: 0 0.75rem 0.75rem 0;
+            color: #7c2d12;
+            font-style: normal;
+        }}
+        #reader-body pre {{
+            background-color: #1e293b;
+            color: #f8fafc;
+            padding: 1rem;
+            border-radius: 0.875rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }}
+        #reader-body code:not(pre code) {{
+            background-color: #f1f5f9;
+            color: #c2410c;
+            padding: 0.15rem 0.4rem;
+            border-radius: 0.375rem;
+            font-size: 0.85em;
+            font-weight: 600;
         }}
         /* Custom scrollbar */
         ::-webkit-scrollbar {{ width: 8px; height: 8px; }}
@@ -182,7 +314,7 @@ html = f"""<!DOCTYPE html>
             <div class="flex items-center justify-between h-16 gap-4">
                 
                 <!-- Logo & Brand Title -->
-                <div class="flex items-center gap-3">
+                <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('catalog')">
                     <img src="images/logos/openfoodfacts/off-logo-icon-light.svg" alt="Open Food Facts" class="w-9 h-9">
                     <div>
                         <span class="text-lg font-black tracking-tight text-stone-900 block leading-tight">Open Food Facts</span>
@@ -198,14 +330,14 @@ html = f"""<!DOCTYPE html>
                     <button onclick="switchTab('charter')" id="nav-charter" class="nav-link px-3.5 py-2 rounded-xl text-xs font-semibold text-stone-600 hover:text-stone-900 hover:bg-stone-100 transition cursor-pointer">
                         🎨 Graphic Charter
                     </button>
+                    <button onclick="switchTab('docs')" id="nav-docs" class="nav-link px-3.5 py-2 rounded-xl text-xs font-semibold text-stone-600 hover:text-stone-900 hover:bg-stone-100 transition cursor-pointer">
+                        📚 Documentation &amp; Research
+                    </button>
                     <button onclick="switchTab('hand')" id="nav-hand" class="nav-link px-3.5 py-2 rounded-xl text-xs font-semibold text-stone-600 hover:text-stone-900 hover:bg-stone-100 transition cursor-pointer">
                         📱 Hand Mockup Generator
                     </button>
                     <button onclick="switchTab('avatar')" id="nav-avatar" class="nav-link px-3.5 py-2 rounded-xl text-xs font-semibold text-stone-600 hover:text-stone-900 hover:bg-stone-100 transition cursor-pointer">
                         👤 Avatar Creator
-                    </button>
-                    <button onclick="switchTab('uxr')" id="nav-uxr" class="nav-link px-3.5 py-2 rounded-xl text-xs font-semibold text-stone-600 hover:text-stone-900 hover:bg-stone-100 transition cursor-pointer">
-                        🔬 UX Research (UXR)
                     </button>
                     <button onclick="switchTab('motion')" id="nav-motion" class="nav-link px-3.5 py-2 rounded-xl text-xs font-semibold text-stone-600 hover:text-stone-900 hover:bg-stone-100 transition cursor-pointer">
                         🎬 Motion &amp; Videos
@@ -214,12 +346,12 @@ html = f"""<!DOCTYPE html>
 
                 <!-- Mobile Menu Button -->
                 <div class="md:hidden flex items-center">
-                    <select onchange="switchTab(this.value)" class="text-xs font-bold bg-white border border-stone-300 rounded-lg px-2.5 py-1.5 text-stone-800">
+                    <select id="mobile-nav-select" onchange="switchTab(this.value)" class="text-xs font-bold bg-white border border-stone-300 rounded-lg px-2.5 py-1.5 text-stone-800">
                         <option value="catalog">🖼️ Assets Catalog</option>
                         <option value="charter">🎨 Graphic Charter</option>
+                        <option value="docs">📚 Documentation &amp; Research</option>
                         <option value="hand">📱 Hand Generator</option>
                         <option value="avatar">👤 Avatar Creator</option>
-                        <option value="uxr">🔬 UX Research</option>
                         <option value="motion">🎬 Motion &amp; Videos</option>
                     </select>
                 </div>
@@ -244,7 +376,7 @@ html = f"""<!DOCTYPE html>
                         Explore Open Food Facts Design Assets
                     </h1>
                     <p class="text-stone-600 text-sm sm:text-base mt-2 leading-relaxed">
-                        Discover 650+ production-grade illustrations, animated SVGs, logos, and iconography for web, mobile apps, and community campaigns.
+                        Discover 650+ production-grade illustrations, animated SVGs, logos, Nutri-Scores, and iconography for web, mobile apps, and community campaigns.
                     </p>
                 </div>
                 <div class="flex flex-wrap items-center gap-2">
@@ -253,7 +385,7 @@ html = f"""<!DOCTYPE html>
                         <span class="text-xs font-bold text-stone-500 uppercase">Total Assets</span>
                     </div>
                     <div class="bg-white/90 backdrop-blur rounded-2xl p-4 border border-orange-200 shadow-xs text-center min-w-[110px]">
-                        <span class="block text-2xl font-black text-emerald-600">30+</span>
+                        <span class="block text-2xl font-black text-emerald-600">{categories['animated']['count']}</span>
                         <span class="text-xs font-bold text-stone-500 uppercase">Animated SVGs</span>
                     </div>
                 </div>
@@ -263,56 +395,80 @@ html = f"""<!DOCTYPE html>
             <div class="bg-white rounded-2xl border border-stone-200 p-4 shadow-xs space-y-3">
                 <div class="flex flex-wrap items-center justify-between gap-3">
                     <div class="relative flex-grow max-w-md">
-                        <input type="text" id="asset-search" placeholder="Search 650+ assets by name, keyword..." oninput="filterAssets()" class="w-full pl-10 pr-4 py-2.5 text-sm bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-500 transition">
+                        <input type="text" id="asset-search" placeholder="Search {len(assets)} assets by name, category, or path..." oninput="filterAssets()" class="w-full pl-10 pr-9 py-2.5 text-sm bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-500 transition">
                         <svg class="w-4 h-4 text-stone-400 absolute left-3.5 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        <button id="clear-search-btn" onclick="clearSearch()" class="hidden absolute right-3 top-3 text-stone-400 hover:text-stone-700 text-sm font-bold">&times;</button>
                     </div>
 
                     <div class="flex items-center gap-2 text-xs font-medium text-stone-500">
                         <span id="results-count" class="font-bold text-stone-800">Showing {len(assets)} assets</span>
+                        <button id="quick-show-all-btn" onclick="loadMoreAssets('all')" class="hidden px-2.5 py-1 rounded-lg bg-orange-100 hover:bg-orange-200 text-orange-800 font-bold transition">
+                            Show All
+                        </button>
                     </div>
                 </div>
 
                 <!-- Category Filter Pills -->
                 <div class="flex flex-wrap gap-1.5 pt-2 border-t border-stone-100" id="category-pills">
-                    <button onclick="setCategoryFilter('all')" class="cat-pill active px-3 py-1.5 rounded-lg text-xs font-semibold bg-orange-600 text-white transition">
+                    <button onclick="setCategoryFilter('all', this)" class="cat-pill active px-3 py-1.5 rounded-lg text-xs font-semibold bg-orange-600 text-white transition cursor-pointer">
                         All ({len(assets)})
                     </button>
-                    <button onclick="setCategoryFilter('animated')" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-stone-100 text-stone-600 hover:bg-stone-200 transition">
-                        ✨ Animated SVGs
+                    <button onclick="setCategoryFilter('animated', this)" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-stone-100 text-stone-600 hover:bg-stone-200 transition cursor-pointer">
+                        ✨ Animated SVGs ({categories['animated']['count']})
                     </button>
-                    <button onclick="setCategoryFilter('food')" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-stone-100 text-stone-600 hover:bg-stone-200 transition">
-                        🥗 Food Illustrations
+                    <button onclick="setCategoryFilter('food', this)" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-stone-100 text-stone-600 hover:bg-stone-200 transition cursor-pointer">
+                        🥗 Food Illustrations ({categories['food']['count']})
                     </button>
-                    <button onclick="setCategoryFilter('shared')" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-stone-100 text-stone-600 hover:bg-stone-200 transition">
-                        🤝 Community &amp; Shared
+                    <button onclick="setCategoryFilter('shared', this)" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-stone-100 text-stone-600 hover:bg-stone-200 transition cursor-pointer">
+                        🤝 Community &amp; Shared ({categories['shared']['count']})
                     </button>
-                    <button onclick="setCategoryFilter('logos')" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-stone-100 text-stone-600 hover:bg-stone-200 transition">
-                        🏷️ Brand Logos
+                    <button onclick="setCategoryFilter('logos', this)" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-stone-100 text-stone-600 hover:bg-stone-200 transition cursor-pointer">
+                        🏷️ Brand Logos ({categories['logos']['count']})
                     </button>
-                    <button onclick="setCategoryFilter('scores')" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-stone-100 text-stone-600 hover:bg-stone-200 transition">
-                        🚦 Nutri &amp; Green-Score
+                    <button onclick="setCategoryFilter('scores', this)" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-stone-100 text-stone-600 hover:bg-stone-200 transition cursor-pointer">
+                        🚦 Nutri &amp; Green-Score ({categories['scores']['count']})
                     </button>
-                    <button onclick="setCategoryFilter('prices')" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-stone-100 text-stone-600 hover:bg-stone-200 transition">
-                        💰 Open Prices
+                    <button onclick="setCategoryFilter('prices', this)" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-stone-100 text-stone-600 hover:bg-stone-200 transition cursor-pointer">
+                        💰 Open Prices ({categories['prices']['count']})
                     </button>
-                    <button onclick="setCategoryFilter('products')" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-stone-100 text-stone-600 hover:bg-stone-200 transition">
-                        📦 Products
+                    <button onclick="setCategoryFilter('products', this)" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-stone-100 text-stone-600 hover:bg-stone-200 transition cursor-pointer">
+                        📦 Products ({categories['products']['count']})
                     </button>
-                    <button onclick="setCategoryFilter('beauty')" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-stone-100 text-stone-600 hover:bg-stone-200 transition">
-                        🧴 Beauty
+                    <button onclick="setCategoryFilter('beauty', this)" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-stone-100 text-stone-600 hover:bg-stone-200 transition cursor-pointer">
+                        🧴 Beauty ({categories['beauty']['count']})
                     </button>
-                    <button onclick="setCategoryFilter('petfood')" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-stone-100 text-stone-600 hover:bg-stone-200 transition">
-                        🐾 Pet Food
+                    <button onclick="setCategoryFilter('petfood', this)" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-stone-100 text-stone-600 hover:bg-stone-200 transition cursor-pointer">
+                        🐾 Pet Food ({categories['petfood']['count']})
                     </button>
-                    <button onclick="setCategoryFilter('animations')" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-stone-100 text-stone-600 hover:bg-stone-200 transition">
-                        🎬 Videos &amp; Motion
+                    <button onclick="setCategoryFilter('avatars', this)" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-stone-100 text-stone-600 hover:bg-stone-200 transition cursor-pointer">
+                        👤 Avatars ({categories['avatars']['count']})
+                    </button>
+                    <button onclick="setCategoryFilter('animations', this)" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-stone-100 text-stone-600 hover:bg-stone-200 transition cursor-pointer">
+                        🎬 Videos &amp; Motion ({categories['animations']['count']})
                     </button>
                 </div>
             </div>
 
             <!-- Asset Cards Grid -->
-            <div id="assets-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            <div id="assets-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
                 <!-- Dynamically rendered via JS -->
+            </div>
+
+            <!-- Infinite Scroll Sentinel & Pagination Controls -->
+            <div id="pagination-controls" class="py-8 flex flex-col items-center justify-center gap-3">
+                <div class="flex flex-wrap items-center justify-center gap-3">
+                    <button id="load-more-btn" onclick="loadMoreAssets(60)" class="px-6 py-2.5 rounded-xl text-sm font-bold bg-white border border-stone-300 hover:bg-stone-100 text-stone-700 shadow-xs transition flex items-center gap-2 cursor-pointer">
+                        <span>⬇️ Load More Assets</span>
+                    </button>
+                    <button id="show-all-btn" onclick="loadMoreAssets('all')" class="px-6 py-2.5 rounded-xl text-sm font-bold bg-orange-600 hover:bg-orange-700 text-white shadow-xs transition flex items-center gap-2 cursor-pointer">
+                        <span>⚡ Show All Assets</span>
+                    </button>
+                </div>
+                <p id="pagination-status" class="text-xs font-medium text-stone-500 text-center">
+                    Scrolling down will automatically load more assets.
+                </p>
+                <!-- Sentinel element for IntersectionObserver -->
+                <div id="scroll-sentinel" class="w-full h-8"></div>
             </div>
         </section>
 
@@ -441,7 +597,84 @@ html = f"""<!DOCTYPE html>
         </section>
 
         <!-- ============================================================== -->
-        <!-- TAB 3: HAND SCREENSHOT GENERATOR TOOL                          -->
+        <!-- TAB 3: DOCUMENTATION & RESEARCH (EXPANDED TO ALL DOCS)          -->
+        <!-- ============================================================== -->
+        <section id="tab-docs" class="hidden space-y-6">
+            <div class="bg-white rounded-3xl border border-stone-200 p-6 sm:p-10 shadow-xs">
+                <div class="pb-6 border-b border-stone-200">
+                    <div class="flex flex-wrap items-center justify-between gap-4">
+                        <div>
+                            <span class="text-xs font-bold text-indigo-600 tracking-wider uppercase block">Design Knowledge &amp; Research Base</span>
+                            <h1 class="text-3xl font-black text-stone-900 tracking-tight mt-1">Documentation, Guidelines &amp; UXR</h1>
+                            <p class="text-stone-500 text-sm mt-1">Official design system specifications, onboarding guides, Google Stitch tokens, and UX research findings.</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <a id="doc-github-link" href="https://github.com/openfoodfacts/openfoodfacts-design" target="_blank" class="px-4 py-2 rounded-xl text-xs font-bold bg-stone-100 hover:bg-stone-200 text-stone-700 transition flex items-center gap-1.5 cursor-pointer">
+                                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                                <span>View on GitHub</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Two-Column Documentation Explorer -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-6">
+                    <!-- Left: Navigation Tree with Search -->
+                    <div class="lg:col-span-4 space-y-4">
+                        <div class="bg-stone-50 rounded-2xl p-4 border border-stone-200 space-y-3">
+                            <div class="relative">
+                                <input type="text" id="doc-search" placeholder="Filter documentation..." oninput="filterDocs()" class="w-full pl-9 pr-3 py-2 text-xs bg-white border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition">
+                                <svg class="w-3.5 h-3.5 text-stone-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                            </div>
+                            
+                            <div id="doc-list-container" class="space-y-4 max-h-[680px] overflow-y-auto pr-1">
+                                <!-- Populated dynamically by categories -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Formatted Markdown Reader -->
+                    <div class="lg:col-span-8 bg-stone-50/50 rounded-2xl p-6 sm:p-8 border border-stone-200 min-h-[600px] flex flex-col">
+                        <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-stone-200 mb-6">
+                            <div>
+                                <span id="reader-category" class="text-xs font-bold text-orange-600 uppercase tracking-wide">Category</span>
+                                <h2 id="reader-title" class="text-xl font-black text-stone-900 mt-0.5">Select a document</h2>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span id="reader-path" class="text-xs font-mono text-stone-400 bg-stone-100 px-2.5 py-1 rounded-md">path</span>
+                                <button onclick="copyDocPath()" class="text-xs font-bold text-stone-500 hover:text-stone-800 transition cursor-pointer" title="Copy relative file path">
+                                    📋
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Special Alert for DESIGN.md -->
+                        <div id="design-experiment-banner" class="hidden mb-6 p-4 rounded-2xl bg-amber-50 border border-amber-200/90 text-amber-900 shadow-xs">
+                            <div class="flex items-start gap-3">
+                                <span class="text-2xl select-none">🧪</span>
+                                <div>
+                                    <h4 class="font-bold text-sm text-amber-900">Experimental LLM Design System Document (Google Stitch)</h4>
+                                    <p class="text-xs text-amber-800/90 mt-1 leading-relaxed">
+                                        <code>DESIGN.md</code> follows the Google Stitch specification as an experiment to help Large Language Models (LLMs) and autonomous AI coding agents respect the Open Food Facts graphic charter, design tokens, and components when creating or updating UI.
+                                    </p>
+                                    <p class="text-xs text-amber-800/90 mt-1 font-semibold">
+                                        ⚠️ Please note: Because this is an evolving experiment, it might contain mistakes, omissions, or slight discrepancies with live production code. Always verify critical visual identity decisions against the official <a href="javascript:switchTab('charter')" class="underline hover:text-amber-950">Brand Charter</a> and live repositories.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Rendered Content Body -->
+                        <div id="reader-body" class="prose prose-stone max-w-none text-sm leading-relaxed flex-grow">
+                            <p class="text-stone-500 italic">Select any document from the list on the left to read its full content.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================== -->
+        <!-- TAB 4: HAND SCREENSHOT GENERATOR TOOL                          -->
         <!-- ============================================================== -->
         <section id="tab-hand" class="hidden space-y-6">
             <div class="bg-white rounded-3xl border border-stone-200 p-6 sm:p-10 shadow-xs">
@@ -465,13 +698,13 @@ html = f"""<!DOCTYPE html>
         </section>
 
         <!-- ============================================================== -->
-        <!-- TAB 4: AVATAR CREATOR (FIXED & POLISHED)                       -->
+        <!-- TAB 5: AVATAR CREATOR (FIXED & POLISHED)                       -->
         <!-- ============================================================== -->
         <section id="tab-avatar" class="hidden space-y-6">
             <div class="bg-white rounded-3xl border border-stone-200 p-6 sm:p-10 shadow-xs">
                 <div class="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-stone-200">
                     <div>
-                        <span class="text-xs font-bold text-orange-600 tracking-wider uppercase block">Community Profiles &bull; Fixed Prototype</span>
+                        <span class="text-xs font-bold text-orange-600 tracking-wider uppercase block">Community Profiles &bull; Modular SVG System</span>
                         <h1 class="text-3xl font-black text-stone-900 tracking-tight mt-1">Open Food Facts Avatar Creator</h1>
                         <p class="text-stone-500 text-sm mt-1">Mix and match hairstyles, skin tones, facial expressions, and branded t-shirts.</p>
                     </div>
@@ -490,46 +723,6 @@ html = f"""<!DOCTYPE html>
         </section>
 
         <!-- ============================================================== -->
-        <!-- TAB 5: UX RESEARCH (UXR HUB)                                   -->
-        <!-- ============================================================== -->
-        <section id="tab-uxr" class="hidden space-y-6">
-            <div class="bg-white rounded-3xl border border-stone-200 p-6 sm:p-10 shadow-xs">
-                <div class="pb-6 border-b border-stone-200">
-                    <span class="text-xs font-bold text-purple-600 tracking-wider uppercase block">User Experience Research</span>
-                    <h1 class="text-3xl font-black text-stone-900 tracking-tight mt-1">UX Research Repository &amp; Operations</h1>
-                    <p class="text-stone-500 text-sm mt-1">Guides, templates, heuristics, and user research findings across Open Food Facts projects.</p>
-                </div>
-
-                <!-- Two-Column UXR Explorer -->
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-6">
-                    <!-- Left: Doc Navigation Tree -->
-                    <div class="lg:col-span-4 space-y-4">
-                        <div class="bg-stone-50 rounded-2xl p-4 border border-stone-200">
-                            <h3 class="text-xs font-bold text-stone-400 uppercase tracking-wide mb-3">Available Documentation</h3>
-                            <div id="uxr-doc-list" class="space-y-1">
-                                <!-- Populated dynamically -->
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Right: Formatted Markdown Reader -->
-                    <div class="lg:col-span-8 bg-stone-50/50 rounded-2xl p-6 sm:p-8 border border-stone-200 min-h-[500px]">
-                        <div class="flex items-center justify-between pb-4 border-b border-stone-200 mb-6">
-                            <div>
-                                <span id="reader-category" class="text-xs font-bold text-orange-600 uppercase tracking-wide">Category</span>
-                                <h2 id="reader-title" class="text-xl font-black text-stone-900 mt-0.5">Select a document</h2>
-                            </div>
-                            <span id="reader-path" class="text-xs font-mono text-stone-400">path</span>
-                        </div>
-                        <div id="reader-body" class="prose prose-stone max-w-none text-sm leading-relaxed">
-                            <p class="text-stone-500 italic">Select any document from the list on the left to read its full content.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ============================================================== -->
         <!-- TAB 6: MOTION & ANIMATIONS                                     -->
         <!-- ============================================================== -->
         <section id="tab-motion" class="hidden space-y-6">
@@ -537,7 +730,7 @@ html = f"""<!DOCTYPE html>
                 <div class="pb-6 border-b border-stone-200">
                     <span class="text-xs font-bold text-rose-600 tracking-wider uppercase block">Motion Graphics</span>
                     <h1 class="text-3xl font-black text-stone-900 tracking-tight mt-1">Animations, Rive &amp; Video Assets</h1>
-                    <p class="text-stone-500 text-sm mt-1">Interactive vector animations, Nutri-Score &amp; Green-Score scans, and brand videos.</p>
+                    <p class="text-stone-500 text-sm mt-1">Interactive vector animations, Nutri-Score &amp; Green-Score scans, and brand showcase videos.</p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
@@ -545,13 +738,14 @@ html = f"""<!DOCTYPE html>
                     <div class="bg-stone-50 rounded-2xl border border-stone-200 overflow-hidden shadow-xs">
                         <div class="aspect-video bg-black flex items-center justify-center">
                             <video controls class="w-full h-full object-cover">
+                                <source src="animations/sunrise-open-food-facts.mp4" type="video/mp4">
                                 <source src="animations/videos/sunrise-open-food-facts.mp4" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>
                         </div>
                         <div class="p-4">
                             <h3 class="font-bold text-stone-900 text-sm">Sunrise Open Food Facts</h3>
-                            <p class="text-xs text-stone-500 mt-1">animations/videos/sunrise-open-food-facts.mp4</p>
+                            <p class="text-xs text-stone-500 mt-1">animations/sunrise-open-food-facts.mp4</p>
                         </div>
                     </div>
 
@@ -559,13 +753,14 @@ html = f"""<!DOCTYPE html>
                     <div class="bg-stone-50 rounded-2xl border border-stone-200 overflow-hidden shadow-xs">
                         <div class="aspect-video bg-black flex items-center justify-center">
                             <video controls class="w-full h-full object-cover">
+                                <source src="animations/icons-open-food-facts.mp4" type="video/mp4">
                                 <source src="animations/videos/icons-open-food-facts.mp4" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>
                         </div>
                         <div class="p-4">
                             <h3 class="font-bold text-stone-900 text-sm">Icons Open Food Facts</h3>
-                            <p class="text-xs text-stone-500 mt-1">animations/videos/icons-open-food-facts.mp4</p>
+                            <p class="text-xs text-stone-500 mt-1">animations/icons-open-food-facts.mp4</p>
                         </div>
                     </div>
 
@@ -573,13 +768,14 @@ html = f"""<!DOCTYPE html>
                     <div class="bg-stone-50 rounded-2xl border border-stone-200 overflow-hidden shadow-xs">
                         <div class="aspect-video bg-black flex items-center justify-center">
                             <video controls class="w-full h-full object-cover">
+                                <source src="animations/universes-oxf.mp4" type="video/mp4">
                                 <source src="animations/videos/universes-oxf.mp4" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>
                         </div>
                         <div class="p-4">
                             <h3 class="font-bold text-stone-900 text-sm">Universes OXF (OFF, OBF, OPFF, OPF)</h3>
-                            <p class="text-xs text-stone-500 mt-1">animations/videos/universes-oxf.mp4</p>
+                            <p class="text-xs text-stone-500 mt-1">animations/universes-oxf.mp4</p>
                         </div>
                     </div>
 
@@ -629,6 +825,9 @@ html = f"""<!DOCTYPE html>
                     </button>
                 </div>
                 <div class="flex items-center gap-2">
+                    <button id="modal-copy-path" onclick="copyAssetPath()" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-white border border-stone-200 hover:bg-stone-50 text-stone-700 transition cursor-pointer">
+                        📋 Copy Path
+                    </button>
                     <button id="modal-copy-link" onclick="copyAssetMarkdown()" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-white border border-stone-200 hover:bg-stone-50 text-stone-700 transition cursor-pointer">
                         📋 Copy Markdown
                     </button>
@@ -640,17 +839,24 @@ html = f"""<!DOCTYPE html>
         </div>
     </div>
 
-    <!-- Data Injection -->
+    <!-- Data Injection & Runtime Logic -->
     <script>
         const ALL_ASSETS = {assets_json};
-        const ALL_UXR_DOCS = {uxr_json};
+        const ALL_DOCS = {docs_json};
 
         let currentCategory = 'all';
         let currentModalAsset = null;
         let isModalPaused = false;
+        let displayedCount = 60;
+        const PAGE_SIZE = 60;
+        let activeFilteredAssets = [];
+        let scrollObserver = null;
 
         function switchTab(tabId) {{
-            const tabs = ['catalog', 'charter', 'hand', 'avatar', 'uxr', 'motion'];
+            // Support legacy 'uxr' tab ID
+            if (tabId === 'uxr') tabId = 'docs';
+
+            const tabs = ['catalog', 'charter', 'docs', 'hand', 'avatar', 'motion'];
             tabs.forEach(t => {{
                 const el = document.getElementById('tab-' + t);
                 const nav = document.getElementById('nav-' + t);
@@ -662,32 +868,67 @@ html = f"""<!DOCTYPE html>
                     if (nav) nav.classList.remove('active');
                 }}
             }});
+
+            const mobileSelect = document.getElementById('mobile-nav-select');
+            if (mobileSelect) mobileSelect.value = tabId;
+
             window.scrollTo({{ top: 0, behavior: 'smooth' }});
         }}
 
-        function setCategoryFilter(cat) {{
+        function setCategoryFilter(cat, btnEl) {{
             currentCategory = cat;
             document.querySelectorAll('#category-pills button').forEach(b => {{
                 b.className = 'cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-stone-100 text-stone-600 hover:bg-stone-200 transition cursor-pointer';
             }});
-            event.target.className = 'cat-pill active px-3 py-1.5 rounded-lg text-xs font-semibold bg-orange-600 text-white transition cursor-pointer';
+            if (btnEl) {{
+                btnEl.className = 'cat-pill active px-3 py-1.5 rounded-lg text-xs font-semibold bg-orange-600 text-white transition cursor-pointer';
+            }}
+            displayedCount = PAGE_SIZE;
+            filterAssets();
+        }}
+
+        function clearSearch() {{
+            const input = document.getElementById('asset-search');
+            input.value = '';
+            document.getElementById('clear-search-btn').classList.add('hidden');
+            displayedCount = PAGE_SIZE;
             filterAssets();
         }}
 
         function filterAssets() {{
             const query = (document.getElementById('asset-search').value || '').toLowerCase().trim();
-            const grid = document.getElementById('assets-grid');
-            grid.innerHTML = '';
+            const clearBtn = document.getElementById('clear-search-btn');
+            if (query) {{
+                clearBtn.classList.remove('hidden');
+            }} else {{
+                clearBtn.classList.add('hidden');
+            }}
 
-            const filtered = ALL_ASSETS.filter(a => {{
-                const matchesCat = currentCategory === 'all' || a.category === currentCategory || (currentCategory === 'animated' && a.animated);
-                const matchesQuery = !query || a.name.toLowerCase().includes(query) || a.path.toLowerCase().includes(query);
+            activeFilteredAssets = ALL_ASSETS.filter(a => {{
+                const matchesCat = currentCategory === 'all' 
+                    || a.category === currentCategory 
+                    || (currentCategory === 'animated' && a.animated);
+                const matchesQuery = !query 
+                    || a.name.toLowerCase().includes(query) 
+                    || a.path.toLowerCase().includes(query)
+                    || a.category.toLowerCase().includes(query);
                 return matchesCat && matchesQuery;
             }});
 
-            document.getElementById('results-count').innerText = `Showing ${{filtered.length}} of ${{ALL_ASSETS.length}} assets`;
+            renderAssetGrid(true);
+        }}
 
-            filtered.slice(0, 100).forEach(asset => {{
+        function renderAssetGrid(reset = false) {{
+            const grid = document.getElementById('assets-grid');
+            if (reset) {{
+                grid.innerHTML = '';
+            }}
+
+            const startIdx = reset ? 0 : grid.children.length;
+            const endIdx = Math.min(displayedCount, activeFilteredAssets.length);
+            const sliceToRender = activeFilteredAssets.slice(startIdx, endIdx);
+
+            sliceToRender.forEach(asset => {{
                 const card = document.createElement('div');
                 card.className = 'bg-white rounded-2xl border border-stone-200/80 p-3 shadow-xs hover:shadow-md hover:border-orange-400 transition flex flex-col group cursor-pointer';
                 card.onclick = () => openModal(asset);
@@ -697,13 +938,18 @@ html = f"""<!DOCTYPE html>
                 preview.className = 'w-full aspect-square bg-stone-50 rounded-xl flex items-center justify-center p-3 mb-2.5 overflow-hidden relative';
 
                 if (asset.ext === 'mp4') {{
-                    preview.innerHTML = '<span class="text-3xl">🎬</span>';
+                    preview.innerHTML = '<span class="text-3xl select-none">🎬</span>';
+                }} else if (asset.ext === 'riv') {{
+                    preview.innerHTML = '<div class="text-center"><span class="text-3xl select-none">📐</span><span class="block text-[10px] font-bold text-rose-600 mt-1 uppercase">Rive</span></div>';
                 }} else {{
                     const img = document.createElement('img');
                     img.src = asset.path;
                     img.alt = asset.name;
                     img.loading = 'lazy';
                     img.className = 'max-w-full max-h-full object-contain group-hover:scale-105 transition';
+                    img.onerror = () => {{
+                        preview.innerHTML = '<span class="text-xs font-bold text-stone-400">Preview</span>';
+                    }};
                     preview.appendChild(img);
                 }}
 
@@ -730,6 +976,64 @@ html = f"""<!DOCTYPE html>
 
                 grid.appendChild(card);
             }});
+
+            // Update status & pagination UI
+            const resultsCountEl = document.getElementById('results-count');
+            const quickShowAllBtn = document.getElementById('quick-show-all-btn');
+            const loadMoreBtn = document.getElementById('load-more-btn');
+            const showAllBtn = document.getElementById('show-all-btn');
+            const paginationStatus = document.getElementById('pagination-status');
+
+            const total = activeFilteredAssets.length;
+            const shown = Math.min(displayedCount, total);
+
+            resultsCountEl.innerText = `Showing ${{shown}} of ${{total}} assets ${{total === ALL_ASSETS.length ? '(All Assets)' : ''}}`;
+
+            if (shown < total) {{
+                quickShowAllBtn.classList.remove('hidden');
+                loadMoreBtn.classList.remove('hidden');
+                showAllBtn.classList.remove('hidden');
+                const remaining = total - shown;
+                loadMoreBtn.querySelector('span').innerText = `⬇️ Load More (${{Math.min(PAGE_SIZE, remaining)}} more)`;
+                showAllBtn.querySelector('span').innerText = `⚡ Show All (${{total}} assets)`;
+                paginationStatus.innerText = `${{remaining}} more assets available. Scroll down or click below to load.`;
+            }} else {{
+                quickShowAllBtn.classList.add('hidden');
+                loadMoreBtn.classList.add('hidden');
+                showAllBtn.classList.add('hidden');
+                paginationStatus.innerHTML = `✓ All ${{total}} assets displayed. <a href="javascript:window.scrollTo({{top:0, behavior:'smooth'}})" class="text-orange-600 font-bold hover:underline">Back to top &uarr;</a>`;
+            }}
+        }}
+
+        function loadMoreAssets(amount) {{
+            if (amount === 'all') {{
+                displayedCount = activeFilteredAssets.length;
+            }} else {{
+                displayedCount += (amount || PAGE_SIZE);
+            }}
+            renderAssetGrid(false);
+        }}
+
+        // Setup Infinite Scroll via IntersectionObserver
+        function setupInfiniteScroll() {{
+            const sentinel = document.getElementById('scroll-sentinel');
+            if (!sentinel || !window.IntersectionObserver) return;
+
+            if (scrollObserver) {{
+                scrollObserver.disconnect();
+            }}
+
+            scrollObserver = new IntersectionObserver((entries) => {{
+                entries.forEach(entry => {{
+                    if (entry.isIntersecting) {{
+                        if (displayedCount < activeFilteredAssets.length) {{
+                            loadMoreAssets(PAGE_SIZE);
+                        }}
+                    }}
+                }});
+            }}, {{ rootMargin: '400px' }});
+
+            scrollObserver.observe(sentinel);
         }}
 
         function openModal(asset) {{
@@ -752,7 +1056,9 @@ html = f"""<!DOCTYPE html>
             }}
 
             if (asset.ext === 'mp4') {{
-                stage.innerHTML = `<video controls class="max-h-[300px] rounded-lg"><source src="${{asset.path}}" type="video/mp4"></video>`;
+                stage.innerHTML = `<video controls autoplay loop class="max-h-[300px] rounded-lg shadow-sm"><source src="${{asset.path}}" type="video/mp4"></video>`;
+            }} else if (asset.ext === 'riv') {{
+                stage.innerHTML = `<div class="text-center p-6"><span class="text-5xl block mb-2">📐</span><span class="font-bold text-stone-800 text-sm">Rive Vector Animation (.riv)</span><p class="text-xs text-stone-500 mt-1">Interactive runtime format. Download to open in Rive editor or embed in application runtime.</p></div>`;
             }} else {{
                 const img = document.createElement('img');
                 img.src = asset.path;
@@ -793,6 +1099,27 @@ html = f"""<!DOCTYPE html>
             }});
         }}
 
+        function copyAssetPath() {{
+            if (!currentModalAsset) return;
+            navigator.clipboard.writeText(currentModalAsset.path).then(() => {{
+                const btn = document.getElementById('modal-copy-path');
+                const orig = btn.innerText;
+                btn.innerText = '✓ Copied Path!';
+                setTimeout(() => {{ btn.innerText = orig; }}, 2000);
+            }});
+        }}
+
+        function copyDocPath() {{
+            const p = document.getElementById('reader-path').innerText;
+            if (!p) return;
+            navigator.clipboard.writeText(p).then(() => {{
+                const el = document.getElementById('reader-path');
+                const orig = el.innerText;
+                el.innerText = '✓ Copied!';
+                setTimeout(() => {{ el.innerText = orig; }}, 1500);
+            }});
+        }}
+
         function copyColor(hex, el) {{
             navigator.clipboard.writeText(hex).then(() => {{
                 const orig = el.querySelector('span:last-child').innerText;
@@ -803,41 +1130,128 @@ html = f"""<!DOCTYPE html>
             }});
         }}
 
-        // Initialize UXR Viewer
-        function initUxrViewer() {{
-            const listContainer = document.getElementById('uxr-doc-list');
-            listContainer.innerHTML = '';
+        // Initialize Documentation & Research Explorer
+        let currentSelectedDoc = null;
 
-            ALL_UXR_DOCS.forEach((doc, idx) => {{
-                const item = document.createElement('button');
-                item.className = 'w-full text-left px-3 py-2 rounded-xl text-xs font-semibold text-stone-700 hover:bg-stone-200/60 transition flex items-center justify-between cursor-pointer';
-                item.innerHTML = `<span>${{doc.title}}</span><span class="text-[10px] text-stone-400">${{doc.category}}</span>`;
-                item.onclick = () => loadUxrDoc(doc, item);
-                listContainer.appendChild(item);
-
-                if (idx === 0) loadUxrDoc(doc, item);
-            }});
+        function initDocViewer() {{
+            filterDocs();
         }}
 
-        function loadUxrDoc(doc, itemEl) {{
-            document.querySelectorAll('#uxr-doc-list button').forEach(b => b.classList.remove('bg-orange-100', 'text-orange-800'));
-            if (itemEl) itemEl.classList.add('bg-orange-100', 'text-orange-800');
+        function filterDocs() {{
+            const query = (document.getElementById('doc-search').value || '').toLowerCase().trim();
+            const container = document.getElementById('doc-list-container');
+            container.innerHTML = '';
+
+            const filteredDocs = ALL_DOCS.filter(d => {{
+                return !query || d.title.toLowerCase().includes(query) || d.path.toLowerCase().includes(query) || d.category.toLowerCase().includes(query);
+            }});
+
+            if (filteredDocs.length === 0) {{
+                container.innerHTML = '<p class="text-xs text-stone-400 py-3 text-center">No matching documents found.</p>';
+                return;
+            }}
+
+            // Group by category
+            const groups = {{}};
+            filteredDocs.forEach(d => {{
+                if (!groups[d.category]) groups[d.category] = [];
+                groups[d.category].push(d);
+            }});
+
+            let isFirst = true;
+
+            for (const [catName, catDocs] of Object.entries(groups)) {{
+                const groupDiv = document.createElement('div');
+                groupDiv.className = 'space-y-1';
+
+                const groupHeader = document.createElement('div');
+                groupHeader.className = 'text-[11px] font-bold text-stone-400 uppercase tracking-wider px-2 py-1 flex items-center justify-between';
+                groupHeader.innerHTML = `<span>${{catName}}</span><span class="text-[10px] font-normal text-stone-400">${{catDocs.length}}</span>`;
+                groupDiv.appendChild(groupHeader);
+
+                catDocs.forEach(doc => {{
+                    const item = document.createElement('button');
+                    item.className = 'doc-nav-item w-full text-left px-3 py-2 rounded-xl text-xs font-semibold text-stone-700 hover:bg-stone-200/60 transition flex items-center justify-between cursor-pointer gap-2';
+                    
+                    let badgeHtml = '';
+                    if (doc.is_design_spec) {{
+                        badgeHtml = '<span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-amber-200 text-amber-900 shrink-0">AI Spec</span>';
+                    }} else if (doc.path.includes('Consent') || doc.path.includes('Privacy')) {{
+                        badgeHtml = '<span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-purple-100 text-purple-800 shrink-0">GDPR</span>';
+                    }}
+
+                    item.innerHTML = `<span class="truncate">${{doc.title}}</span>${{badgeHtml}}`;
+                    item.onclick = () => loadDoc(doc, item);
+                    groupDiv.appendChild(item);
+
+                    if (!currentSelectedDoc && isFirst) {{
+                        loadDoc(doc, item);
+                        isFirst = false;
+                    }} else if (currentSelectedDoc && currentSelectedDoc.path === doc.path) {{
+                        item.classList.add('bg-orange-100', 'text-orange-900', 'font-bold');
+                    }}
+                }});
+
+                container.appendChild(groupDiv);
+            }}
+        }}
+
+        function loadDoc(doc, itemEl) {{
+            currentSelectedDoc = doc;
+
+            document.querySelectorAll('.doc-nav-item').forEach(b => {{
+                b.classList.remove('bg-orange-100', 'text-orange-900', 'font-bold');
+            }});
+            if (itemEl) {{
+                itemEl.classList.add('bg-orange-100', 'text-orange-900', 'font-bold');
+            }}
 
             document.getElementById('reader-title').innerText = doc.title;
             document.getElementById('reader-category').innerText = doc.category;
             document.getElementById('reader-path').innerText = doc.path;
 
-            if (typeof marked !== 'undefined') {{
-                document.getElementById('reader-body').innerHTML = marked.parse(doc.content);
+            const githubBtn = document.getElementById('doc-github-link');
+            if (githubBtn) {{
+                githubBtn.href = `https://github.com/openfoodfacts/openfoodfacts-design/blob/main/${{encodeURIComponent(doc.path)}}`;
+            }}
+
+            // Show or hide experimental banner for DESIGN.md
+            const banner = document.getElementById('design-experiment-banner');
+            if (doc.is_design_spec || doc.path === 'DESIGN.md') {{
+                banner.classList.remove('hidden');
             }} else {{
-                document.getElementById('reader-body').innerText = doc.content;
+                banner.classList.add('hidden');
+            }}
+
+            const readerBody = document.getElementById('reader-body');
+            if (typeof marked !== 'undefined') {{
+                readerBody.innerHTML = marked.parse(doc.content);
+
+                // Intercept relative markdown links to switch docs within the reader
+                readerBody.querySelectorAll('a').forEach(a => {{
+                    const href = a.getAttribute('href');
+                    if (href && (href.endsWith('.md') || href.includes('.md#'))) {{
+                        const cleanDocPath = href.split('#')[0].replace(/^\\.\\//, '');
+                        const targetDoc = ALL_DOCS.find(d => d.path === cleanDocPath || d.path.endsWith(cleanDocPath) || cleanDocPath.endsWith(d.path));
+                        if (targetDoc) {{
+                            a.onclick = (e) => {{
+                                e.preventDefault();
+                                loadDoc(targetDoc, null);
+                            }};
+                            a.title = `Read ${{targetDoc.title}} in documentation viewer`;
+                        }}
+                    }}
+                }});
+            }} else {{
+                readerBody.innerText = doc.content;
             }}
         }}
 
         // Initialize on load
         document.addEventListener('DOMContentLoaded', () => {{
             filterAssets();
-            initUxrViewer();
+            setupInfiniteScroll();
+            initDocViewer();
         }});
     </script>
 

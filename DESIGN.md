@@ -1,6 +1,8 @@
 # Open Food Facts — Design System
 
 > **Format:** This file follows the [Google Stitch DESIGN.md](https://stitch.withgoogle.com/docs/design-md/overview) specification — a standardised, agent-readable way for open-source projects to document their design system in a single, version-controlled file. Coding agents and UI generators must strictly adhere to these design tokens and constraints to ensure brand consistency.
+>
+> **Note:** This document is an experiment to help Large Language Models (LLMs) and AI coding agents respect the Open Food Facts graphic charter, design tokens, and components when generating UI code. As an evolving experiment, it might contain mistakes or discrepancies with live production implementations. Always cross-reference with the [Graphic Charter](./graphic-charter) and official product repositories.
 
 ---
 
