@@ -8,12 +8,48 @@ repo_root = os.path.dirname(os.path.abspath(__file__))
 
 # 1. Collect all assets
 assets = []
+
+# Language dictionary for multi-language assets (e.g. UN SDG Goals)
+LANGUAGES = {
+    'AR': {'name': 'Arabic', 'native': 'العربية', 'flag': '🇸🇦'},
+    'CA': {'name': 'Catalan', 'native': 'Català', 'flag': '🇦🇩'},
+    'DA': {'name': 'Danish', 'native': 'Dansk', 'flag': '🇩🇰'},
+    'DE': {'name': 'German', 'native': 'Deutsch', 'flag': '🇩🇪'},
+    'EL': {'name': 'Greek', 'native': 'Ελληνικά', 'flag': '🇬🇷'},
+    'EN': {'name': 'English', 'native': 'English', 'flag': '🇬🇧'},
+    'ES': {'name': 'Spanish', 'native': 'Español', 'flag': '🇪🇸'},
+    'EU': {'name': 'Basque', 'native': 'Euskara', 'flag': '🇪🇸'},
+    'FI': {'name': 'Finnish', 'native': 'Suomi', 'flag': '🇫🇮'},
+    'FR': {'name': 'French', 'native': 'Français', 'flag': '🇫🇷'},
+    'FY': {'name': 'Frisian', 'native': 'Frysk', 'flag': '🇳🇱'},
+    'GA': {'name': 'Irish', 'native': 'Gaeilge', 'flag': '🇮🇪'},
+    'GE': {'name': 'Georgian', 'native': 'ქართული', 'flag': '🇬🇪'},
+    'HI': {'name': 'Hindi', 'native': 'हिन्दी', 'flag': '🇮🇳'},
+    'HY': {'name': 'Armenian', 'native': 'Հայերեն', 'flag': '🇦🇲'},
+    'IN': {'name': 'Indonesian', 'native': 'Bahasa Indonesia', 'flag': '🇮🇩'},
+    'IS': {'name': 'Icelandic', 'native': 'Íslenska', 'flag': '🇮🇸'},
+    'IT': {'name': 'Italian', 'native': 'Italiano', 'flag': '🇮🇹'},
+    'JP': {'name': 'Japanese', 'native': '日本語', 'flag': '🇯🇵'},
+    'NL': {'name': 'Dutch', 'native': 'Nederlands', 'flag': '🇳🇱'},
+    'NO': {'name': 'Norwegian', 'native': 'Norsk', 'flag': '🇳🇴'},
+    'PL': {'name': 'Polish', 'native': 'Polski', 'flag': '🇵🇱'},
+    'PT': {'name': 'Portuguese', 'native': 'Português', 'flag': '🇵🇹'},
+    'PT_BR': {'name': 'Portuguese (Brazil)', 'native': 'Português do Brasil', 'flag': '🇧🇷'},
+    'RO': {'name': 'Romanian', 'native': 'Română', 'flag': '🇷🇴'},
+    'RU': {'name': 'Russian', 'native': 'Русский', 'flag': '🇷🇺'},
+    'SE': {'name': 'Swedish', 'native': 'Svenska', 'flag': '🇸🇪'},
+    'SW': {'name': 'Swahili', 'native': 'Kiswahili', 'flag': '🇰🇪'},
+    'ZH': {'name': 'Chinese', 'native': '中文', 'flag': '🇨🇳'},
+}
+
 categories = {
     'animated': {'name': '✨ Animated SVGs', 'count': 0},
     'food': {'name': '🥗 Food Illustrations', 'count': 0},
     'shared': {'name': '🤝 Shared Illustrations', 'count': 0},
     'logos': {'name': '🏷️ Brand Logos', 'count': 0},
-    'scores': {'name': '🚦 Nutri & Green-Score', 'count': 0},
+    'nutriscore': {'name': '🚦 Nutri-Score', 'count': 0},
+    'greenscore': {'name': '🌱 Green-Score', 'count': 0},
+    'sdg': {'name': '🌐 UN SDG Goals', 'count': 0},
     'prices': {'name': '💰 Open Prices', 'count': 0},
     'products': {'name': '📦 Products', 'count': 0},
     'beauty': {'name': '🧴 Beauty', 'count': 0},
@@ -66,16 +102,35 @@ for root, dirs, files in os.walk(repo_root):
                 cat = 'beauty'
             elif 'illustrations/products' in rel_path or 'logos/openproductsfacts' in rel_path or 'compare-graph-opf' in rel_path:
                 cat = 'products'
-            elif 'nutri-score' in rel_path or 'green-score' in rel_path or 'un-sdg' in rel_path:
-                cat = 'scores'
-            elif 'logos' in rel_path:
-                cat = 'logos'
             elif 'animations' in rel_path or ext in ['.mp4', '.gif', '.riv']:
                 cat = 'animations'
+            elif 'un-sdg' in rel_path or 'logos/un-sdg-goals' in rel_path:
+                cat = 'sdg'
+            elif 'green-score' in rel_path or 'logos/green-score' in rel_path:
+                cat = 'greenscore'
+            elif 'nutriscore' in rel_path or 'nutri-score' in rel_path:
+                cat = 'nutriscore'
+            elif 'logos' in rel_path:
+                cat = 'logos'
             elif 'avatars' in rel_path:
                 cat = 'avatars'
             elif 'magnets' in rel_path:
                 cat = 'shared'
+
+            # Detect language for assets (e.g. UN SDG Goals multi-language files)
+            lang_code = None
+            lang_name = None
+            lang_flag = None
+            if cat == 'sdg' or 'un-sdg-goals' in rel_path:
+                if f.startswith('PT_BR_'):
+                    lang_code = 'PT_BR'
+                else:
+                    parts = f.split('_')
+                    if len(parts) > 1 and len(parts[0]) == 2 and parts[0].isupper():
+                        lang_code = parts[0]
+                if lang_code in LANGUAGES:
+                    lang_name = LANGUAGES[lang_code]['name']
+                    lang_flag = LANGUAGES[lang_code]['flag']
 
             if is_animated:
                 categories['animated']['count'] += 1
@@ -96,11 +151,45 @@ for root, dirs, files in os.walk(repo_root):
                 'animated': is_animated,
                 'ext': ext.replace('.', ''),
                 'png_path': (rel_base + '.png') if has_png else None,
-                'svg_path': (rel_base + '.svg') if has_svg else None
+                'svg_path': (rel_base + '.svg') if has_svg else None,
+                'lang': lang_code,
+                'lang_name': lang_name,
+                'lang_flag': lang_flag
             })
 
 # Sort assets: animated first, then by category, then by name
 assets.sort(key=lambda x: (not x['animated'], x['category'], x['name']))
+
+# Compute language counts and generate options for the language selector
+sdg_lang_counts = {}
+for a in assets:
+    if a.get('lang'):
+        code = a['lang']
+        sdg_lang_counts[code] = sdg_lang_counts.get(code, 0) + 1
+
+lang_options_html = ['<option value="all">🌐 All Languages (All)</option>']
+for code, count in sorted(sdg_lang_counts.items(), key=lambda x: LANGUAGES.get(x[0], {}).get('name', '')):
+    info = LANGUAGES[code]
+    flag = info['flag']
+    name = info['name']
+    lang_options_html.append(f'<option value="{code}">{flag} {name} - {code} ({count})</option>')
+lang_options_str = '\n                    '.join(lang_options_html)
+
+top_lang_codes = ['EN', 'FR', 'ES', 'DE', 'AR', 'ZH', 'IT', 'RU', 'NL', 'PT_BR', 'HI', 'JP']
+quick_pills_html = [
+    '<button onclick="setLanguageFilter(\'all\', this)" class="sdg-lang-pill active px-2.5 py-1 rounded-lg text-xs font-bold bg-orange-600 text-white transition cursor-pointer">All</button>'
+]
+for code in top_lang_codes:
+    if code in sdg_lang_counts:
+        info = LANGUAGES[code]
+        count = sdg_lang_counts[code]
+        flag = info['flag']
+        name = info['name']
+        native = info['native']
+        quick_pills_html.append(
+            f'<button onclick="setLanguageFilter(\'{code}\', this)" class="sdg-lang-pill px-2.5 py-1 rounded-lg text-xs font-semibold bg-stone-100 text-stone-700 hover:bg-stone-200 transition cursor-pointer" title="{name} ({native})">{flag} {code} ({count})</button>'
+        )
+quick_pills_str = '\n        '.join(quick_pills_html)
 
 # 2. Collect all documentation pages (including root docs like README, DESIGN, CONTRIBUTING, RESSOURCES)
 docs = []
@@ -406,24 +495,48 @@ html = f"""<!DOCTYPE html>
                         <span class="block text-2xl font-black text-emerald-600">{categories['animated']['count']}</span>
                         <span class="text-xs font-bold text-stone-500 uppercase">Animated SVGs</span>
                     </div>
+                    <div class="bg-white/90 backdrop-blur rounded-2xl p-4 border border-orange-200 shadow-xs text-center min-w-[110px]">
+                        <span class="block text-2xl font-black text-sky-600">{len(sdg_lang_counts)}</span>
+                        <span class="text-xs font-bold text-stone-500 uppercase">SDG Languages</span>
+                    </div>
                 </div>
             </div>
 
             <!-- Search & Filter Controls -->
             <div class="bg-white rounded-2xl border border-stone-200 p-4 shadow-xs space-y-3">
                 <div class="flex flex-wrap items-center justify-between gap-3">
-                    <div class="relative flex-grow max-w-md">
-                        <input type="text" id="asset-search" placeholder="Search {len(assets)} assets by name, category, or path..." oninput="filterAssets()" class="w-full pl-10 pr-9 py-2.5 text-sm bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-500 transition">
-                        <svg class="w-4 h-4 text-stone-400 absolute left-3.5 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                        <button id="clear-search-btn" onclick="clearSearch()" class="hidden absolute right-3 top-3 text-stone-400 hover:text-stone-700 text-sm font-bold">&times;</button>
+                    <div class="flex flex-wrap items-center gap-3 flex-grow">
+                        <div class="relative flex-grow min-w-[220px] max-w-md">
+                            <input type="text" id="asset-search" placeholder="Search {len(assets)} assets by name, category, language, or path..." oninput="filterAssets()" class="w-full pl-10 pr-9 py-2.5 text-sm bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-500 transition">
+                            <svg class="w-4 h-4 text-stone-400 absolute left-3.5 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                            <button id="clear-search-btn" onclick="clearSearch()" class="hidden absolute right-3 top-3 text-stone-400 hover:text-stone-700 text-sm font-bold">&times;</button>
+                        </div>
+
+                        <!-- Language Filter Select -->
+                        <div class="flex items-center gap-1.5 transition" id="language-filter-wrapper">
+                            <label for="language-filter" class="text-xs font-bold text-stone-500 whitespace-nowrap flex items-center gap-1">
+                                🌐 <span class="hidden sm:inline">Language:</span>
+                            </label>
+                            <select id="language-filter" onchange="setLanguageFilter(this.value)" class="text-xs font-semibold bg-stone-50 hover:bg-stone-100 border border-stone-200 rounded-xl px-3 py-2 text-stone-700 focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-500 transition cursor-pointer">
+                                {lang_options_str}
+                            </select>
+                        </div>
                     </div>
 
                     <div class="flex items-center gap-2 text-xs font-medium text-stone-500">
                         <span id="results-count" class="font-bold text-stone-800">Showing {len(assets)} assets</span>
-                        <button id="quick-show-all-btn" onclick="loadMoreAssets('all')" class="hidden px-2.5 py-1 rounded-lg bg-orange-100 hover:bg-orange-200 text-orange-800 font-bold transition">
+                        <button id="quick-show-all-btn" onclick="loadMoreAssets('all')" class="hidden px-2.5 py-1 rounded-lg bg-orange-100 hover:bg-orange-200 text-orange-800 font-bold transition cursor-pointer">
                             Show All
                         </button>
                     </div>
+                </div>
+
+                <!-- Quick Language Pills for SDG -->
+                <div id="sdg-lang-quickpills" class="flex flex-wrap items-center gap-1.5 pt-2 border-t border-stone-100 text-xs">
+                    <span class="font-bold text-stone-500 text-[11px] mr-1 flex items-center gap-1">
+                        🌐 SDG Quick Langs:
+                    </span>
+                    {quick_pills_str}
                 </div>
 
                 <!-- Category Filter Pills -->
@@ -443,8 +556,14 @@ html = f"""<!DOCTYPE html>
                     <button onclick="setCategoryFilter('logos', this)" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-stone-100 text-stone-600 hover:bg-stone-200 transition cursor-pointer">
                         🏷️ Brand Logos ({categories['logos']['count']})
                     </button>
-                    <button onclick="setCategoryFilter('scores', this)" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-stone-100 text-stone-600 hover:bg-stone-200 transition cursor-pointer">
-                        🚦 Nutri &amp; Green-Score ({categories['scores']['count']})
+                    <button onclick="setCategoryFilter('nutriscore', this)" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-stone-100 text-stone-600 hover:bg-stone-200 transition cursor-pointer">
+                        🚦 Nutri-Score ({categories['nutriscore']['count']})
+                    </button>
+                    <button onclick="setCategoryFilter('greenscore', this)" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-stone-100 text-stone-600 hover:bg-stone-200 transition cursor-pointer">
+                        🌱 Green-Score ({categories['greenscore']['count']})
+                    </button>
+                    <button onclick="setCategoryFilter('sdg', this)" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-stone-100 text-stone-600 hover:bg-stone-200 transition cursor-pointer">
+                        🌐 UN SDG Goals ({categories['sdg']['count']})
                     </button>
                     <button onclick="setCategoryFilter('prices', this)" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-stone-100 text-stone-600 hover:bg-stone-200 transition cursor-pointer">
                         💰 Open Prices ({categories['prices']['count']})
@@ -820,7 +939,10 @@ html = f"""<!DOCTYPE html>
             <div class="p-5 border-b border-stone-100 flex items-center justify-between">
                 <div>
                     <h3 id="modal-title" class="font-bold text-stone-900 text-base">Asset Title</h3>
-                    <p id="modal-path" class="text-xs font-mono text-stone-400 mt-0.5">path/to/asset.svg</p>
+                    <div class="flex items-center gap-2 mt-0.5">
+                        <p id="modal-path" class="text-xs font-mono text-stone-400">path/to/asset.svg</p>
+                        <span id="modal-lang-badge" class="hidden px-2 py-0.5 rounded text-[10px] font-bold bg-stone-100 text-stone-700 border border-stone-200"></span>
+                    </div>
                 </div>
                 <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-600 flex items-center justify-center transition cursor-pointer">
                     &times;
@@ -863,6 +985,7 @@ html = f"""<!DOCTYPE html>
         const ALL_DOCS = {docs_json};
 
         let currentCategory = 'all';
+        let currentLanguage = 'all';
         let currentModalAsset = null;
         let isModalPaused = false;
         let displayedCount = 60;
@@ -901,6 +1024,76 @@ html = f"""<!DOCTYPE html>
             if (btnEl) {{
                 btnEl.className = 'cat-pill active px-3 py-1.5 rounded-lg text-xs font-semibold bg-orange-600 text-white transition cursor-pointer';
             }}
+
+            // If switching away from all or sdg to a category with no languages, reset language filter
+            if (cat !== 'all' && cat !== 'sdg' && currentLanguage !== 'all') {{
+                currentLanguage = 'all';
+                const langSelect = document.getElementById('language-filter');
+                if (langSelect) langSelect.value = 'all';
+                document.querySelectorAll('#sdg-lang-quickpills button').forEach(b => {{
+                    b.className = 'sdg-lang-pill px-2.5 py-1 rounded-lg text-xs font-semibold bg-stone-100 text-stone-700 hover:bg-stone-200 transition cursor-pointer';
+                }});
+                const allLangBtn = document.querySelector('#sdg-lang-quickpills button');
+                if (allLangBtn) allLangBtn.className = 'sdg-lang-pill active px-2.5 py-1 rounded-lg text-xs font-bold bg-orange-600 text-white transition cursor-pointer';
+            }}
+
+            // Toggle SDG quick language pills visibility
+            const sdgQuickPills = document.getElementById('sdg-lang-quickpills');
+            const langWrapper = document.getElementById('language-filter-wrapper');
+            if (sdgQuickPills) {{
+                if (cat === 'sdg') {{
+                    sdgQuickPills.classList.remove('hidden');
+                    if (langWrapper) langWrapper.classList.add('ring-2', 'ring-orange-500/40', 'rounded-xl');
+                }} else if (cat === 'all') {{
+                    sdgQuickPills.classList.remove('hidden');
+                    if (langWrapper) langWrapper.classList.remove('ring-2', 'ring-orange-500/40', 'rounded-xl');
+                }} else {{
+                    sdgQuickPills.classList.add('hidden');
+                    if (langWrapper) langWrapper.classList.remove('ring-2', 'ring-orange-500/40', 'rounded-xl');
+                }}
+            }}
+
+            displayedCount = PAGE_SIZE;
+            filterAssets();
+        }}
+
+        function setLanguageFilter(lang, btnEl) {{
+            currentLanguage = lang;
+
+            // If a specific language is chosen and current category has no multi-language assets, auto-switch category to sdg
+            if (lang !== 'all' && currentCategory !== 'all' && currentCategory !== 'sdg') {{
+                currentCategory = 'sdg';
+                document.querySelectorAll('#category-pills button').forEach(b => {{
+                    const onclickAttr = b.getAttribute('onclick') || '';
+                    if (onclickAttr.includes("'sdg'")) {{
+                        b.className = 'cat-pill active px-3 py-1.5 rounded-lg text-xs font-semibold bg-orange-600 text-white transition cursor-pointer';
+                    }} else {{
+                        b.className = 'cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-stone-100 text-stone-600 hover:bg-stone-200 transition cursor-pointer';
+                    }}
+                }});
+            }}
+
+            // Sync select dropdown
+            const langSelect = document.getElementById('language-filter');
+            if (langSelect && langSelect.value !== lang) {{
+                langSelect.value = lang;
+            }}
+
+            // Sync quick pills
+            document.querySelectorAll('#sdg-lang-quickpills button').forEach(b => {{
+                b.className = 'sdg-lang-pill px-2.5 py-1 rounded-lg text-xs font-semibold bg-stone-100 text-stone-700 hover:bg-stone-200 transition cursor-pointer';
+            }});
+            if (btnEl) {{
+                btnEl.className = 'sdg-lang-pill active px-2.5 py-1 rounded-lg text-xs font-bold bg-orange-600 text-white transition cursor-pointer';
+            }} else {{
+                document.querySelectorAll('#sdg-lang-quickpills button').forEach(b => {{
+                    const onclickAttr = b.getAttribute('onclick') || '';
+                    if (onclickAttr.includes(`'${{lang}}'`)) {{
+                        b.className = 'sdg-lang-pill active px-2.5 py-1 rounded-lg text-xs font-bold bg-orange-600 text-white transition cursor-pointer';
+                    }}
+                }});
+            }}
+
             displayedCount = PAGE_SIZE;
             filterAssets();
         }}
@@ -926,11 +1119,18 @@ html = f"""<!DOCTYPE html>
                 const matchesCat = currentCategory === 'all' 
                     || a.category === currentCategory 
                     || (currentCategory === 'animated' && a.animated);
+
+                const matchesLang = currentLanguage === 'all'
+                    || (a.lang && a.lang.toLowerCase() === currentLanguage.toLowerCase());
+
                 const matchesQuery = !query 
                     || a.name.toLowerCase().includes(query) 
                     || a.path.toLowerCase().includes(query)
-                    || a.category.toLowerCase().includes(query);
-                return matchesCat && matchesQuery;
+                    || a.category.toLowerCase().includes(query)
+                    || (a.lang && a.lang.toLowerCase().includes(query))
+                    || (a.lang_name && a.lang_name.toLowerCase().includes(query));
+
+                return matchesCat && matchesLang && matchesQuery;
             }});
 
             renderAssetGrid(true);
@@ -988,8 +1188,12 @@ html = f"""<!DOCTYPE html>
                 card.appendChild(title);
 
                 const sizeSpan = document.createElement('span');
-                sizeSpan.className = 'text-[10px] text-stone-400 uppercase mt-0.5';
-                sizeSpan.innerText = `${{asset.ext.toUpperCase()}} &bull; ${{Math.round(asset.size / 1024)}} KB`;
+                sizeSpan.className = 'text-[10px] text-stone-400 uppercase mt-0.5 flex items-center justify-between';
+                let langBadge = '';
+                if (asset.lang) {{
+                    langBadge = `<span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-stone-100 text-stone-600 border border-stone-200" title="${{asset.lang_name || asset.lang}}">${{asset.lang_flag || '🌐'}} ${{asset.lang}}</span>`;
+                }}
+                sizeSpan.innerHTML = `<span>${{asset.ext.toUpperCase()}} &bull; ${{Math.round(asset.size / 1024)}} KB</span>${{langBadge}}`;
                 card.appendChild(sizeSpan);
 
                 grid.appendChild(card);
@@ -1058,6 +1262,16 @@ html = f"""<!DOCTYPE html>
             currentModalAsset = asset;
             document.getElementById('modal-title').innerText = asset.name;
             document.getElementById('modal-path').innerText = asset.path;
+
+            const langBadge = document.getElementById('modal-lang-badge');
+            if (langBadge) {{
+                if (asset.lang) {{
+                    langBadge.classList.remove('hidden');
+                    langBadge.innerText = `${{asset.lang_flag || '🌐'}} ${{asset.lang_name || asset.lang}} (${{asset.lang}})`;
+                }} else {{
+                    langBadge.classList.add('hidden');
+                }}
+            }}
             
             const downloadBtn = document.getElementById('modal-download');
             downloadBtn.href = asset.path;
