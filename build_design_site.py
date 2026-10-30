@@ -204,6 +204,16 @@ html = f"""<!DOCTYPE html>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Open Food Facts — Design System &amp; Asset Hub</title>
     <!-- Tailwind CSS with Typography Plugin -->
+    <script>
+        // Suppress Tailwind Play CDN advisory warning in console
+        (function() {{
+            const origWarn = console.warn;
+            console.warn = function(...args) {{
+                if (args[0] && typeof args[0] === 'string' && args[0].includes('cdn.tailwindcss.com should not be used in production')) return;
+                origWarn.apply(console, args);
+            }};
+        }})();
+    </script>
     <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -738,14 +748,13 @@ html = f"""<!DOCTYPE html>
                     <div class="bg-stone-50 rounded-2xl border border-stone-200 overflow-hidden shadow-xs">
                         <div class="aspect-video bg-black flex items-center justify-center">
                             <video controls class="w-full h-full object-cover">
-                                <source src="animations/sunrise-open-food-facts.mp4" type="video/mp4">
                                 <source src="animations/videos/sunrise-open-food-facts.mp4" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>
                         </div>
                         <div class="p-4">
                             <h3 class="font-bold text-stone-900 text-sm">Sunrise Open Food Facts</h3>
-                            <p class="text-xs text-stone-500 mt-1">animations/sunrise-open-food-facts.mp4</p>
+                            <p class="text-xs text-stone-500 mt-1">animations/videos/sunrise-open-food-facts.mp4</p>
                         </div>
                     </div>
 
@@ -753,14 +762,13 @@ html = f"""<!DOCTYPE html>
                     <div class="bg-stone-50 rounded-2xl border border-stone-200 overflow-hidden shadow-xs">
                         <div class="aspect-video bg-black flex items-center justify-center">
                             <video controls class="w-full h-full object-cover">
-                                <source src="animations/icons-open-food-facts.mp4" type="video/mp4">
                                 <source src="animations/videos/icons-open-food-facts.mp4" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>
                         </div>
                         <div class="p-4">
                             <h3 class="font-bold text-stone-900 text-sm">Icons Open Food Facts</h3>
-                            <p class="text-xs text-stone-500 mt-1">animations/icons-open-food-facts.mp4</p>
+                            <p class="text-xs text-stone-500 mt-1">animations/videos/icons-open-food-facts.mp4</p>
                         </div>
                     </div>
 
@@ -768,14 +776,13 @@ html = f"""<!DOCTYPE html>
                     <div class="bg-stone-50 rounded-2xl border border-stone-200 overflow-hidden shadow-xs">
                         <div class="aspect-video bg-black flex items-center justify-center">
                             <video controls class="w-full h-full object-cover">
-                                <source src="animations/universes-oxf.mp4" type="video/mp4">
                                 <source src="animations/videos/universes-oxf.mp4" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>
                         </div>
                         <div class="p-4">
                             <h3 class="font-bold text-stone-900 text-sm">Universes OXF (OFF, OBF, OPFF, OPF)</h3>
-                            <p class="text-xs text-stone-500 mt-1">animations/universes-oxf.mp4</p>
+                            <p class="text-xs text-stone-500 mt-1">animations/videos/universes-oxf.mp4</p>
                         </div>
                     </div>
 
