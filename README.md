@@ -1,5 +1,7 @@
 # Open Food Facts
 
+Website: https://openfoodfacts.github.io/openfoodfacts-design/
+
 # Welcome
 [Click here to get onboarded on the Design team](./CONTRIBUTING.md)
 
