@@ -2,16 +2,96 @@ GitHub:
 - changed-files:
   - any-glob-to-any-file: '.github/**/*'
 
-- 🐾 Open Pet Food Facts:
-    - any-glob-to-any-file: 'images/illustrations/pet-food/animals/*.svg'
-    - any-glob-to-any-file: 'images/illustrations/pet-food/*.svg'
+github_actions:
+- changed-files:
+  - any-glob-to-any-file: '.github/workflows/**/*'
 
-- 📸 Open Products Facts:
-    - any-glob-to-any-file: 'images/illustrations/products/*.svg'
-    - any-glob-to-any-file: 'images/illustrations/pet-food/clothes/*.svg'
+"📚 Documentation":
+- changed-files:
+  - any-glob-to-any-file: '**/*.md'
 
-- 🍊 Open Food Facts:
-    - any-glob-to-any-file: 'images/illustrations/food/*.svg'
+"🐾 Open Pet Food Facts":
+- changed-files:
+  - any-glob-to-any-file:
+    - 'images/illustrations/pet-food/**/*'
+    - 'images/logos/openpetfoodfacts/**/*'
 
-- 🧴 Open Beauty Facts:
-    - any-glob-to-any-file: 'images/illustrations/beauty/*.svg'
+"📸 Open Products Facts":
+- changed-files:
+  - any-glob-to-any-file:
+    - 'images/illustrations/products/**/*'
+    - 'images/logos/openproductsfacts/**/*'
+
+"🍊 Open Food Facts":
+- changed-files:
+  - any-glob-to-any-file:
+    - 'images/illustrations/food/**/*'
+    - 'images/logos/openfoodfacts/**/*'
+    - 'UXR OFF/**/*'
+
+"🧴 Open Beauty Facts":
+- changed-files:
+  - any-glob-to-any-file:
+    - 'images/illustrations/beauty/**/*'
+    - 'images/logos/openbeautyfacts/**/*'
+
+"💸 Open Prices":
+- changed-files:
+  - any-glob-to-any-file:
+    - 'images/illustrations/prices/**/*'
+    - 'images/logos/openprices/**/*'
+    - 'UXR Open Prices/**/*'
+
+Illustrations:
+- changed-files:
+  - any-glob-to-any-file: 'images/illustrations/**/*'
+
+Logos:
+- changed-files:
+  - any-glob-to-any-file: 'images/logos/**/*'
+
+Animations:
+- changed-files:
+  - any-glob-to-any-file:
+    - 'animations/**/*'
+    - '**/*animated*'
+    - '**/*.mp4'
+
+"🚦 Nutri-Score":
+- changed-files:
+  - any-glob-to-any-file:
+    - 'images/logos/nutri-score/**/*'
+    - 'images/logos/openfoodfacts/nutriscore/**/*'
+    - '**/*nutri-score*'
+    - '**/*nutriscore*'
+
+green-score:
+- changed-files:
+  - any-glob-to-any-file:
+    - 'images/logos/green-score/**/*'
+    - '**/*green-score*'
+    - '**/*greenscore*'
+    - '**/*GreenScore*'
+
+UXR:
+- changed-files:
+  - any-glob-to-any-file: 'UXR*/**/*'
+
+Characters:
+- changed-files:
+  - any-glob-to-any-file:
+    - 'avatars/**/*'
+    - '**/*character*'
+
+design:
+- changed-files:
+  - any-glob-to-any-file:
+    - 'designs/**/*'
+    - 'graphic-charter/**/*'
+
+"design X code":
+- changed-files:
+  - any-glob-to-any-file:
+    - 'build_design_site.py'
+    - 'index.html'
+    - 'tools/**/*'
