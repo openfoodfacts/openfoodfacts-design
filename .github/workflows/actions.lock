@@ -17,7 +17,7 @@ workflows:
     '.github/workflows/release-please.yml':
         - 'googleapis/release-please-action@v5.0.0'
     '.github/workflows/semantic-pr.yml':
-        - 'amannn/action-semantic-pull-request@v6.1.1'
+        - 'amannn/action-semantic-pull-request@v6.1.2'
     '.github/workflows/top-issues.yml':
         - 'rickstaa/top-issues-action@v1.3.101'
 dependencies:
@@ -58,9 +58,9 @@ dependencies:
         repo_id: 496012378
         uses:
             - 'actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f'
-    'amannn/action-semantic-pull-request@v6.1.1':
-        ref: 'v6.1.1'
-        commit: 'sha1-48f256284bd46cdaab1048c3721360e808335d50'
+    'amannn/action-semantic-pull-request@v6.1.2':
+        ref: 'v6.1.2'
+        commit: 'sha1-2252a14e810aa9b85c2d560bd7070c802206ecf6'
         owner_id: 4038316
         repo_id: 220418983
     'googleapis/release-please-action@v5.0.0':
