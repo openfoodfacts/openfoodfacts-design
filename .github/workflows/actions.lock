@@ -8,7 +8,7 @@ workflows:
     '.github/workflows/deploy-pages.yml':
         - 'actions/checkout@v7.0.1'
         - 'actions/configure-pages@v5.0.0'
-        - 'actions/deploy-pages@v4.0.5'
+        - 'actions/deploy-pages@v5.0.1'
         - 'actions/upload-pages-artifact@v5.0.0'
     '.github/workflows/github-projects.yml':
         - 'actions/add-to-project@v2.0.0'
@@ -36,9 +36,9 @@ dependencies:
         commit: 'sha1-983d7736d9b0ae728b81ab479565c72886d7745b'
         owner_id: 44036562
         repo_id: 513659658
-    'actions/deploy-pages@v4.0.5':
-        ref: 'v4.0.5'
-        commit: 'sha1-d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e'
+    'actions/deploy-pages@v5.0.1':
+        ref: 'v5.0.1'
+        commit: 'sha1-368f82528645a54fb793d4d04e342629a3f51346'
         owner_id: 44036562
         repo_id: 438112499
     'actions/labeler@v7.0.0':
