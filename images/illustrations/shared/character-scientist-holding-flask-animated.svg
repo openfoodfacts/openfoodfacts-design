@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 390" width="220" height="390" fill="none">
+              <style id="svgAnimStyle">
+                :root {
+                  --speed-mult: 1;
+                  --potion-color: #C83CEB;
+                  --potion-light: #E278FC;
+                }
+
+                /* 1. Gentle Upper-Body Breathing &amp; Posture Motion */
+                @keyframes scientistBreathe {
+                  0%, 100% { transform: translateY(0px); }
+                  50% { transform: translateY(-2.2px); }
+                }
+
+                /* 2. Subtle Head Tilt &amp; Nod */
+                @keyframes headInspect {
+                  0%, 100% { transform: rotate(0deg) translateY(0px); }
+                  35% { transform: rotate(1.6deg) translateY(-1px); }
+                  70% { transform: rotate(-1deg) translateY(0.5px); }
+                }
+
+                /* 3. Natural Eye Blinking + Looking at Flask */
+                @keyframes eyeBlink {
+                  0%, 44%, 48%, 92%, 96%, 100% { transform: scaleY(1); }
+                  46%, 94% { transform: scaleY(0.1); }
+                }
+
+                @keyframes eyeGlance {
+                  0%, 25%, 100% { transform: translate(0px, 0px); }
+                  40%, 75% { transform: translate(1.8px, 0.8px); }
+                }
+
+                @keyframes browRaise {
+                  0%, 30%, 100% { transform: translateY(0px); }
+                  45%, 70% { transform: translateY(-1.6px); }
+                }
+
+                /* 4. Left Arm (Viewer's Right) Swirling Flask */
+                @keyframes armSwirl {
+                  0%, 100% { transform: rotate(0deg); }
+                  25% { transform: rotate(-2.5deg) translateY(-2px); }
+                  50% { transform: rotate(1.2deg) translateY(1px); }
+                  75% { transform: rotate(-1.8deg) translateY(-1.5px); }
+                }
+
+                /* 5. Right Arm (Viewer's Left) Subtle Idle Sway */
+                @keyframes rightArmSway {
+                  0%, 100% { transform: rotate(0deg); }
+                  50% { transform: rotate(1.4deg); }
+                }
+
+                /* 6. Flask Independent Micro-Tilt &amp; Slosh */
+                @keyframes flaskRock {
+                  0%, 100% { transform: rotate(0deg); }
+                  25% { transform: rotate(4deg); }
+                  50% { transform: rotate(-3deg); }
+                  75% { transform: rotate(3.5deg); }
+                }
+
+                @keyframes liquidWave {
+                  0%, 100% { transform: rotate(0deg) scaleY(1); }
+                  25% { transform: rotate(-5deg) scaleY(1.03); }
+                  50% { transform: rotate(4deg) scaleY(0.98); }
+                  75% { transform: rotate(-4deg) scaleY(1.02); }
+                }
+
+                /* 7. Rising &amp; Popping Bubbles */
+                @keyframes bubbleRise1 {
+                  0% {
+                    transform: translate(0px, 14px) scale(0.4);
+                    opacity: 0;
+                  }
+                  20% {
+                    opacity: 1;
+                    transform: translate(-1px, 6px) scale(1);
+                  }
+                  75% {
+                    opacity: 0.95;
+                    transform: translate(2px, -16px) scale(1.1);
+                  }
+                  100% {
+                    transform: translate(-2px, -28px) scale(1.45);
+                    opacity: 0;
+                  }
+                }
+
+                @keyframes bubbleRise2 {
+                  0% {
+                    transform: translate(0px, 18px) scale(0.35);
+                    opacity: 0;
+                  }
+                  25% {
+                    opacity: 1;
+                    transform: translate(2px, 6px) scale(1);
+                  }
+                  80% {
+                    opacity: 0.95;
+                    transform: translate(-2px, -18px) scale(1.08);
+                  }
+                  100% {
+                    transform: translate(1px, -32px) scale(1.35);
+                    opacity: 0;
+                  }
+                }
+
+                @keyframes bubbleRise3 {
+                  0% {
+                    transform: translate(0px, 24px) scale(0.3);
+                    opacity: 0;
+                  }
+                  20% {
+                    opacity: 0.95;
+                    transform: translate(-2px, 10px) scale(0.95);
+                  }
+                  80% {
+                    opacity: 0.9;
+                    transform: translate(3px, -14px) scale(1.05);
+                  }
+                  100% {
+                    transform: translate(0px, -26px) scale(1.4);
+                    opacity: 0;
+                  }
+                }
+
+                @keyframes innerBubbleFloat {
+                  0% { transform: translateY(14px) scale(0.5); opacity: 0; }
+                  30% { opacity: 0.65; }
+                  90% { opacity: 0.65; }
+                  100% { transform: translateY(-16px) scale(1.1); opacity: 0; }
+                }
+
+                /* Classes toggled by controls */
+                .anim-breathe {
+                  transform-origin: 78px 240px;
+                  animation: scientistBreathe calc(3.6s / var(--speed-mult)) ease-in-out infinite;
+                }
+                .anim-head {
+                  transform-origin: 78px 95px;
+                  animation: headInspect calc(5.4s / var(--speed-mult)) ease-in-out infinite;
+                }
+                .anim-blink {
+                  transform-origin: 78px 57px;
+                  animation: eyeBlink calc(4.8s / var(--speed-mult)) infinite;
+                }
+                .anim-glance {
+                  animation: eyeGlance calc(5.4s / var(--speed-mult)) ease-in-out infinite;
+                }
+                .anim-brows {
+                  animation: browRaise calc(5.4s / var(--speed-mult)) ease-in-out infinite;
+                }
+                .anim-swirl {
+                  transform-origin: 120px 120px;
+                  animation: armSwirl calc(3.2s / var(--speed-mult)) ease-in-out infinite;
+                }
+                .anim-right-arm {
+                  transform-origin: 28px 115px;
+                  animation: rightArmSway calc(3.6s / var(--speed-mult)) ease-in-out infinite;
+                }
+                .anim-flask {
+                  transform-origin: 185px 175px;
+                  animation: flaskRock calc(3.2s / var(--speed-mult)) ease-in-out infinite;
+                }
+                .anim-liquid {
+                  transform-origin: 185px 202px;
+                  animation: liquidWave calc(3.2s / var(--speed-mult)) ease-in-out infinite;
+                }
+                .anim-bubble-1 {
+                  transform-origin: 182px 155px;
+                  animation: bubbleRise1 calc(2.1s / var(--speed-mult)) ease-in infinite;
+                }
+                .anim-bubble-2 {
+                  transform-origin: 190px 146px;
+                  animation: bubbleRise2 calc(2.5s / var(--speed-mult)) ease-in infinite;
+                  animation-delay: -0.8s;
+                }
+                .anim-bubble-3 {
+                  transform-origin: 180px 134px;
+                  animation: bubbleRise3 calc(2.3s / var(--speed-mult)) ease-in infinite;
+                  animation-delay: -1.5s;
+                }
+                .anim-inner-b1 {
+                  transform-origin: 181px 208px;
+                  animation: innerBubbleFloat calc(1.8s / var(--speed-mult)) linear infinite;
+                }
+                .anim-inner-b2 {
+                  transform-origin: 189px 212px;
+                  animation: innerBubbleFloat calc(2.2s / var(--speed-mult)) linear infinite;
+                  animation-delay: -0.9s;
+                }
+
+                .potion-fill {
+                  fill: var(--potion-color);
+                  transition: fill 0.3s ease;
+                }
+                .potion-highlight {
+                  fill: var(--potion-light);
+                  transition: fill 0.3s ease;
+                }
+              </style>
+
+              <defs>
+                <!-- Clip path matching inner conical region of the flask so sloshing liquid stays neatly inside -->
+                <clipPath id="flaskInteriorClip">
+                  <path d="M 181.5 162 L 188.5 162 L 188.5 182 L 200.5 213 C 202.2 217.5 199.5 220 195 220 L 175 220 C 170.5 220 167.8 217.5 169.5 213 L 181.5 182 Z"/>
+                </clipPath>
+              </defs>
+
+              <!-- Subtle Soft Ground Shadow -->
+              <ellipse id="groundShadow" cx="78" cy="382" rx="48" ry="4.5" fill="#000000" opacity="0.12"/>
+
+              <!-- ================= LEGS, ANKLES & SHOES (STATIC BASE) ================= -->
+              <g id="legsAndShoes">
+                <!-- Left Ankle (viewer's left) -->
+                <rect x="49" y="348" width="19" height="22" fill="#D3B198"/>
+                <!-- Right Ankle (viewer's right) -->
+                <rect x="87" y="348" width="19" height="22" fill="#D3B198"/>
+
+                <!-- Left Shoe (viewer's left, pointing left) -->
+                <path d="M 48 364 C 48 364 58.5 369 69.5 364 L 69.5 379 C 69.5 380.2 68.5 381 67 381 L 34 381 C 30.5 381 30 377.5 33 375 L 48 364 Z" fill="#050505"/>
+
+                <!-- Right Shoe (viewer's right, pointing right) -->
+                <path d="M 86.5 364 C 97.5 369 108 364 108 364 L 123 375 C 126 377.5 125.5 381 122 381 L 89 381 C 87.5 381 86.5 380.2 86.5 379 L 86.5 364 Z" fill="#050505"/>
+
+                <!-- Dark Charcoal Pants (#474747) -->
+                <!-- Viewer's Left Leg -->
+                <path d="M 38 265 L 74.5 265 L 74.5 352 C 74.5 355 72.5 356.5 69.5 356.5 L 44.5 356.5 C 41.5 356.5 39.8 355 39.5 352 L 38 265 Z" fill="#474747"/>
+                <!-- Viewer's Right Leg -->
+                <path d="M 81.5 265 L 118 265 L 116.5 352 C 116.2 355 114.5 356.5 111.5 356.5 L 86.5 356.5 C 83.5 356.5 81.5 355 81.5 352 L 81.5 265 Z" fill="#474747"/>
+              </g>
+
+              <!-- ================= UPPER BODY GROUP (BREATHING MOTION) ================= -->
+              <g id="upperBodyGroup" class="anim-breathe">
+
+                <!-- Neck (#BD9B84) -->
+                <path d="M 68 88 L 88 88 L 88 118 C 88 125 68 125 68 118 Z" fill="#BD9B84"/>
+
+                <!-- Green V-Neck Undershirt (#24A84A) -->
+                <path d="M 62 98 L 94 98 L 94 185 L 62 185 Z" fill="#24A84A"/>
+                <!-- Neckline Curve on Green Shirt showing tan collarbone/neck -->
+                <path d="M 67.5 96 L 88.5 96 L 88.5 107 C 88.5 119 67.5 119 67.5 107 Z" fill="#BD9B84"/>
+
+                <!-- ================= LEFT ARM & FLASK (VIEWER'S RIGHT) ================= -->
+                <g id="leftArmAndFlask" class="anim-swirl">
+                  <!-- Lab Coat Right Sleeve Curving Outward (#E8E8E8) -->
+                  <path d="M 116 100 C 127 104 134 114 145 142 C 152 160 160 167 171 171 L 171 206 C 151 206 135 198 122 174 L 116 155 Z" fill="#E8E8E8"/>
+
+                  <!-- Mint Glove Palm Back (#3CFFD0) behind flask -->
+                  <path d="M 170 173 L 180 173 L 185 165 C 187 162 190 164 189 168 L 186 196 L 170 196 Z" fill="#3CFFD0"/>
+
+                  <!-- ERLENMEYER FLASK & BUBBLES -->
+                  <g id="flaskGroup" class="anim-flask">
+                    
+                    <!-- Rising Purple Bubbles Above Flask -->
+                    <g id="bubblesGroup">
+                      <circle class="potion-fill anim-bubble-1" cx="182.5" cy="155" r="3.2"/>
+                      <circle class="potion-fill anim-bubble-2" cx="190" cy="146" r="4.1"/>
+                      <circle class="potion-fill anim-bubble-3" cx="180.5" cy="134" r="2.2"/>
+                    </g>
+
+                    <!-- Sky Blue Glass Flask Body (#6ECFF6) -->
+                    <!-- Top Rim Lip -->
+                    <rect x="177.5" y="160" width="15" height="3.8" rx="1.9" fill="#6ECFF6"/>
+                    <!-- Neck & Conical Body -->
+                    <path d="M 180 163 L 190 163 L 190 182 L 204 214 C 206.2 219 203 223.5 197.5 223.5 L 172.5 223.5 C 167 223.5 163.8 219 166 214 L 180 182 Z" fill="#6ECFF6"/>
+
+                    <!-- Magenta/Purple Liquid Inside Flask (#C83CEB) -->
+                    <g clip-path="url(#flaskInteriorClip)">
+                      <g id="liquidSloshGroup" class="anim-liquid">
+                        <!-- Liquid Mass -->
+                        <path class="potion-fill" d="M 160 196 Q 173 194 185 196 T 210 196 L 210 225 L 160 225 Z"/>
+                        <!-- Subtle Top Surface Meniscus Highlight -->
+                        <path class="potion-highlight" d="M 174 196.5 Q 185 194.8 196 196.5 Q 185 198.2 174 196.5 Z" opacity="0.55"/>
+                        <!-- Tiny Effervescent Bubbles Inside Liquid -->
+                        <circle class="potion-highlight anim-inner-b1" cx="181" cy="212" r="1.8"/>
+                        <circle class="potion-highlight anim-inner-b2" cx="189" cy="215" r="1.4"/>
+                      </g>
+                    </g>
+
+                    <!-- Subtle Glass Specular Reflection Line -->
+                    <path d="M 173 215 L 181.5 194" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" opacity="0.45"/>
+                  </g>
+
+                  <!-- Mint Glove 4 Wrapped Horizontal Fingers in Front of Flask Neck (#3CFFD0) -->
+                  <g id="wrappedFingers">
+                    <rect x="181.5" y="172.5" width="13.5" height="4.2" rx="2.1" fill="#3CFFD0"/>
+                    <rect x="181.5" y="178" width="13.5" height="4.2" rx="2.1" fill="#3CFFD0"/>
+                    <rect x="181.5" y="183.5" width="13.5" height="4.2" rx="2.1" fill="#3CFFD0"/>
+                    <rect x="181.5" y="189" width="13.5" height="4.2" rx="2.1" fill="#3CFFD0"/>
+                  </g>
+                </g>
+
+                <!-- ================= RIGHT ARM & GLOVE (VIEWER'S LEFT) ================= -->
+                <g id="rightArmGroup" class="anim-right-arm">
+                  <!-- Mint Glove on Viewer's Left (#3CFFD0) -->
+                  <g id="leftSideGlove">
+                    <!-- Palm & Wrist -->
+                    <path d="M 11.5 215 L 30 215 L 28.5 234 L 10 233 Z" fill="#3CFFD0"/>
+                    <!-- Thumb sticking out to the right -->
+                    <path d="M 27 219 L 35.5 227.5 C 37.2 229.2 35.2 232.2 33 230.8 L 25.5 225 Z" fill="#3CFFD0"/>
+                    <!-- 4 Vertical Fingers -->
+                    <rect x="9.5" y="229" width="3.8" height="19" rx="1.9" transform="rotate(4 9.5 229)" fill="#3CFFD0"/>
+                    <rect x="14.5" y="230" width="3.8" height="19.5" rx="1.9" transform="rotate(4 14.5 230)" fill="#3CFFD0"/>
+                    <rect x="19.5" y="230" width="3.8" height="19.5" rx="1.9" transform="rotate(4 19.5 230)" fill="#3CFFD0"/>
+                    <rect x="24.5" y="230" width="3.8" height="18.5" rx="1.9" transform="rotate(4 24.5 230)" fill="#3CFFD0"/>
+                  </g>
+
+                  <!-- Lab Coat Left Sleeve (#E8E8E8) -->
+                  <path d="M 40 100 C 26 103 20 116 14 152 L 8.5 218 L 34 218 L 36 140 Z" fill="#E8E8E8"/>
+                </g>
+
+                <!-- ================= LAB COAT TORSO & LAPELS ================= -->
+                <g id="labCoatTorso">
+                  <!-- Main Coat Body (#E8E8E8) with V-neck cutout showing green shirt -->
+                  <path d="M 40 97 L 64.5 97 L 78 172 L 91.5 97 L 116 97 L 122 140 L 122 273 C 122 275.5 120.5 277 118 277 L 38 277 C 35.5 277 34 275.5 34 273 L 34 140 Z" fill="#E8E8E8"/>
+
+                  <!-- Vertical Darker Grey Seam Lines (#BDBDBD) -->
+                  <line x1="34.5" y1="142" x2="34.5" y2="218" stroke="#BDBDBD" stroke-width="2.2"/>
+                  <line x1="121.5" y1="142" x2="121.5" y2="178" stroke="#BDBDBD" stroke-width="2.2"/>
+
+                  <!-- Bright White Notched Lapels (#F7F7F7) -->
+                  <!-- Left Lapel -->
+                  <path d="M 48 95.5 L 65.5 95.5 L 78 172 L 53.5 133.5 L 60.5 129.5 L 51 125.5 Z" fill="#F7F7F7"/>
+                  <!-- Right Lapel -->
+                  <path d="M 108 95.5 L 90.5 95.5 L 78 172 L 102.5 133.5 L 95.5 129.5 L 105 125.5 Z" fill="#F7F7F7"/>
+                </g>
+
+                <!-- ================= HEAD, HAIR, GOGGLES & FACE ================= -->
+                <g id="headGroup" class="anim-head">
+                  <!-- Ears (#D3B198) -->
+                  <circle cx="48.5" cy="59" r="9.5" fill="#D3B198"/>
+                  <circle cx="107.5" cy="59" r="9.5" fill="#D3B198"/>
+
+                  <!-- Head Base Oval (#D3B198) -->
+                  <ellipse cx="78" cy="56" rx="30" ry="37.5" fill="#D3B198"/>
+
+                  <!-- Brown Parted Hair (#7C6352) -->
+                  <path d="M 44.5 52 C 42 25 56 7 73 7.5 C 76 7.5 77.5 9 78 10.5 C 78.5 9 80 7.5 83 7.5 C 100 7 114 25 111.5 52 C 109.5 55.5 103 55 97 45 C 91 35 83 24 78 21.5 C 73 24 65 35 59 45 C 53 55 46.5 55.5 44.5 52 Z" fill="#7C6352"/>
+
+                  <!-- Eyebrows (#4A3222) -->
+                  <g id="eyebrows" class="anim-brows">
+                    <path d="M 60.5 42.5 Q 66.5 39 71.5 41.5" stroke="#4A3222" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+                    <path d="M 84.5 41.5 Q 89.5 39 95.5 42.5" stroke="#4A3222" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+                  </g>
+
+                  <!-- Sky Blue Safety Goggles (#5AC8FA) with Rounded Frame & Nose Notch -->
+                  <path d="M 60 44.5 L 96 44.5 C 102.5 44.5 106.5 49 106.5 55.5 C 106.5 62 101.5 67 94.5 67 L 85.5 67 C 82.8 67 81.8 65 80.8 62.5 C 79.8 60 78.8 59.2 78 59.2 C 77.2 59.2 76.2 60 75.2 62.5 C 74.2 65 73.2 67 70.5 67 L 61.5 67 C 54.5 67 49.5 62 49.5 55.5 C 49.5 49 53.5 44.5 60 44.5 Z" fill="#5AC8FA"/>
+
+                  <!-- Subtle Goggle Lens Shine -->
+                  <path d="M 55 49.5 Q 61 48 66 49.5" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" opacity="0.45"/>
+                  <path d="M 89 49.5 Q 95 48 100 49.5" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" opacity="0.45"/>
+
+                  <!-- Eyes (#3D2314) with Blink & Glance -->
+                  <g id="eyesBlinkWrapper" class="anim-blink">
+                    <g id="eyesGlanceWrapper" class="anim-glance">
+                      <circle cx="66.5" cy="56.5" r="3.1" fill="#3D2314"/>
+                      <circle cx="89.5" cy="56.5" r="3.1" fill="#3D2314"/>
+                    </g>
+                  </g>
+
+                  <!-- Cute Curved Smile (#3D2314) -->
+                  <path d="M 73.2 74 C 75 77.6 81 77.6 82.8 74" stroke="#3D2314" stroke-width="3" stroke-linecap="round" fill="none"/>
+                </g>
+
+              </g>
+            </svg>
