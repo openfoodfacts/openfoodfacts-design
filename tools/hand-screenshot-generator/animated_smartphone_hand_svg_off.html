@@ -478,8 +478,10 @@
 
             let safeUrl = '';
 
-            // Allow embedded local uploads (data:image/*) and normal remote images (http/https).
-            if (/^data:image\//i.test(rawUrl)) {
+            // Allow embedded local uploads for common raster formats only,
+            // and normal remote images (http/https).
+            // Intentionally excludes SVG data URLs (image/svg+xml).
+            if (/^data:image\/(?:png|jpeg|jpg|gif|webp);base64,[a-z0-9+/=\s]+$/i.test(rawUrl)) {
                 safeUrl = rawUrl;
             } else {
                 try {
