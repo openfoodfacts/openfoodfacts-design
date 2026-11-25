@@ -470,17 +470,20 @@
         // Update screen image href
         function sanitizeScreenImageUrl(url) {
             if (!url) return '';
-            const trimmed = url.trim();
+            const trimmed = String(url).trim();
 
-            // Allow embedded local uploads (data URLs), but only image MIME types.
-            if (/^data:image\//i.test(trimmed)) {
+            // Allow embedded local uploads (data URLs), but only safe raster image MIME types in base64 form.
+            if (/^data:image\/(?:png|jpe?g|gif|webp);base64,[a-z0-9+/=\s]+$/i.test(trimmed)) {
                 return trimmed;
             }
 
-            // Allow only http/https URLs (absolute or relative resolved against current origin).
+            // Allow only http/https URLs (absolute or relative resolved against current origin),
+            // and require a common image file extension.
             try {
                 const parsed = new URL(trimmed, window.location.href);
-                if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+                const isHttp = parsed.protocol === 'http:' || parsed.protocol === 'https:';
+                const hasImageExtension = /\.(?:png|jpe?g|gif|webp|bmp|svg)$/i.test(parsed.pathname);
+                if (isHttp && hasImageExtension) {
                     return parsed.href;
                 }
             } catch (_) {
